@@ -46,6 +46,8 @@ Route::group(["prefix" => ""], function() {
 		->name("$group.menu");
 	Route::get("add-menu","$MenuController@add")
 		->name("$group.menu.add");
+	Route::post("add-menu","$MenuController@store")
+		->name("$group.menu.store");
 
 	// group menu
 	Route::get("add-group-menu","$GroupMenuController@add")

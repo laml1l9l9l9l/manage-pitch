@@ -25,17 +25,17 @@ class GroupMenuController extends Controller
     {
     	$group_menu_request = $request->get('group_menu');
 
-    	$validated_data = $this->validator($group_menu_request)->validate();
+    	$this->validator($group_menu_request)->validate();
 
         $group_menu = $this->group_menu;
-        $helper = $this->helper;
+        $helper     = $this->helper;
 
         $group_menu->name       = $group_menu_request['name'];
         $group_menu->created_at = $helper->getCurrentDateTime();
         $group_menu->updated_at = $helper->getCurrentDateTime();
         $group_menu->save();
 
-        return redirect()->route('admin.group.menu.add')
+        return redirect()->route('admin.menu')
             ->with('success', 'Bạn đã thêm mới một nhóm cho menu');
     }
 

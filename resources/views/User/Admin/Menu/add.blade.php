@@ -9,11 +9,15 @@
 @section('content')
 <div class="content">
 	<div class="container-fluid">
+		
+		@include('Layout.Admin.Notification.message_basic')
+
 		<div class="row">
 			
 			<div class="col-md-6">
 				<div class="card">
-					<form method="#" action="#">
+					<form method="post" action="{{ route('admin.menu.store') }}">
+						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
 								{{ __('Thêm mới menu') }}
@@ -24,88 +28,156 @@
 								<label for="name">
 									{{ __('Tên') }}
 								</label>
-								<input type="text" placeholder="Tên menu" class="form-control" id="name">
+								<input type="text" placeholder="Tên menu" class="form-control" id="name" name="menu[name]" value="{{ old('menu')['name'] }}">
+                				@if (!empty($errors) && $errors->has('name'))
+                					<label class="error text-danger" for="name">
+                						{{ $errors->first('name') }}
+                					</label>
+                				@endif
 							</div>
 							<div class="form-group">
 								<label for="link">
 									{{ __('Link') }}
 								</label>
-								<input type="text" placeholder="Link menu" class="form-control" id="link">
+								<input type="text" placeholder="Link menu" class="form-control" id="link" name="menu[link]" value="{{ old('menu')['link'] }}">
+                				@if (!empty($errors) && $errors->has('link'))
+                					<label class="error text-danger" for="link">
+                						{{ $errors->first('link') }}
+                					</label>
+                				@endif
 							</div>
 							<div class="form-group">
+								<label>
+									{{ __('Menu liên quan') }}
+								</label>
+								<br>
+								<div class="checkbox checkbox-inline">
+								    <input type="checkbox" id="checkbox-relevant-menu" name="menu[checkbox_relevant_menu]" @if (isset(old('menu')['checkbox_relevant_menu'])) checked="checked" @endif>
+									<label for="checkbox-relevant-menu">
+										{{ __('Có') }}
+									</label>
+								</div>
+							</div>
+							<div class="row d-none" id="input-relevant-menu">
+								<div class="col-sm-6">
+									<select class="selectpicker" data-style="btn btn-block" title="Menu liên quan" data-size="5" name="menu[relevant_menu]">
+										@if (count($group_menu) > 0)
+											@php
+												$helper->optionSelectBasic($group_menu, null);
+											@endphp
+										@else
+											<option>Chưa có nhóm menu</option>
+										@endif
+									</select>
+	                				@if (!empty($errors) && $errors->has('relevant_menu'))
+	                					<label class="error text-danger">
+	                						{{ $errors->first('relevant_menu') }}
+	                					</label>
+	                				@endif
+								</div>
+							</div>
+							<div class="form-group" id="menu-level">
 								<label>
 									{{ __('Loại menu') }}
 								</label>
 								<br>
 								<div class="radio radio-inline">
-								    <input type="radio" name="radio1" id="normal_menu" value="0" checked="checked">
+								    <input type="radio" id="normal_menu" value="0" name="menu[level]" @if(!isset(old('menu')['level']) || old('menu')['level'] == 0) checked="checked" @endif>
 									<label for="normal_menu">
 										{{ __('Menu thường') }}
 									</label>
 								</div>
 								<div class="radio radio-inline">
-								    <input type="radio" name="radio1" id="sub_menu" value="1">
+								    <input type="radio" id="sub_menu" value="1" name="menu[level]" @if(isset(old('menu')['level']) && old('menu')['level'] == 1) checked="checked" @endif>
 									<label for="sub_menu">
 										{{ __('Menu con') }}
 									</label>
 								</div>
+								<br>
+                				@if (!empty($errors) && $errors->has('level'))
+                					<label class="error text-danger">
+                						{{ $errors->first('level') }}
+                					</label>
+                				@endif
 							</div>
-							<div class="row">
+							<div class="row" id="option-menu-level">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="index_menu">
+										<label for="icon-menu">
+											{{ __('Icon menu') }}
+										</label>
+										<input type="text" placeholder="VD: ti-panel" class="form-control index-menu" id="icon-menu" name="menu[icon]" value="{{ old('menu')['icon'] }}">
+		                				@if (!empty($errors) && $errors->has('icon'))
+		                					<label class="error text-danger">
+		                						{{ $errors->first('icon') }}
+		                					</label>
+		                				@endif
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="index-menu">
 											{{ __('Thứ tự menu') }}
 										</label>
-										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control" id="index_menu">
+										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control  index-menu" id="index-menu" name="menu[index_menu]" value="{{ old('menu')['index_menu'] }}">
+		                				@if (!empty($errors) && $errors->has('index_menu'))
+		                					<label class="error text-danger">
+		                						{{ $errors->first('index_menu') }}
+		                					</label>
+		                				@endif
 									</div>
 								</div>
 								<div class="col-md-6 d-none">
 									<div class="form-group">
-										<label for="index_sub_menu">
+										<label for="sub-name">
+											{{ __('Tên rút gọn') }}
+										</label>
+										<input type="text" placeholder="VD: HĐ - Hóa đơn" class="form-control index-sub-menu" id="sub-name" name="menu[sub_name]">
+		                				@if (!empty($errors) && $errors->has('sub_name'))
+		                					<label class="error text-danger">
+		                						{{ $errors->first('sub_name') }}
+		                					</label>
+		                				@endif
+									</div>
+								</div>
+								<div class="col-md-6 d-none">
+									<div class="form-group">
+										<label for="index-sub-menu">
 											{{ __('Thứ tự menu con') }}
 										</label>
-										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control" id="index_sub_menu">
+										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control index-sub-menu" id="index-sub-menu" name="menu[index_sub_menu]">
+		                				@if (!empty($errors) && $errors->has('index_sub_menu'))
+		                					<label class="error text-danger">
+		                						{{ $errors->first('index_sub_menu') }}
+		                					</label>
+		                				@endif
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-6">
-									<select class="selectpicker" data-style="btn btn-block" title="Nhóm menu" data-size="5">
-										<option value="id">Bahasa Indonesia</option>
-										<option value="ms">Bahasa Melayu</option>
-										<option value="ca">Català</option>
-										<option value="da">Dansk</option>
-										<option value="de">Deutsch</option>
-										<option value="en">English</option>
-										<option value="es">Español</option>
-										<option value="el">Eλληνικά</option>
-										<option value="fr">Français</option>
-										<option value="it">Italiano</option>
-										<option value="hu">Magyar</option>
-										<option value="nl">Nederlands</option>
-										<option value="no">Norsk</option>
-										<option value="pl">Polski</option>
-										<option value="pt">Português</option>
-										<option value="fi">Suomi</option>
-										<option value="sv">Svenska</option>
-										<option value="tr">Türkçe</option>
-										<option value="is">Íslenska</option>
-										<option value="cs">Čeština</option>
-										<option value="ru">Русский</option>
-										<option value="th">ภาษาไทย</option>
-										<option value="zh">中文 (简体)</option>
-										<option value="zh-TW">中文 (繁體)</option>
-										<option value="ja">日本語</option>
-										<option value="ko">한국어</option>
+									<select class="selectpicker" data-style="btn btn-block" title="Nhóm menu" data-size="5" name="menu[group_menu]">
+										@if (count($group_menu) > 0)
+											@php
+												$helper->optionSelectBasic($group_menu, null);
+											@endphp
+										@else
+											<option>Chưa có nhóm menu</option>
+										@endif
 									</select>
+	                				@if (!empty($errors) && $errors->has('group_menu'))
+	                					<label class="error text-danger">
+	                						{{ $errors->first('group_menu') }}
+	                					</label>
+	                				@endif
 								</div>
 								<div class="col-md-6">
-									<button type="button" class="btn btn-wd btn-info">
+									<a href="{{ route('admin.group.menu.add') }}" class="btn btn-wd btn-info">
 										<span class="btn-label">
 											<i class="ti-plus"></i>
 										</span>
 										{{ __('Thêm nhóm menu') }}
-									</button>
+									</a>
 								</div>
 							</div>
 							<button type="submit" class="btn btn-fill btn-info">
@@ -124,14 +196,54 @@
 @push('js')
 	<script type="text/javascript">
 		$(document).ready(function() {
+			if($('#sub_menu').is(':checked'))
+			{
+				$('.index-sub-menu').parent('div').parent('div').removeClass('d-none');
+				$('.index-menu').parent('div').parent('div').addClass('d-none');
+			}
+			else
+			{
+				$('.index-sub-menu').parent('div').parent('div').addClass('d-none');
+				$('.index-menu').parent('div').parent('div').removeClass('d-none');
+			}
+
 			$('#normal_menu, #sub_menu').click(function () {
 				if($('#sub_menu').is(':checked'))
 				{
-					$('#index_sub_menu').parent('div').parent('div').removeClass('d-none');
+					$('.index-sub-menu').parent('div').parent('div').removeClass('d-none');
+					$('.index-menu').parent('div').parent('div').addClass('d-none');
 				}
 				else
 				{
-					$('#index_sub_menu').parent('div').parent('div').addClass('d-none');
+					$('.index-sub-menu').parent('div').parent('div').addClass('d-none');
+					$('.index-menu').parent('div').parent('div').removeClass('d-none');
+				}
+			})
+
+			if($('#checkbox-relevant-menu').is(':checked'))
+			{
+				$('#menu-level').addClass('d-none');
+				$('#option-menu-level').addClass('d-none');
+				$('#input-relevant-menu').removeClass('d-none');
+			}
+			else
+			{
+				$('#menu-level').removeClass('d-none');
+				$('#option-menu-level').removeClass('d-none');
+				$('#input-relevant-menu').addClass('d-none');
+			}
+			$('#checkbox-relevant-menu').click(function () {
+				if($('#checkbox-relevant-menu').is(':checked'))
+				{
+					$('#menu-level').addClass('d-none');
+					$('#option-menu-level').addClass('d-none');
+					$('#input-relevant-menu').removeClass('d-none');
+				}
+				else
+				{
+					$('#menu-level').removeClass('d-none');
+					$('#option-menu-level').removeClass('d-none');
+					$('#input-relevant-menu').addClass('d-none');
 				}
 			})
 		});
