@@ -8,6 +8,7 @@ use App\Model\Admin\GroupMenu;
 use App\Model\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Pagination\Paginator;
 use Validator;
 
 class MenuController extends Controller
@@ -24,30 +25,28 @@ class MenuController extends Controller
         $model_menu       = $this->menu;
         $model_group_menu = $this->group_menu;
 
-        $offset     = 5;
-        $start_page = 1;
-        $page       = $request->get('page');
-        if(empty($page))
-        {
-            $page = 1;
-        }
-        elseif($page > 1)
-        {
-            $page = ($page - 1) * $offset + 1;
-        }
+        $offset          = 5;
+        $start_page      = 1;
+        $page            = $request->get('page');
+        $page_menu       = $this->indexTable($page, $offset);
 
-
-        $menu = $model_menu->paginate($offset);
+        $menu = $model_menu->paginate($offset, ['*'], 'page_menu');
         $menu->setPath(URL::current());
 
-        $group_menu = $model_group_menu->paginate($offset);
+        $offset          = 5;
+        $start_page      = 1;
+        $page            = $request->get('page_group_name');
+        $page_group_menu = $this->indexTable($page, $offset);
+
+        $group_menu = $model_group_menu->paginate($offset, ['*'], 'page_group_name');
         $group_menu->setPath(URL::current());
 
     	return view('User.Admin.Menu.index', [
-            'menu'       => $menu,
-            'model_menu' => $model_menu,
-            'group_menu' => $group_menu,
-            'page'       => $page
+            'menu'            => $menu,
+            'model_menu'      => $model_menu,
+            'group_menu'      => $group_menu,
+            'page_menu'       => $page_menu,
+            'page_group_menu' => $page_group_menu
         ]);
     }
 
@@ -103,6 +102,20 @@ class MenuController extends Controller
 
         return redirect()->route('admin.menu')
             ->with('success', 'Bạn đã thêm mới một menu');
+    }
+
+    public function indexTable($page, $offset)
+    {
+        if(empty($page))
+        {
+            $page = 1;
+        }
+        elseif($page > 1)
+        {
+            $page = ($page - 1) * $offset + 1;
+        }
+
+        return $page;
     }
 
     protected function validatorIndexMenu(array $data)

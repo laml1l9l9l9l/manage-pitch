@@ -62,7 +62,7 @@
 								@if (count($menu) > 0)
 									@foreach ($menu as $element_menu)
 										<tr>
-											<td class="text-center">{{ $page }}</td>
+											<td class="text-center">{{ $page_menu }}</td>
 											<td>
 												{{ __($element_menu->name) }}
 											</td>
@@ -88,7 +88,7 @@
 											</td>
 										</tr>
 										@php
-											$page++
+											$page_menu++
 										@endphp
 									@endforeach
 								@else
@@ -126,7 +126,7 @@
 									@if (count($group_menu) > 0)
 										@foreach ($group_menu as $element_group_menu)
 											<tr>
-												<td class="text-center">{{ $page }}</td>
+												<td class="text-center">{{ $page_group_menu }}</td>
 												<td>
 													{{ __($element_group_menu->name) }}
 												</td>
@@ -143,7 +143,7 @@
 												</td>
 											</tr>
 											@php
-												$page++
+												$page_group_menu++
 											@endphp
 										@endforeach
 									@else

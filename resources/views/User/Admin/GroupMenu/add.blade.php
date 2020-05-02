@@ -29,7 +29,7 @@
 									{{ __('Tên') }}
 									<star>*</star>
 								</label>
-								<input type="text" placeholder="Tên nhóm menu" class="form-control" id="name" name="group_menu[name]" value="{{ old('group_menu')['name'] }}">
+								<input type="text" placeholder="Tên nhóm menu" class="form-control" id="name" name="group_menu[name]" value="@if(!empty(old('group_menu')['name'])) {{ old('group_menu')['name'] }} @endif">
                 				@if (!empty($errors) && $errors->has('name'))
                 					<label class="error text-danger" for="name">
                 						{{ $errors->first('name') }}

@@ -71,6 +71,8 @@
 	                    </div>
 	                </div>
 	            </div>
+
+	            {{-- Menu --}}
 	            <ul class="nav">
 
 	                <li>

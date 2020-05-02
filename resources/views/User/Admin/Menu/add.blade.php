@@ -28,7 +28,7 @@
 								<label for="name">
 									{{ __('Tên') }}
 								</label>
-								<input type="text" placeholder="Tên menu" class="form-control" id="name" name="menu[name]" value="{{ old('menu')['name'] }}">
+								<input type="text" placeholder="Tên menu" class="form-control" id="name" name="menu[name]" value="@if(!empty(old('menu')['name'])) {{ old('menu')['name'] }} @endif">
                 				@if (!empty($errors) && $errors->has('name'))
                 					<label class="error text-danger" for="name">
                 						{{ $errors->first('name') }}
@@ -39,7 +39,7 @@
 								<label for="link">
 									{{ __('Link') }}
 								</label>
-								<input type="text" placeholder="Link menu" class="form-control" id="link" name="menu[link]" value="{{ old('menu')['link'] }}">
+								<input type="text" placeholder="Link menu" class="form-control" id="link" name="menu[link]" value="@if(!empty(old('menu')['link'])) {{ old('menu')['link'] }} @endif">
                 				@if (!empty($errors) && $errors->has('link'))
                 					<label class="error text-danger" for="link">
                 						{{ $errors->first('link') }}
@@ -106,7 +106,7 @@
 										<label for="icon-menu">
 											{{ __('Icon menu') }}
 										</label>
-										<input type="text" placeholder="VD: ti-panel" class="form-control index-menu" id="icon-menu" name="menu[icon]" value="{{ old('menu')['icon'] }}">
+										<input type="text" placeholder="VD: ti-panel" class="form-control index-menu" id="icon-menu" name="menu[icon]" value="@if(!empty(old('menu')['icon'])) {{ old('menu')['icon'] }} @endif">
 		                				@if (!empty($errors) && $errors->has('icon'))
 		                					<label class="error text-danger">
 		                						{{ $errors->first('icon') }}
@@ -119,7 +119,7 @@
 										<label for="index-menu">
 											{{ __('Thứ tự menu') }}
 										</label>
-										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control  index-menu" id="index-menu" name="menu[index_menu]" value="{{ old('menu')['index_menu'] }}">
+										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control  index-menu" id="index-menu" name="menu[index_menu]" value="@if(!empty(old('menu')['index_menu'])) {{ old('menu')['index_menu'] }} @endif">
 		                				@if (!empty($errors) && $errors->has('index_menu'))
 		                					<label class="error text-danger">
 		                						{{ $errors->first('index_menu') }}
@@ -132,7 +132,7 @@
 										<label for="sub-name">
 											{{ __('Tên rút gọn') }}
 										</label>
-										<input type="text" placeholder="VD: HĐ - Hóa đơn" class="form-control index-sub-menu" id="sub-name" name="menu[sub_name]">
+										<input type="text" placeholder="VD: HĐ - Hóa đơn" class="form-control index-sub-menu" id="sub-name" name="menu[sub_name]" value="@if(!empty(old('menu')['sub_name'])) {{ old('menu')['sub_name'] }} @endif">
 		                				@if (!empty($errors) && $errors->has('sub_name'))
 		                					<label class="error text-danger">
 		                						{{ $errors->first('sub_name') }}
@@ -145,7 +145,7 @@
 										<label for="index-sub-menu">
 											{{ __('Thứ tự menu con') }}
 										</label>
-										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control index-sub-menu" id="index-sub-menu" name="menu[index_sub_menu]">
+										<input type="text" placeholder="VD: 1 - số lớn xếp xuống cuối" class="form-control index-sub-menu" id="index-sub-menu" name="menu[index_sub_menu]" value="@if(!empty(old('menu')['index_sub_menu'])) {{ old('menu')['index_sub_menu'] }} @endif">
 		                				@if (!empty($errors) && $errors->has('index_sub_menu'))
 		                					<label class="error text-danger">
 		                						{{ $errors->first('index_sub_menu') }}
