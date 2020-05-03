@@ -15,10 +15,9 @@ class Admin extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('account');
+            $table->string('email');
             $table->string('password');
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
             $table->string('id_role')->nullable();
             $table->timestamps();
         });

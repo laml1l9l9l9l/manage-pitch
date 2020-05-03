@@ -58,3 +58,8 @@
 <!-- Paper Dashboard PRO DEMO methods, don't include it in your project! -->
 <script src="{{ asset('admin/js/custom.js') }}"></script>
 <script src="{{ asset('admin/js/template-custom.js') }}"></script>
+
+
+
+<!-- Custom js -->
+<script type="text/javascript" src="{{ asset('admin/js/custom-js/menu.js') }}"></script>

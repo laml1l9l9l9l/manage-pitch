@@ -4,61 +4,47 @@ namespace App\Http\Controllers\Admin\Menu;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Menu;
-use App\Model\Admin\GroupMenu;
 use App\Model\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Pagination\Paginator;
 use Validator;
 
 class MenuController extends Controller
 {
-    public function __construct(GroupMenu $group_menu, Helper $helper, Menu $menu)
+    public function __construct(Helper $helper, Menu $menu)
     {
-        $this->menu       = $menu;
-        $this->group_menu = $group_menu;
-        $this->helper     = $helper;
+        $this->menu   = $menu;
+        $this->helper = $helper;
     }
 
     public function index(Request $request)
     {
         $model_menu       = $this->menu;
-        $model_group_menu = $this->group_menu;
 
         $offset          = 5;
         $start_page      = 1;
-        $page            = $request->get('page');
+        $page            = $request->get('page_menu');
         $page_menu       = $this->indexTable($page, $offset);
 
         $menu = $model_menu->paginate($offset, ['*'], 'page_menu');
         $menu->setPath(URL::current());
 
-        $offset          = 5;
-        $start_page      = 1;
-        $page            = $request->get('page_group_name');
-        $page_group_menu = $this->indexTable($page, $offset);
-
-        $group_menu = $model_group_menu->paginate($offset, ['*'], 'page_group_name');
-        $group_menu->setPath(URL::current());
-
     	return view('User.Admin.Menu.index', [
-            'menu'            => $menu,
-            'model_menu'      => $model_menu,
-            'group_menu'      => $group_menu,
-            'page_menu'       => $page_menu,
-            'page_group_menu' => $page_group_menu
+            'menu'                    => $menu,
+            'model_menu'              => $model_menu,
+            'page_menu'               => $page_menu
         ]);
     }
 
     public function add()
     {
-        $model_group_menu = $this->group_menu;
-        $helper           = $this->helper;
+        $model_menu = $this->menu;
+        $helper     = $this->helper;
 
-        $group_menu = $model_group_menu->get();
+        $menu = $model_menu->get();
     	return view('User.Admin.Menu.add', [
-            'group_menu' => $group_menu,
-            'helper'     => $helper
+            'menu'   => $menu,
+            'helper' => $helper
         ]);
     }
 
@@ -118,7 +104,7 @@ class MenuController extends Controller
         return $page;
     }
 
-    protected function validatorIndexMenu(array $data)
+    private function validatorIndexMenu(array $data)
     {
         return Validator::make($data, [
             'name'           => ['required','string', 'min:2', 'max:25'],
@@ -130,7 +116,7 @@ class MenuController extends Controller
         ], $this->messages());
     }
 
-    protected function validatorIndexSubMenu(array $data)
+    private function validatorIndexSubMenu(array $data)
     {
         return Validator::make($data, [
             'name'           => ['required','string', 'min:2', 'max:25'],
@@ -142,7 +128,7 @@ class MenuController extends Controller
         ], $this->messages());
     }
 
-    protected function validatorRelevantMenu(array $data)
+    private function validatorRelevantMenu(array $data)
     {
         return Validator::make($data, [
             'name'          => ['required','string', 'min:2', 'max:25'],
@@ -152,7 +138,7 @@ class MenuController extends Controller
         ], $this->messages());
     }
 
-    protected function messages()
+    private function messages()
     {
         return [
             'required'               => 'Không được để trống',

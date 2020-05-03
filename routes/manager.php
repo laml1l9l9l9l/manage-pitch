@@ -44,16 +44,10 @@ Route::group(["prefix" => ""], function() {
 	// menu
 	Route::get("menu","$MenuController@index")
 		->name("$group.menu");
-	Route::get("add-menu","$MenuController@add")
+	Route::get("menu/add","$MenuController@add")
 		->name("$group.menu.add");
-	Route::post("add-menu","$MenuController@store")
+	Route::post("menu/add","$MenuController@store")
 		->name("$group.menu.store");
-
-	// group menu
-	Route::get("add-group-menu","$GroupMenuController@add")
-		->name("$group.group.menu.add");
-	Route::post("add-group-menu","$GroupMenuController@store")
-		->name("$group.group.menu.store");
 
 	// profile
 	Route::get("profile","$ProfileController@index")

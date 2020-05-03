@@ -36,12 +36,12 @@
                     <div class="content">
                         <div class="form-group">
                             <label class="text-default">
-                                {{ __('Tài khoản') }}
+                                {{ __('Email') }}
                             </label>
-                            <input type="text" placeholder="Tài khoản" class="form-control" required="required" name="admin[account]" value="{{ old('admin')['account'] }}">
-                            @if ( !empty($errors) && $errors->has('account') )
+                            <input type="text" placeholder="Email" class="form-control" required="required" name="admin[email]" value="@if(!empty(old('admin')['email'])) {{ old('admin')['email'] }} @endif">
+                            @if ( !empty($errors) && $errors->has('email') )
                                 <small class="mb-2" role="alert">
-                                    <strong class="text-danger">{{ $errors->first('account') }}</strong>
+                                    <strong class="text-danger">{{ $errors->first('email') }}</strong>
                                 </small>
                             @endif
                         </div>

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class RegisterController extends Controller
 {
     use RegistersUsers;
-    protected $redirectTo = 'home';
+    protected $redirectTo = 'manager/home';
 
 	public function __construct(Admin $admin)
 	{
@@ -30,21 +30,30 @@ class RegisterController extends Controller
     {
     	$admin_request = $request['admin'];
         $this->validator($admin_request)->validate();
-        dd($this->admin);
 
         event(new Registered($user = $this->create($admin_request)));
 
         // $this->guard()->login($user);
-        Auth::loginUsingId($user->id);
+        $this->guard()->loginUsingId($user->id);
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());
     }
 
+    protected function guard()
+    {
+        return Auth::guard('admin');
+    }
+    
+    protected function registered(Request $request, $user)
+    {
+        //
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
-			'account'  => ['required', 'string', 'max:255', 'min: 5', 'unique:admins'],
+			'email'  => ['required', 'string', 'max:255', 'min: 5', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i', 'unique:admins'],
 			'password' => ['required', 'string', 'min:5', 'confirmed']
         ], $this->messages());
     }
@@ -52,12 +61,13 @@ class RegisterController extends Controller
     public function messages()
 	{
 	    return [
-			'required'  => 'Không được để trống',
-			'string'    => 'Không đúng định dạng',
-            'unique'    => 'Tài khoản đã tồn tại',
-			'max'       => 'Không được dài hơn :max ký tự',
-			'min'       => 'Không được ngắn hơn hơn :min ký tự',
-			'confirmed' => 'Hai mật khẩu chưa trùng khớp nhau',
+            'required'      => 'Không được để trống',
+            'string'        => 'Không đúng định dạng',
+            'unique'        => 'Tài khoản đã tồn tại',
+            'max'           => 'Không được dài hơn :max ký tự',
+            'min'           => 'Không được ngắn hơn hơn :min ký tự',
+            'confirmed'     => 'Hai mật khẩu chưa trùng khớp nhau',
+            'email.regex' => 'Email định dạng',
 	    ];
 	}
 
@@ -66,8 +76,8 @@ class RegisterController extends Controller
         $user_model = $this->admin;
 
         return Admin::create([
-			'username' => $data['account'],
-			'password' => $user_model->buildPassLender($data['password'])
+            'email'    => $data['email'],
+            'password' => $user_model->buildPassLender($data['password'])
         ]);
     }
 }

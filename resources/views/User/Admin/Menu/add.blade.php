@@ -61,9 +61,9 @@
 							<div class="row d-none" id="input-relevant-menu">
 								<div class="col-sm-6">
 									<select class="selectpicker" data-style="btn btn-block" title="Menu liên quan" data-size="5" name="menu[relevant_menu]">
-										@if (count($group_menu) > 0)
+										@if (count($menu) > 0)
 											@php
-												$helper->optionSelectBasic($group_menu, null);
+												$helper->optionSelectLinkMenu($menu, null);
 											@endphp
 										@else
 											<option>Chưa có nhóm menu</option>
@@ -152,32 +152,6 @@
 		                					</label>
 		                				@endif
 									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6">
-									<select class="selectpicker" data-style="btn btn-block" title="Nhóm menu" data-size="5" name="menu[group_menu]">
-										@if (count($group_menu) > 0)
-											@php
-												$helper->optionSelectBasic($group_menu, null);
-											@endphp
-										@else
-											<option>Chưa có nhóm menu</option>
-										@endif
-									</select>
-	                				@if (!empty($errors) && $errors->has('group_menu'))
-	                					<label class="error text-danger">
-	                						{{ $errors->first('group_menu') }}
-	                					</label>
-	                				@endif
-								</div>
-								<div class="col-md-6">
-									<a href="{{ route('admin.group.menu.add') }}" class="btn btn-wd btn-info">
-										<span class="btn-label">
-											<i class="ti-plus"></i>
-										</span>
-										{{ __('Thêm nhóm menu') }}
-									</a>
 								</div>
 							</div>
 							<button type="submit" class="btn btn-fill btn-info">

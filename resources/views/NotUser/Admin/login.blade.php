@@ -21,7 +21,8 @@
 
 @section('content')
 	<div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-        <form method="#" action="#">
+        <form method="POST" action="{{ route('admin.process_login') }}">
+            @csrf
             <div class="card" data-background="color" data-color="blue">
                 <div class="card-header">
                     <h3 class="card-title">
@@ -31,11 +32,21 @@
                 <div class="card-content">
                     <div class="form-group">
                         <label>{{ __('Tài khoản') }}</label>
-                        <input type="email" placeholder="Enter email" class="form-control input-no-border">
+                        <input type="email" placeholder="Enter email" class="form-control input-no-border" id="email" name="email" value="@if(!empty(old('email'))) {{ old('email') }} @endif">
+                        @if (!empty($errors) && $errors->has('email'))
+                            <label class="error text-danger" for="email">
+                                {{ $errors->first('email') }}
+                            </label>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label>{{ __('Mật khẩu') }}</label>
-                        <input type="password" placeholder="Password" class="form-control input-no-border">
+                        <input type="password" placeholder="Password" class="form-control input-no-border" id="password" name="password">
+                        @if (!empty($errors) && $errors->has('password'))
+                            <label class="error text-danger" for="password">
+                                {{ $errors->first('password') }}
+                            </label>
+                        @endif
                     </div>
                 </div>
                 <div class="card-footer text-center">
