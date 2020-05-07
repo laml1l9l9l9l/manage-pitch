@@ -8,6 +8,14 @@
 			</p>
 		</a>
 	</li>
+	<li>
+		<a href="{{ route('admin.menu') }}">
+			<i class="ti-menu"></i>
+			<p>
+				{{ __('Quyền quản trị') }}
+			</p>
+		</a>
+	</li>
 
 	<li class="active">
 		<a data-toggle="collapse" href="#dashboardOverview">

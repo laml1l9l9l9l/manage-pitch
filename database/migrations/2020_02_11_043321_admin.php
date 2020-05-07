@@ -18,7 +18,7 @@ class Admin extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('name')->nullable();
-            $table->string('id_role')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -5,23 +5,23 @@ $prefix = "Admin";
 
 // login
 Route::get("login","$prefix\LoginController@index")
-	->name("$group.login");
+	->name("$group.login")->middleware('logged.auth');
 Route::post("login","$prefix\LoginController@login")
-	->name("$group.process_login");
+	->name("$group.process_login")->middleware('logged.auth');
 
 // register
 Route::get("register","$prefix\RegisterController@index")
-	->name("$group.register");
+	->name("$group.register")->middleware('logged.auth');
 Route::post("register","$prefix\RegisterController@register")
-	->name("$group.process_register");
+	->name("$group.process_register")->middleware('logged.auth');
 
 // forgot password
 Route::get("forgot-password","$prefix\ForgotPassword@index")
-	->name("$group.forgot.password");
+	->name("$group.forgot.password")->middleware('logged.auth');
 
 
 
-Route::group(["prefix" => ""], function() {
+Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function() {
 	// tách ra nhiều controller
 	$group      = "admin";
 	$HomeController           = "Admin\HomeController";
@@ -52,8 +52,12 @@ Route::group(["prefix" => ""], function() {
 	// profile
 	Route::get("profile","$ProfileController@index")
 		->name("$group.profile");
+	Route::post("profile/update","$ProfileController@update")
+		->name("$group.profile.update");
 	Route::get("change-password","$ChangePasswordController@changePassword")
 		->name("$group.change.password");
+
+	// logout
 	Route::get("logout","$ProfileController@logout")
 		->name("$group.logout");
 

@@ -15,30 +15,28 @@
                 </h4>
             </div>
             <div class="card-content">
-                <form method="post">
+                <form method="post" action="{{ route('admin.profile.update') }}">
+                    @csrf
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="form-group">
                                 <label>
                                 	{{ __('Tài khoản') }}
                                 </label>
-                                <input type="text" class="form-control border-input" disabled placeholder="Company" value="Creative Code Inc.">
+                                <input type="text" class="form-control border-input" disabled placeholder="Email" value="{{ $account->email }}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="form-group">
-                                <label for="input_email">{{ __('Họ và tên') }}</label>
-                                <input type="text" class="form-control border-input" id="input_email" placeholder="Họ tên" value="Chet" name="admin['name']">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-2">
-                            <div class="form-group">
-                                <label for="input_email">{{ __('Địa chỉ email') }}</label>
-                                <input type="email" class="form-control border-input" id="input_email" placeholder="Email" name="admin['email']">
+                                <label for="input_name">{{ __('Họ và tên') }}</label>
+                                <input type="text" class="form-control border-input" id="input_name" placeholder="Họ tên" name="profile[name]" value="{{ $account->name }}">
+                                @if (!empty($errors) && $errors->has('profile.name'))
+                                    <label class="error text-danger" for="input_name">
+                                        {{ $errors->first('profile.name') }}
+                                    </label>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -46,7 +44,12 @@
                         <div class="col-md-8 col-md-offset-2">
                             <div class="form-group">
                                 <label>{{ __('Quyền') }}</label>
-                                <input type="email" class="form-control border-input" placeholder="Quyền" name="admin['id_role']">
+                                <input type="text" class="form-control border-input" id="input_id_role" placeholder="Quyền" name="profile[id_role]">
+                                @if (!empty($errors) && $errors->has('profile.id_role'))
+                                    <label class="error text-danger" for="input_id_role">
+                                        {{ $errors->first('profile.id_role') }}
+                                    </label>
+                                @endif
                             </div>
                         </div>
                     </div>

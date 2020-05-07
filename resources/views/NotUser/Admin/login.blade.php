@@ -30,6 +30,9 @@
                     </h3>
                 </div>
                 <div class="card-content">
+
+                    @include('Layout.Admin.Notification.message_basic')
+                    
                     <div class="form-group">
                         <label>{{ __('Tài khoản') }}</label>
                         <input type="email" placeholder="Enter email" class="form-control input-no-border" id="email" name="email" value="@if(!empty(old('email'))) {{ old('email') }} @endif">

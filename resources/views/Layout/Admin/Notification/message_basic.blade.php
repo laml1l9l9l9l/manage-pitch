@@ -3,7 +3,7 @@
 
     	@if (session('success'))
 	    	<div class="alert alert-success">
-	            <button type="button" aria-hidden="true" class="close">×</button>
+	            <button type="button" data-dismiss="alert" aria-label="Close" aria-hidden="true" class="close">×</button>
 	            <span>
 	            	<i class="ti-check"></i>
 	            	<b> Thành công - </b> {{ session('success') }}
@@ -13,7 +13,7 @@
 
     	@if (session('error'))
 	        <div class="alert alert-danger">
-	            <button type="button" aria-hidden="true" class="close">×</button>
+	            <button type="button" data-dismiss="alert" aria-label="Close" aria-hidden="true" class="close">×</button>
 	            <span>
 	            	<i class="ti-close"></i>
 	            	<b> Thất bại - </b> {{ session('error') }}

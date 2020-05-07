@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class PhanQuyen extends Migration
+class AdminRoles extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class PhanQuyen extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('admin_roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('admin_id');
+            $table->string('role_id');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ class PhanQuyen extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::drop('admin_roles');
     }
 }

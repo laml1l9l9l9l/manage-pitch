@@ -20,6 +20,7 @@ class KhachHang extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

@@ -33,8 +33,8 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($admin_request)));
 
-        // $this->guard()->login($user);
-        $this->guard()->loginUsingId($user->id);
+        $this->guard()->login($user);
+        // $this->guard()->loginUsingId($user->id);
 
         return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());
@@ -76,8 +76,8 @@ class RegisterController extends Controller
         $user_model = $this->admin;
 
         return Admin::create([
-            'email'    => $data['email'],
-            'password' => $user_model->buildPassLender($data['password'])
+            'email'          => $data['email'],
+            'password'       => $user_model->buildPassLender($data['password'])
         ]);
     }
 }

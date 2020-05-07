@@ -22,14 +22,14 @@
 @section('content')
     <div class="col-md-8 col-md-offset-2">
         <div class="header-text">
-            <h2 class="text-info">
+            <h2 class="text-white">
                 {{ __('Quên mật khẩu') }}
             </h2>
             <hr>
         </div>
     </div>
     <div class="col-md-8 col-md-offset-2 text-center">
-        <p class="text-info">
+        <p class="text-white">
             {{ __('Mật khẩu mới sẽ được gửi vào email') }}
         </p>
     </div>
@@ -43,7 +43,7 @@
                             <label class="text-default">
                                 {{ __('Email') }}
                             </label>
-                            <input type="text" placeholder="Email" class="form-control" required="required" name="admin[email]" value="{{ old('admin')['email'] }}">
+                            <input type="text" placeholder="Email" class="form-control" required="required" name="admin[email]" value="@if(!empty(old('admin')['email'])) {{ old('admin')['email'] }} @endif">
                             @if ( !empty($errors) && $errors->has('email') )
                                 <small class="mb-2" role="alert">
                                     <strong class="text-danger">{{ $errors->first('email') }}</strong>
