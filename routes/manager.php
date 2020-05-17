@@ -33,7 +33,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	$TimeController           = "Admin\Time\TimeController";
 	$ChangePasswordController = "Admin\Profile\ChangePasswordController";
 	$MenuController           = "Admin\Menu\MenuController";
-	$GroupMenuController      = "Admin\Menu\GroupMenuController";
+	$PermissionController     = "Admin\Permission\PermissionController";
 
 	// home
 	Route::get("","$HomeController@home")
@@ -48,6 +48,14 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.menu.add");
 	Route::post("menu/add","$MenuController@store")
 		->name("$group.menu.store");
+
+	// permission
+	Route::get("permission","$PermissionController@index")
+		->name("$group.permission");
+	Route::get("permission/add","$PermissionController@add")
+		->name("$group.permission.add");
+	Route::post("permission/add","$PermissionController@store")
+		->name("$group.permission.store");
 
 	// profile
 	Route::get("profile","$ProfileController@index")

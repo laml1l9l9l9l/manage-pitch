@@ -63,3 +63,4 @@
 
 <!-- Custom js -->
 <script type="text/javascript" src="{{ asset('admin/js/custom-js/menu.js') }}"></script>
+<script type="text/javascript" src="{{ asset('admin/js/custom-js/form.js') }}"></script>

@@ -90,20 +90,6 @@ class MenuController extends Controller
             ->with('success', 'Bạn đã thêm mới một menu');
     }
 
-    public function indexTable($page, $offset)
-    {
-        if(empty($page))
-        {
-            $page = 1;
-        }
-        elseif($page > 1)
-        {
-            $page = ($page - 1) * $offset + 1;
-        }
-
-        return $page;
-    }
-
     private function validatorIndexMenu(array $data)
     {
         return Validator::make($data, [

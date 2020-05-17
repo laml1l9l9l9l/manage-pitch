@@ -10,4 +10,19 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+
+    protected function indexTable($page, $offset)
+    {
+        if(empty($page))
+        {
+            $page = 1;
+        }
+        elseif($page > 1)
+        {
+            $page = ($page - 1) * $offset + 1;
+        }
+
+        return $page;
+    }
 }

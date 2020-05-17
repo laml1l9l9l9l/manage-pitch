@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Admin;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
 
     protected $redirectTo = '/manager';
 
@@ -30,33 +33,25 @@ class LoginController extends Controller
         $model_admin = $this->admin;
         $request['password'] = $model_admin->buildPassLender($request['password']);
 
-        $credentials = array(
-            'email' => $request['email'],
-            'password' => $request['password'],
-        );
+        $credentials = $request->only('email', 'password');
 
-        dd(Auth::guard('')->attempt($credentials));
+        $user = $this->admin->where('email','=',$credentials['email'])
+            ->where('password','=',$credentials['password'])
+            ->first();
+            
 
-        if ($this->attemptLoginAdmin($request)) {
+        if (!empty($user)) {
+            $this->guard()->login($user);
             $request->session()->regenerate();
 
             $this->clearLoginAttempts($request);
 
-            return redirect()->route('admin.home');
+            return $this->authenticated($request, $this->guard()->user())
+                ?: redirect()->intended($this->redirectPath());
+            // return redirect()->route('admin.home');
         }
 
         return $this->customSendFailedLoginResponse($request);
-    }
-
-    protected function attemptLoginAdmin(Request $request)
-    {
-        $credentials = array(
-            'email' => $request['email'],
-            'password' => $request['password'],
-        );
-        return $this->guardAdmin()->attempt(
-            $credentials, false
-        );
     }
 
     protected function customSendFailedLoginResponse(Request $request)
@@ -85,8 +80,8 @@ class LoginController extends Controller
         ];
     }
 
-    protected function guardAdmin()
+    protected function guard()
     {
-        return Auth::guard('');
+        return \Auth::guard('admin');
     }
 }

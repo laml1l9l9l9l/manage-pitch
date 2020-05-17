@@ -9,10 +9,18 @@
 		</a>
 	</li>
 	<li>
-		<a href="{{ route('admin.menu') }}">
-			<i class="ti-menu"></i>
+		<a href="{{ route('admin.permission') }}">
+			<i class="ti-key"></i>
 			<p>
 				{{ __('Quyền quản trị') }}
+			</p>
+		</a>
+	</li>
+	<li>
+		<a href="{{ route('admin.menu') }}">
+			<i class="ti-lock"></i>
+			<p>
+				{{ __('Phân quyền') }}
 			</p>
 		</a>
 	</li>

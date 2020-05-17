@@ -284,3 +284,23 @@
 input:focus{
   background: linear-gradient(90deg, rgba(243,242,238,1) 0%, rgba(227,227,227,1) 100%);
 }
+
+/*Text*/
+.text-bold {
+  font-weight: bold !important;
+}
+
+.text-bold > *{
+  font-weight: bold !important;
+}
+
+/*Form*/
+.form-btn{
+  margin: 0 1rem;
+}
+
+/*Card*/
+.card-form-btn{
+  display: flex;
+  justify-content: flex-end;
+}

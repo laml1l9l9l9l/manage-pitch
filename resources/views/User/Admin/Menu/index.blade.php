@@ -43,9 +43,9 @@
 
 				<div class="card-content">
 					<div class="table-responsive">
-						<table class="table">
+						<table class="table table-striped">
 							<thead>
-								<tr>
+								<tr class="text-bold">
 									<th class="text-center">#</th>
 									<th>{{ __('Tên menu') }}</th>
 									<th>{{ __('Link') }}</th>
@@ -89,7 +89,7 @@
 									@endforeach
 								@else
 									<tr>
-										<td class="text-center" colspan="3">
+										<td class="text-center" colspan="6">
 											{{ __('Chưa có menu') }}
 										</td>
 									</tr>
