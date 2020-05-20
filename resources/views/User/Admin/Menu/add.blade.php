@@ -46,7 +46,7 @@
                 					</label>
                 				@endif
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<label>
 									{{ __('Menu liên quan') }}
 								</label>
@@ -61,9 +61,9 @@
 							<div class="row d-none" id="input-relevant-menu">
 								<div class="col-sm-6">
 									<select class="selectpicker" data-style="btn btn-block" title="Menu liên quan" data-size="5" name="menu[relevant_menu]">
-										@if (count($menu) > 0)
+										@if (!empty($menu) && count($menu) > 0)
 											@php
-												$helper->optionSelectLinkMenu($menu, null);
+												Helpers::optionSelectLinkMenu($menu, null);
 											@endphp
 										@else
 											<option>Chưa có nhóm menu</option>
@@ -75,7 +75,7 @@
 	                					</label>
 	                				@endif
 								</div>
-							</div>
+							</div> --}}
 							<div class="form-group" id="menu-level">
 								<label>
 									{{ __('Loại menu') }}

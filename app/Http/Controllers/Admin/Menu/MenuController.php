@@ -11,10 +11,9 @@ use Validator;
 
 class MenuController extends Controller
 {
-    public function __construct(Helper $helper, Menu $menu)
+    public function __construct(Menu $menu)
     {
         $this->menu   = $menu;
-        $this->helper = $helper;
     }
 
     public function index(Request $request)
@@ -39,12 +38,10 @@ class MenuController extends Controller
     public function add()
     {
         $model_menu = $this->menu;
-        $helper     = $this->helper;
 
         $menu = $model_menu->get();
     	return view('User.Admin.Menu.add', [
             'menu'   => $menu,
-            'helper' => $helper
         ]);
     }
 
@@ -52,11 +49,11 @@ class MenuController extends Controller
     {
     	$menu_request = $request->get('menu');
 
-        if(isset($menu_request['checkbox_relevant_menu']))
-        {
-            $this->validatorRelevantMenu($menu_request)->validate();
-        }
-        elseif($menu_request['level'] == 0)
+        // if(isset($menu_request['checkbox_relevant_menu']))
+        // {
+        //     $this->validatorRelevantMenu($menu_request)->validate();
+        // }
+        if($menu_request['level'] == 0)
         {
             $this->validatorIndexMenu($menu_request)->validate();
         }
@@ -71,19 +68,18 @@ class MenuController extends Controller
         }
 
         $menu   = $this->menu;
-        $helper = $this->helper;
 
         $menu->name           = $menu_request['name'];
         $menu->link           = $menu_request['link'];
         $menu->level_menu     = $menu_request['level'];
         $menu->icon           = $menu_request['icon'];
         $menu->index_menu     = $menu_request['index_menu'];
-        $menu->sub_name       = $menu_request['sub_name'];
+        // $menu->sub_name       = $menu_request['sub_name'];
         $menu->index_sub_menu = $menu_request['index_sub_menu'];
-        $menu->id_group_menu  = $menu_request['group_menu'];
-        $menu->relevant_menu  = $menu_request['relevant_menu'];
-        $menu->created_at     = $helper->getCurrentDateTime();
-        $menu->updated_at     = $helper->getCurrentDateTime();
+        // $menu->id_group_menu  = $menu_request['group_menu'];
+        // $menu->relevant_menu  = $menu_request['relevant_menu'];
+        $menu->created_at     = Helper::getCurrentDateTime();
+        $menu->updated_at     = Helper::getCurrentDateTime();
         $menu->save();
 
         return redirect()->route('admin.menu')
@@ -98,7 +94,7 @@ class MenuController extends Controller
             'level'          => ['required','string', 'min:1', 'max:3'],
             'icon'           => ['required','string', 'min:2', 'max:25'],
             'index_menu'     => ['required','string', 'min:1', 'max:3'],
-            'group_menu'     => ['required','string', 'min:1', 'max:3'],
+            // 'group_menu'     => ['required','string', 'min:1', 'max:3'],
         ], $this->messages());
     }
 
@@ -108,9 +104,9 @@ class MenuController extends Controller
             'name'           => ['required','string', 'min:2', 'max:25'],
             'link'           => ['required','string', 'min:2', 'max:50'],
             'level'          => ['required','string', 'min:1', 'max:3'],
-            'sub_name'       => ['required','string', 'min:2', 'max:3'],
+            // 'sub_name'       => ['required','string', 'min:2', 'max:3'],
             'index_sub_menu' => ['required','string', 'min:1', 'max:3'],
-            'group_menu'     => ['required','string', 'min:1', 'max:3'],
+            // 'group_menu'     => ['required','string', 'min:1', 'max:3'],
         ], $this->messages());
     }
 
@@ -119,8 +115,8 @@ class MenuController extends Controller
         return Validator::make($data, [
             'name'          => ['required','string', 'min:2', 'max:25'],
             'link'          => ['required','string', 'min:2', 'max:50'],
-            'relevant_menu' => ['required','string', 'min:1', 'max:3'],
-            'group_menu'    => ['required','string', 'min:1', 'max:3'],
+            // 'relevant_menu' => ['required','string', 'min:1', 'max:3'],
+            // 'group_menu'    => ['required','string', 'min:1', 'max:3'],
         ], $this->messages());
     }
 
@@ -133,8 +129,8 @@ class MenuController extends Controller
             'name.min'               => 'Tên ngắn hơn :min ký tự',
             'max'                    => 'Sai định dạng',
             'min'                    => 'Sai định dạng',
-            'relevant_menu.required' => 'Phải chọn menu liên quan',
-            'group_menu.required'    => 'Phải chọn nhóm menu',
+            // 'relevant_menu.required' => 'Phải chọn menu liên quan',
+            // 'group_menu.required'    => 'Phải chọn nhóm menu',
         ];
     }
 }

@@ -34,10 +34,23 @@
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="icon-menu">
-										Icon menu
+									<label for="status-bill">
+										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="VD: ti-panel" class="form-control" id="icon-menu" name="bill[icon]" value="">
+									<input type="text" placeholder="select" class="form-control" id="status-bill" name="bill[status]" value="">
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="create-date-bill">
+										{{ __('Ngày tạo') }}
+									</label>
+									<div class="form-inline custom-form-inline">
+										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[start_created_at]" value="">
+										-
+										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[end_created_at]" value="">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -82,6 +95,7 @@
 							<thead>
 								<tr class="text-bold">
 									<th class="text-center">#</th>
+									<th>{{ __('Khách hàng') }}</th>
 									<th>{{ __('Tiền đặt cọc') }}</th>
 									<th>{{ __('Thành tiền') }}</th>
 									<th>{{ __('Trạng thái') }}</th>

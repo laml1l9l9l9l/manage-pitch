@@ -43,10 +43,41 @@
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="icon-menu">
-										Icon menu
+									<label for="phone-customer">
+										{{ __('Số điện thoại') }}
 									</label>
-									<input type="text" placeholder="VD: ti-panel" class="form-control" id="icon-menu" name="bill[icon]" value="">
+									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="phone-customer" name="bill[icon]" value="">
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="account-customer">
+										{{ __('Tài khoản') }}
+									</label>
+									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="account-customer" name="bill[icon]" value="">
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="status-customer">
+										{{ __('Trạng thái') }}
+									</label>
+									<input type="text" placeholder="Sử dụng select" class="form-control" id="status-customer" name="bill[icon]" value="">
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>
+										{{ __('Ngày tạo') }}
+									</label>
+									<div class="form-inline custom-form-inline">
+										<input type="date" placeholder="select" class="form-control" name="bill[start_created_at]" value="">
+										-
+										<input type="date" placeholder="select" class="form-control" name="bill[end_created_at]" value="">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -95,6 +126,7 @@
 									<th>{{ __('Họ tên') }}</th>
 									<th>{{ __('Email') }}</th>
 									<th>{{ __('Số điện thoại') }}</th>
+									<th>{{ __('Trạng thái') }}</th>
 									<th>{{ __('Ngày tạo') }}</th>
 									<th class="text-center">{{ __('Thao Tác') }}</th>
 								</tr>
