@@ -14,10 +14,10 @@ class SanBong extends Migration
     public function up()
     {
         Schema::create('pitchs', function (Blueprint $table) {
-            $table->string('id')->comment('ma san bong');
+            $table->increments('id')->comment('ma san bong');
             $table->string('name');
-            $table->string('type')->comment('1: san 7, 2: san 9, 3: san 11');
-            $table->string('price');
+            $table->tinyInteger('type')->comment('1: san 7, 2: san 9, 3: san 11');
+            $table->integer('price');
             $table->string('image');
             $table->timestamps();
         });

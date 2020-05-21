@@ -14,7 +14,7 @@ class NhaPhanPhoi extends Migration
     public function up()
     {
         Schema::create('distributors', function (Blueprint $table) {
-            $table->string('id')->comment('ma nha phan phoi');
+            $table->increments('id')->comment('ma nha phan phoi');
             $table->string('name');
             $table->string('phone');
             $table->string('email');

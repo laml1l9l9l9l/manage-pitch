@@ -9,7 +9,7 @@ class Menu extends Model
     protected $table = 'menu';
 
     public $status_model = array(
-    	0 => 'Menu cha',
-    	1 => 'Menu con',
+    	MENU => 'Menu cha',
+    	SUB_MENU => 'Menu con',
     );
 }

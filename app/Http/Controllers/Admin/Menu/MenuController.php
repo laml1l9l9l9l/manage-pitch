@@ -13,7 +13,7 @@ class MenuController extends Controller
 {
     public function __construct(Menu $menu)
     {
-        $this->menu   = $menu;
+        $this->menu = $menu;
     }
 
     public function index(Request $request)
@@ -89,11 +89,11 @@ class MenuController extends Controller
     private function validatorIndexMenu(array $data)
     {
         return Validator::make($data, [
-            'name'           => ['required','string', 'min:2', 'max:25'],
-            'link'           => ['required','string', 'min:2', 'max:50'],
-            'level'          => ['required','string', 'min:1', 'max:3'],
-            'icon'           => ['required','string', 'min:2', 'max:25'],
-            'index_menu'     => ['required','string', 'min:1', 'max:3'],
+            'name'           => ['required', 'string', 'min:2', 'max:25'],
+            'link'           => ['required', 'string', 'min:2', 'max:50'],
+            'level'          => ['required', 'string', 'min:1', 'max:3'],
+            'icon'           => ['required', 'string', 'min:2', 'max:25'],
+            'index_menu'     => ['required', 'string', 'min:1', 'max:3'],
             // 'group_menu'     => ['required','string', 'min:1', 'max:3'],
         ], $this->messages());
     }
@@ -101,20 +101,20 @@ class MenuController extends Controller
     private function validatorIndexSubMenu(array $data)
     {
         return Validator::make($data, [
-            'name'           => ['required','string', 'min:2', 'max:25'],
-            'link'           => ['required','string', 'min:2', 'max:50'],
-            'level'          => ['required','string', 'min:1', 'max:3'],
-            // 'sub_name'       => ['required','string', 'min:2', 'max:3'],
-            'index_sub_menu' => ['required','string', 'min:1', 'max:3'],
-            // 'group_menu'     => ['required','string', 'min:1', 'max:3'],
+            'name'           => ['required', 'string', 'min:2', 'max:25'],
+            'link'           => ['required', 'string', 'min:2', 'max:50'],
+            'level'          => ['required', 'string', 'min:1', 'max:3'],
+            // 'sub_name'       => ['required', 'string', 'min:2', 'max:3'],
+            'index_sub_menu' => ['required', 'string', 'min:1', 'max:3'],
+            // 'group_menu'     => ['required', 'string', 'min:1', 'max:3'],
         ], $this->messages());
     }
 
     private function validatorRelevantMenu(array $data)
     {
         return Validator::make($data, [
-            'name'          => ['required','string', 'min:2', 'max:25'],
-            'link'          => ['required','string', 'min:2', 'max:50'],
+            'name'          => ['required', 'string', 'min:2', 'max:25'],
+            'link'          => ['required', 'string', 'min:2', 'max:50'],
             // 'relevant_menu' => ['required','string', 'min:1', 'max:3'],
             // 'group_menu'    => ['required','string', 'min:1', 'max:3'],
         ], $this->messages());
@@ -127,8 +127,8 @@ class MenuController extends Controller
             'string'                 => 'Sai định dạng',
             'name.max'               => 'Tên dài hơn :max ký tự',
             'name.min'               => 'Tên ngắn hơn :min ký tự',
-            'max'                    => 'Sai định dạng',
-            'min'                    => 'Sai định dạng',
+            'max'                    => 'Sai định dạng, dài hơn :max ký tự',
+            'min'                    => 'Sai định dạng, dài hơn :max ký tự',
             // 'relevant_menu.required' => 'Phải chọn menu liên quan',
             // 'group_menu.required'    => 'Phải chọn nhóm menu',
         ];

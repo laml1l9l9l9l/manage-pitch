@@ -16,7 +16,7 @@
 			
 			<div class="col-md-6">
 				<div class="card">
-					<form method="post" action="{{ route('admin.menu.store') }}" enctype="multipart/form-data">
+					<form method="post" action="{{ route('admin.pitch.store') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
@@ -41,14 +41,10 @@
 										<label for="link">
 											{{ __('Loại sân') }}
 										</label>
-										<select class="selectpicker" data-style="btn btn-block" title="Menu liên quan" data-size="5" name="pitch[type]">
-											@if (!empty($menu) && count($menu) > 0)
-												@php
-													$helper->optionSelectLinkMenu($menu, null);
-												@endphp
-											@else
-												<option>Chưa có nhóm menu</option>
-											@endif
+										<select class="selectpicker" data-style="btn btn-block" title="Chọn loại sân" data-size="5" name="pitch[type]">
+											@php
+												Helpers::optionSelectArray($model_pitch->status_model, (!empty(old('pitch')['type'])) ? old('pitch')['type'] : '' );
+											@endphp
 										</select>
 		                				@if (!empty($errors) && $errors->has('type'))
 		                					<label class="error text-danger">
@@ -81,6 +77,11 @@
 											{{ __('Ảnh sân') }}
 										</label>
 										<input type="file" class="form-control-file" id="pitch-img" name="pitch[image]">
+		                				@if (!empty($errors) && $errors->has('image'))
+		                					<label class="error text-danger">
+		                						{{ $errors->first('image') }}
+		                					</label>
+		                				@endif
 									</div>
 								</div>
 							</div>

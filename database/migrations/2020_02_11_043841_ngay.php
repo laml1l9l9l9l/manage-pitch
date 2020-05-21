@@ -14,12 +14,12 @@ class Ngay extends Migration
     public function up()
     {
         Schema::create('dates', function (Blueprint $table) {
-            $table->string('id');
+            $table->increments('id');
             $table->date('date');
             $table->string('name');
-            $table->string('date_special')->comment('1: ngay dac biet, 0: ngay binh thuong');
-            $table->string('increase_price')->comment('gia tang');
-            $table->string('status')->comment('1: hoat dong, 0: nghi');
+            $table->tinyInteger('date_special')->comment('1: ngay dac biet, 0: ngay binh thuong');
+            $table->integer('increase_price')->comment('gia tang');
+            $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();
         });
     }

@@ -78,6 +78,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.pitch");
 	Route::get("pitch/add","$PitchController@add")
 		->name("$group.pitch.add");
+	Route::post("pitch/add","$PitchController@store")
+		->name("$group.pitch.store");
 
 
 	//customer

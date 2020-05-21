@@ -14,10 +14,10 @@ class SanPham extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->string('id');
+            $table->increments('id');
             $table->string('name');
-            $table->string('price');
-            $table->string('id_distributor');
+            $table->integer('price');
+            $table->integer('id_distributor');
             $table->timestamps();
         });
     }

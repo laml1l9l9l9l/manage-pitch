@@ -128,14 +128,58 @@
 									<th class="text-center">#</th>
 									<th>{{ __('Tên sân bóng') }}</th>
 									<th>{{ __('Loại sân') }}</th>
-									<th>{{ __('Giá') }}</th>
-									<th>{{ __('Hình ảnh') }}</th>
-									<th>{{ __('Ngày tạo') }}</th>
-									<th class="text-center">{{ __('Thao Tác') }}</th>
+									<th class="text-center">{{ __('Giá') }}</th>
+									<th class="text-center">{{ __('Hình ảnh') }}</th>
+									<th class="text-right">{{ __('Ngày tạo') }}</th>
+									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								{{-- Dữ liệu --}}
+								<tr>
+									@if (count($pitch) > 0)
+										@foreach ($pitch as $element_pitch)
+											<tr>
+												<td class="text-center">{{ $page_pitch }}</td>
+												<td>
+													{{ __($element_pitch->name) }}
+												</td>
+												<td>
+													{{ __($model_pitch->status_model[$element_pitch->type]) }}
+												</td>
+												<td class="text-right">
+													{{ number_format(__($element_pitch->price)) . ' VNĐ' }}
+												</td>
+												<td class="text-center">
+													@php
+														$path_image = str_replace('public', 'storage', $element_pitch->image);
+													@endphp
+													<img src="{{ asset($path_image) }}" class="image-list">
+													{{-- <img src="{{ asset($element_pitch->image) }}"> --}}
+												</td>
+												<td class="text-right">
+													{{ date('d-m-Y', strtotime($element_pitch->created_at)) }}
+												</td>
+												<td class="td-actions text-right">
+													<button type="button" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
+														<i class="fa fa-file"></i>
+													</button>
+													<button type="button" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
+														<i class="fa fa-edit"></i>
+													</button>
+													<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+														<i class="fa fa-times"></i>
+													</button>
+												</td>
+											</tr>
+										@endforeach
+									@else
+										<td class="text-center" colspan="7">
+											<h4 class="my-3">
+												{{ __('Chưa có sân bóng') }}
+											</h4>
+										</td>
+									@endif
+								</tr>
 							</tbody>
 						</table>
 					</div>

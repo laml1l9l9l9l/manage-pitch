@@ -14,11 +14,11 @@ class ChiTietHoaDon extends Migration
     public function up()
     {
         Schema::create('detail_bills', function (Blueprint $table) {
-            $table->string('id_bill');
-            $table->string('id_pitch')->comment('ma san bong');
-            $table->string('id_time_slot')->comment('ma khung gio');
+            $table->integer('id_bill');
+            $table->integer('id_pitch')->comment('ma san bong');
+            $table->integer('id_time_slot')->comment('ma khung gio');
             $table->string('soccer_day')->comment('ngay da');
-            $table->string('price')->comment('gia');
+            $table->integer('price')->comment('gia');
             $table->timestamps();
         });
     }

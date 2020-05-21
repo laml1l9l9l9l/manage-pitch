@@ -325,3 +325,11 @@ input[type='file']{
     margin: 1rem 0;
   }
 }
+
+
+/*Image*/
+.image-list{
+  width: 20rem;
+  height: 10rem;
+  background-size: cover;
+}

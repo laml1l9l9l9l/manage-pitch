@@ -14,7 +14,7 @@ class KhachHang extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->string('id');
+            $table->increments('id');
             $table->string('account');
             $table->string('password');
             $table->string('name')->nullable();

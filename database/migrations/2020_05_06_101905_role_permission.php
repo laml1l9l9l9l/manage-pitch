@@ -16,8 +16,8 @@ class RolePermission extends Migration
         Schema::create('role_permission', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('role_id')->nullable();
-            $table->string('permission_id')->nullable();
+            $table->integer('role_id')->nullable();
+            $table->integer('permission_id')->nullable();
             $table->timestamps();
         });
     }
