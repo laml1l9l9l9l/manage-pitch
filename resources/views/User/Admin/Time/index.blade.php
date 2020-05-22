@@ -91,7 +91,7 @@
 						</h4>
 					</div>
 					<div class="card-content">
-						<a href="{{ route('admin.menu.add') }}" class="btn btn-primary btn-fill btn-wd">
+						<a href="{{ route('admin.time.add') }}" class="btn btn-primary btn-fill btn-wd">
 							<i class="ti-menu"></i>
 							{{ __('Thêm thời gian') }}
 						</a>

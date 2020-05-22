@@ -20,7 +20,7 @@ class KhungGioDatLich extends Migration
             $table->string('name');
             $table->tinyInteger('time_special')->comment('1: them tien, 0: binh thuong');
             $table->integer('increase_price')->comment('gia tang');
-            $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
+            $table->tinyInteger('status')->comment('1: hoat dong, 0: khoa');
             $table->timestamps();
         });
     }

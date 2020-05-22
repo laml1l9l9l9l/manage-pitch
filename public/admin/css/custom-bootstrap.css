@@ -332,4 +332,6 @@ input[type='file']{
   width: 20rem;
   height: 10rem;
   background-size: cover;
+  background-position: center;
+  border-radius: 1rem;
 }

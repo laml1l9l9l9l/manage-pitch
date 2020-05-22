@@ -93,6 +93,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	//time
 	Route::get("time","$TimeController@index")
 		->name("$group.time");
+	Route::get("time/add","$TimeController@add")
+		->name("$group.time.add");
+	Route::post("time/add","$TimeController@store")
+		->name("$group.time.store");
 
 });
 

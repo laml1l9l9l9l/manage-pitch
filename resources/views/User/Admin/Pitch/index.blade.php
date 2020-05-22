@@ -160,13 +160,13 @@
 													{{ date('d-m-Y', strtotime($element_pitch->created_at)) }}
 												</td>
 												<td class="td-actions text-right">
-													<button type="button" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
+													<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
 														<i class="fa fa-file"></i>
 													</button>
-													<button type="button" rel="tooltip" title="Edit Profile" class="btn btn-success btn-simple btn-xs">
+													<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
 														<i class="fa fa-edit"></i>
 													</button>
-													<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+													<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
 														<i class="fa fa-times"></i>
 													</button>
 												</td>

@@ -29,12 +29,12 @@ class Helper
             $values = (array)json_decode($values);
         }
         foreach ($values as $key => $value ){
-            if($key == $selected){
+            if(strval($key) === $selected){
                 $flag = "selected";
             }else{
                 $flag = "";
             }
-            echo "<option $flag value=\"".$key."\">$value</option>";
+            echo "<option $flag value=\"$key\">$value</option>";
         }
 
     }
