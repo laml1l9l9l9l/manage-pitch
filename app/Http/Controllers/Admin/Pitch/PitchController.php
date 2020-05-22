@@ -95,6 +95,8 @@ class PitchController extends Controller
 			'string'   => 'Sai định dạng',
 			'max'      => 'Sai định dạng, dài hơn :max ký tự',
 			'min'      => 'Sai định dạng, ngắn hơn :min ký tự',
+			'type.max' => 'Sai định dạng',
+			'type.min' => 'Sai định dạng',
 			'image'    => 'Phải chọn ảnh',
         ];
     }

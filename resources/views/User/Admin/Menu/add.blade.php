@@ -82,13 +82,13 @@
 								</label>
 								<br>
 								<div class="radio radio-inline">
-								    <input type="radio" id="normal_menu" value="0" name="menu[level]" @if(!isset(old('menu')['level']) || old('menu')['level'] == 0) checked="checked" @endif>
+								    <input type="radio" id="normal_menu" value="{{ MENU }}" name="menu[level]" @if(!isset(old('menu')['level']) || old('menu')['level'] == MENU) checked="checked" @endif>
 									<label for="normal_menu">
 										{{ __('Menu thường') }}
 									</label>
 								</div>
 								<div class="radio radio-inline">
-								    <input type="radio" id="sub_menu" value="1" name="menu[level]" @if(isset(old('menu')['level']) && old('menu')['level'] == 1) checked="checked" @endif>
+								    <input type="radio" id="sub_menu" value="{{ SUB_MENU }}" name="menu[level]" @if(isset(old('menu')['level']) && old('menu')['level'] == SUB_MENU) checked="checked" @endif>
 									<label for="sub_menu">
 										{{ __('Menu con') }}
 									</label>

@@ -118,16 +118,61 @@
 								<tr class="text-bold">
 									<th class="text-center">#</th>
 									<th>{{ __('Thời gian') }}</th>
-									<th>{{ __('Giờ bắt đầu') }}</th>
-									<th>{{ __('Giờ kết thúc') }}</th>
-									<th>{{ __('Giá tăng') }}</th>
-									<th>{{ __('Trạng thái') }}</th>
-									<th>{{ __('Ngày tạo') }}</th>
-									<th class="text-center">{{ __('Thao Tác') }}</th>
+									<th class="text-right">{{ __('Giờ bắt đầu') }}</th>
+									<th class="text-right">{{ __('Giờ kết thúc') }}</th>
+									<th class="text-right">{{ __('Giá tăng') }}</th>
+									<th class="text-center">{{ __('Trạng thái') }}</th>
+									<th class="text-right">{{ __('Ngày tạo') }}</th>
+									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								{{-- Dữ liệu --}}
+								@if (count($time_slots) > 0)
+									@foreach ($time_slots as $time_slot)
+										<tr>
+											<td class="text-center">{{ $page_time }}</td>
+											<td>
+												{{ __($time_slot->name) }}
+											</td>
+											<td class="text-right">
+												{{ date('H:i', strtotime($time_slot->time_start)) }}
+											</td>
+											<td class="text-right">
+												{{ date('H:i', strtotime($time_slot->time_end)) }}
+											</td>
+											<td class="text-right">
+												@if (!empty($time_slot->increase_price))
+													{{ number_format(__($time_slot->increase_price)) . ' VNĐ' }}
+												@else
+													{{ __('Không có') }}
+												@endif
+											</td>
+											<td class="text-center">
+												{{ __($model_time->status_model[$time_slot->status]) }}
+											</td>
+											<td class="text-right">
+												{{ date('d-m-Y', strtotime($time_slot->created_at)) }}
+											</td>
+											<td class="td-actions text-right">
+												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
+													<i class="fa fa-file"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+													<i class="fa fa-edit"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+													<i class="fa fa-times"></i>
+												</button>
+											</td>
+										</tr>
+									@endforeach
+								@else
+									<td class="text-center" colspan="8">
+										<h4 class="my-3">
+											{{ __('Chưa có thời gian') }}
+										</h4>
+									</td>
+								@endif
 							</tbody>
 						</table>
 					</div>

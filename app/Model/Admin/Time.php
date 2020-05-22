@@ -9,8 +9,8 @@ class Time extends Model
     protected $table = 'time_slots';
 
     public $status_model = array(
-    	LOCK => 'Khóa',
-    	ACTIVE => 'Hoạt động'
+		ACTIVE => 'Hoạt động',
+		LOCK   => 'Khóa'
     );
 
     public $time_special_model = array(

@@ -28,7 +28,7 @@
 								<label for="name">
 									{{ __('Tên khoảng thời gian') }}
 								</label>
-								<input type="text" placeholder="Tên khoảng thời gian" class="form-control" id="name" name="pitch[name]" value="@if(!empty(old('pitch')['name'])) {{ old('pitch')['name'] }} @endif">
+								<input type="text" placeholder="Tên khoảng thời gian" class="form-control" id="name" name="time[name]" value="@if(!empty(old('time')['name'])) {{ old('time')['name'] }} @endif">
                 				@if (!empty($errors) && $errors->has('name'))
                 					<label class="error text-danger" for="name">
                 						{{ $errors->first('name') }}
@@ -43,7 +43,7 @@
 										</label>
 										<select class="selectpicker" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="time[status]">
 											@php
-												Helpers::optionSelectArray($model_time->status_model, (!empty(old('time')['status'])) ? old('time')['status'] : '' );
+												Helpers::optionSelectArray($model_time->status_model, (isset(old('time')['status']) && old('time')['status'] !== null) ? old('time')['status'] : '' );
 											@endphp
 										</select>
 		                				@if (!empty($errors) && $errors->has('status'))
@@ -57,9 +57,9 @@
 											{{ __('Thời gian') }}
 										</label>
 										<div class="form-inline custom-form-inline">
-											<input type="time" placeholder="select" class="form-control" name="time[time_start]" value="">
+											<input type="time" placeholder="select" class="form-control" name="time[time_start]" value="@if(!empty(old('time')['time_start'])){{old('time')['time_start']}}@endif">
 											-
-											<input type="time" placeholder="select" class="form-control" name="time[time_end]" value="">
+											<input type="time" placeholder="select" class="form-control" name="time[time_end]" value="@if(!empty(old('time')['time_end'])){{old('time')['time_end']}}@endif">
 										</div>
 		                				@if (!empty($errors) && $errors->has('time_start'))
 		                					<label class="error text-danger">
@@ -81,20 +81,20 @@
 										</label>
 										<br>
 										<div class="radio radio-inline">
-											<input type="radio" name="radio1" id="manually" value="option1" checked="checked">
+											<input type="radio" name="time[time_special]" id="manually" value="{{ MANUALLY }}" @if(!isset(old('time')['time_special']) || old('time')['time_special'] == MANUALLY) checked="checked" @endif>
 											<label for="manually">
 												{{ __('Bình thường') }}
 											</label>
 										</div>
 										<div class="radio radio-inline">
-											<input type="radio" name="radio1" id="increase-price" value="option1">
+											<input type="radio" name="time[time_special]" id="increase-price" value="{{ INCREASE_PRICE }}" @if(isset(old('time')['time_special']) && old('time')['time_special'] == INCREASE_PRICE) checked="checked" @endif>
 											<label for="increase-price">
 												{{ __('Tăng giá') }}
 											</label>
 										</div>
-		                				@if (!empty($errors) && $errors->has('type'))
+		                				@if (!empty($errors) && $errors->has('time_special'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('type') }}
+		                						{{ $errors->first('time_special') }}
 		                					</label>
 		                				@endif
 									</div>
@@ -103,14 +103,14 @@
 											{{ __('Giá tăng') }}
 										</label>
 										<div class="input-group">
-											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="time-increase-price" name="pitch[price]" value="@if(!empty(old('pitch')['price'])) {{ old('pitch')['price'] }} @endif">
+											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="time-increase-price" name="time[increase_price]" value="@if(!empty(old('time')['increase_price'])) {{ old('time')['increase_price'] }} @endif">
 											<span class="input-group-addon">
 												{{ __('VNĐ') }}
 											</span>
 										</div>
-		                				@if (!empty($errors) && $errors->has('price'))
+		                				@if (!empty($errors) && $errors->has('increase_price'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('price') }}
+		                						{{ $errors->first('increase_price') }}
 		                					</label>
 		                				@endif
 									</div>
@@ -132,6 +132,15 @@
 @push('js')
 	<script type="text/javascript">
 		$(document).ready(function() {
+			if($('#increase-price').is(':checked'))
+			{
+				$('#time-increase-price').parent('div').parent('div').removeClass('d-none');
+			}
+			else
+			{
+				$('#time-increase-price').parent('div').parent('div').addClass('d-none');
+			}
+
 			$('#increase-price, #manually').click(function () {
 				if($('#increase-price').is(':checked'))
 				{
