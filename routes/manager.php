@@ -89,6 +89,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	//date
 	Route::get("date","$DateController@index")
 		->name("$group.date");
+	Route::get("date/add","$DateController@add")
+		->name("$group.date.add");
+	Route::post("date/add","$DateController@store")
+		->name("$group.date.store");
 
 	//time
 	Route::get("time","$TimeController@index")

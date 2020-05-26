@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Thêm thời gian') }}
+		{{ __('Thêm ngày tháng') }}
 	</title>
 @endpush
 
@@ -16,19 +16,19 @@
 			
 			<div class="col-md-6">
 				<div class="card">
-					<form method="post" action="{{ route('admin.time.store') }}" enctype="multipart/form-data">
+					<form method="post" action="{{ route('admin.date.store') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
-								{{ __('Thêm mới thời gian') }}
+								{{ __('Thêm mới ngày tháng') }}
 							</h4>
 						</div>
 						<div class="card-content">
 							<div class="form-group">
 								<label for="name">
-									{{ __('Tên khoảng thời gian') }}
+									{{ __('Tên ngày tháng') }}
 								</label>
-								<input type="text" placeholder="Tên khoảng thời gian" class="form-control" id="name" name="time[name]" value="@if(!empty(old('time')['name'])) {{ old('time')['name'] }} @endif">
+								<input type="text" placeholder="Tên ngày tháng" class="form-control" id="name" name="date[name]" value="@if(!empty(old('date')['name'])) {{ old('date')['name'] }} @endif">
                 				@if (!empty($errors) && $errors->has('name'))
                 					<label class="error text-danger" for="name">
                 						{{ $errors->first('name') }}
@@ -41,9 +41,9 @@
 										<label>
 											{{ __('Trạng thái') }}
 										</label>
-										<select class="selectpicker" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="time[status]">
+										<select class="selectpicker" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="date[status]">
 											@php
-												Helpers::optionSelectArray($model_time->status_model, (isset(old('time')['status']) && old('time')['status'] !== null) ? old('time')['status'] : '' );
+												Helpers::optionSelectArray($model_date->status_model, (isset(old('date')['status']) && old('date')['status'] !== null) ? old('date')['status'] : '' );
 											@endphp
 										</select>
 		                				@if (!empty($errors) && $errors->has('status'))
@@ -53,21 +53,13 @@
 		                				@endif
 									</div>
 									<div class="col-md-6">
-										<label for="period-time">
-											{{ __('Thời gian') }}
+										<label>
+											{{ __('Ngày tháng') }}
 										</label>
-										<div class="form-inline custom-form-inline">
-											<input type="time" placeholder="select" class="form-control" name="time[time_start]" value="@if(!empty(old('time')['time_start'])){{old('time')['time_start']}}@endif">
-											-
-											<input type="time" placeholder="select" class="form-control" name="time[time_end]" value="@if(!empty(old('time')['time_end'])){{old('time')['time_end']}}@endif">
-										</div>
-		                				@if (!empty($errors) && $errors->has('time_start'))
+										<input type="date" placeholder="select" class="form-control" name="date[date]" value="@if(!empty(old('date')['date'])){{old('date')['date']}}@endif">
+		                				@if (!empty($errors) && $errors->has('date'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('time_start') }}
-		                					</label>
-		                				@elseif(!empty($errors) && $errors->has('time_end'))
-		                					<label class="error text-danger">
-		                						{{ $errors->first('time_end') }}
+		                						{{ $errors->first('date') }}
 		                					</label>
 		                				@endif
 									</div>
@@ -81,20 +73,20 @@
 										</label>
 										<br>
 										<div class="radio radio-inline">
-											<input type="radio" name="time[time_special]" id="manually" value="{{ MANUALLY }}" @if(!isset(old('time')['time_special']) || old('time')['time_special'] == MANUALLY) checked="checked" @endif>
+											<input type="radio" name="date[date_special]" id="manually" value="{{ MANUALLY }}" @if(!isset(old('date')['date_special']) || old('date')['date_special'] == MANUALLY) checked="checked" @endif>
 											<label for="manually">
 												{{ __('Bình thường') }}
 											</label>
 										</div>
 										<div class="radio radio-inline">
-											<input type="radio" name="time[time_special]" id="increase-price" value="{{ INCREASE_PRICE }}" @if(isset(old('time')['time_special']) && old('time')['time_special'] == INCREASE_PRICE) checked="checked" @endif>
+											<input type="radio" name="date[date_special]" id="increase-price" value="{{ INCREASE_PRICE }}" @if(isset(old('date')['date_special']) && old('date')['date_special'] == INCREASE_PRICE) checked="checked" @endif>
 											<label for="increase-price">
 												{{ __('Tăng giá') }}
 											</label>
 										</div>
-		                				@if (!empty($errors) && $errors->has('time_special'))
+		                				@if (!empty($errors) && $errors->has('date_special'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('time_special') }}
+		                						{{ $errors->first('date_special') }}
 		                					</label>
 		                				@endif
 									</div>
@@ -103,7 +95,7 @@
 											{{ __('Giá tăng') }}
 										</label>
 										<div class="input-group">
-											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="time-increase-price" name="time[increase_price]" value="@if(!empty(old('time')['increase_price'])) {{ old('time')['increase_price'] }} @endif">
+											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="time-increase-price" name="date[increase_price]" value="@if(!empty(old('date')['increase_price'])) {{ old('date')['increase_price'] }} @endif">
 											<span class="input-group-addon">
 												{{ __('VNĐ') }}
 											</span>

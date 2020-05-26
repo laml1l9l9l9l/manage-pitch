@@ -100,7 +100,7 @@
 						</h4>
 					</div>
 					<div class="card-content">
-						<a href="{{ route('admin.menu.add') }}" class="btn btn-primary btn-fill btn-wd">
+						<a href="{{ route('admin.date.add') }}" class="btn btn-primary btn-fill btn-wd">
 							<i class="ti-menu"></i>
 							{{ __('Thêm ngày tháng') }}
 						</a>
@@ -127,21 +127,63 @@
 								<tr class="text-bold">
 									<th class="text-center">#</th>
 									<th>{{ __('Sự kiện') }}</th>
-									<th>{{ __('Ngày') }}</th>
-									<th>{{ __('Giá tăng') }}</th>
-									<th>{{ __('Trạng thái') }}</th>
-									<th>{{ __('Ngày tạo') }}</th>
-									<th class="text-center">{{ __('Thao Tác') }}</th>
+									<th class="text-right">{{ __('Ngày') }}</th>
+									<th class="text-right">{{ __('Giá tăng') }}</th>
+									<th class="text-center">{{ __('Trạng thái') }}</th>
+									<th class="text-right">{{ __('Ngày tạo') }}</th>
+									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								{{-- Dữ liệu --}}
+								@if (count($dates) > 0)
+									@foreach ($dates as $date)
+										<tr>
+											<td class="text-center">{{ $page_date }}</td>
+											<td>
+												{{ __($date->name) }}
+											</td>
+											<td class="text-right">
+												{{ date('d-m-Y', strtotime($date->date)) }}
+											</td>
+											<td class="text-right">
+												@if (!empty($date->increase_price))
+													{{ number_format(__($date->increase_price)) . ' VNĐ' }}
+												@else
+													{{ __('Không có') }}
+												@endif
+											</td>
+											<td class="text-center">
+												{{ __($model_date->status_model[$date->status]) }}
+											</td>
+											<td class="text-right">
+												{{ date('d-m-Y', strtotime($date->created_at)) }}
+											</td>
+											<td class="td-actions text-right">
+												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
+													<i class="fa fa-file"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+													<i class="fa fa-edit"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+													<i class="fa fa-times"></i>
+												</button>
+											</td>
+										</tr>
+									@endforeach
+								@else
+									<td class="text-center" colspan="8">
+										<h4 class="my-3">
+											{{ __('Chưa có thời gian') }}
+										</h4>
+									</td>
+								@endif
 							</tbody>
 						</table>
 					</div>
 
 					<div class="text-right">
-						{{-- Phân trang --}}
+						{{ $dates->links() }}
 					</div>
 				</div>
 			</div>

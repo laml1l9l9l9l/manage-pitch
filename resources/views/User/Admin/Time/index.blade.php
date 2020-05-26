@@ -178,7 +178,7 @@
 					</div>
 
 					<div class="text-right">
-						{{-- Phân trang --}}
+						{{ $time_slots->links() }}
 					</div>
 				</div>
 			</div>

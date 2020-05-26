@@ -48,17 +48,17 @@ class TimeController extends Controller
 		$time_request = $request->get('time');
 		$time_request['increase_price'] = preg_replace('/[^0-9]/', '', $time_request['increase_price']);
 
-        if($time_request['time_special'] == 0)
+        if($time_request['time_special'] == MANUALLY)
         {
             $this->validatorManually($time_request)->validate();
         }
-        elseif($time_request['time_special'] == 1)
+        elseif($time_request['time_special'] == INCREASE_PRICE)
         {
             $this->validatorIncreasePrice($time_request)->validate();
         }
         else
         {
-            return redirect()->route('admin.menu.add')
+            return redirect()->route('admin.time.add')
                 ->with('error', 'Bạn phải chọn đúng loại menu');
         }
 
@@ -84,27 +84,24 @@ class TimeController extends Controller
     }
 
 
+    private $array_validate = [
+		'name'         => ['required', 'string', 'min:2', 'max:25'],
+		'status'       => ['required', 'string', 'min:1', 'max:1'],
+		'time_start'   => ['required', 'date_format:H:i'],
+		'time_end'     => ['required', 'date_format:H:i', 'after:time_start'],
+		'time_special' => ['required', 'string', 'min:1', 'max:1']
+    ];
+
     private function validatorManually(array $data)
     {
-        return Validator::make($data, [
-			'name'         => ['required', 'string', 'min:2', 'max:25'],
-			'status'       => ['required', 'string', 'min:1', 'max:1'],
-			'time_start'   => ['required', 'date_format:H:i'],
-			'time_end'     => ['required', 'date_format:H:i', 'after:time_start'],
-			'time_special' => ['required', 'string', 'min:1', 'max:1']
-        ], $this->messages());
+        return Validator::make($data, $this->array_validate, $this->messages());
     }
 
     private function validatorIncreasePrice(array $data)
     {
-        return Validator::make($data, [
-			'name'           => ['required', 'string', 'min:2', 'max:25'],
-			'status'         => ['required', 'string', 'min:1', 'max:1'],
-			'time_start'     => ['required', 'date_format:H:i'],
-			'time_end'       => ['required', 'date_format:H:i', 'after:time_start'],
-			'time_special'   => ['required', 'string', 'min:1', 'max:1'],
-			'increase_price' => ['required', 'string', 'min:5', 'max:7']
-        ], $this->messages());
+    	$array_validate = $this->array_validate;
+    	$array_validate['increase_price'] = ['required', 'string', 'min:5', 'max:7'];
+        return Validator::make($data, $array_validate, $this->messages());
     }
 
     private function messages()

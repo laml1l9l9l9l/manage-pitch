@@ -53,12 +53,13 @@ class MenuController extends Controller
         // {
         //     $this->validatorRelevantMenu($menu_request)->validate();
         // }
-        if($menu_request['level'] == 0)
+        if($menu_request['level'] == MENU)
         {
             $this->validatorIndexMenu($menu_request)->validate();
         }
-        elseif($menu_request['level'] == 1)
+        elseif($menu_request['level'] == SUB_MENU)
         {
+            $menu_request['icon'] = $menu_request['sub_name'];
             $this->validatorIndexSubMenu($menu_request)->validate();
         }
         else
@@ -86,28 +87,27 @@ class MenuController extends Controller
             ->with('success', 'Bạn đã thêm mới một menu');
     }
 
+
+    private $array_validate = [
+        'name'  => ['required', 'string', 'min:2', 'max:25'],
+        'link'  => ['required', 'string', 'min:2', 'max:50'],
+        'level' => ['required', 'string', 'min:1', 'max:3'],
+    ];
+
     private function validatorIndexMenu(array $data)
     {
-        return Validator::make($data, [
-            'name'           => ['required', 'string', 'min:2', 'max:25'],
-            'link'           => ['required', 'string', 'min:2', 'max:50'],
-            'level'          => ['required', 'string', 'min:1', 'max:3'],
-            'icon'           => ['required', 'string', 'min:2', 'max:25'],
-            'index_menu'     => ['required', 'string', 'min:1', 'max:3'],
-            // 'group_menu'     => ['required','string', 'min:1', 'max:3'],
-        ], $this->messages());
+        $array_validate               = $this->array_validate;
+        $array_validate['icon']       = ['required', 'string', 'min:2', 'max:25'];
+        $array_validate['index_menu'] = ['required', 'string', 'min:1', 'max:3'];
+        return Validator::make($data, $array_validate, $this->messages());
     }
 
     private function validatorIndexSubMenu(array $data)
     {
-        return Validator::make($data, [
-            'name'           => ['required', 'string', 'min:2', 'max:25'],
-            'link'           => ['required', 'string', 'min:2', 'max:50'],
-            'level'          => ['required', 'string', 'min:1', 'max:3'],
-            // 'sub_name'       => ['required', 'string', 'min:2', 'max:3'],
-            'index_sub_menu' => ['required', 'string', 'min:1', 'max:3'],
-            // 'group_menu'     => ['required', 'string', 'min:1', 'max:3'],
-        ], $this->messages());
+        $array_validate                   = $this->array_validate;
+        $array_validate['sub_name']       = ['required', 'string', 'min:1', 'max:4'];
+        $array_validate['index_sub_menu'] = ['required', 'string', 'min:1', 'max:3'];
+        return Validator::make($data, $array_validate, $this->messages());
     }
 
     private function validatorRelevantMenu(array $data)
