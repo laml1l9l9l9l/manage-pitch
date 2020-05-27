@@ -28,10 +28,10 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-    	$admin_request = $request['customer'];
-        $this->validator($admin_request)->validate();
+    	$customer_request = $request['customer'];
+        $this->validator($customer_request)->validate();
 
-        event(new Registered($user = $this->create($admin_request)));
+        event(new Registered($user = $this->create($customer_request)));
 
         $this->guard()->login($user);
 
@@ -52,8 +52,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-			'email'  => ['required', 'string', 'max:255', 'min: 5', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i', 'unique:admins'],
-			'password' => ['required', 'string', 'min:5', 'confirmed']
+            'name'     => ['required', 'string', 'max:255', 'min: 5'],
+            'email'    => ['required', 'string', 'max:255', 'min: 5', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i', 'unique:customers'],
+            'password' => ['required', 'string', 'min:5', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:5']
         ], $this->messages());
     }
 
@@ -72,11 +74,13 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-        $user_model = $this->admin;
+        $user_model = $this->customer;
 
-        return Admin::create([
-            'email'          => $data['email'],
-            'password'       => $user_model->buildPassLender($data['password'])
+        return Customer::create([
+            'name'     => $data['name'],
+            'email'    => $data['email'],
+            'status'   => ACTIVE,
+            'password' => $user_model->buildPassLender($data['password'])
         ]);
     }
 }

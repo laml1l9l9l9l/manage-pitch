@@ -62,7 +62,7 @@ class LoginController extends Controller
     private function validateLogin(array $data)
     {
         return Validator::make($data, [
-            'email'  => ['required', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i'],
+            'email'    => ['required', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i'],
             'password' => ['required', 'string', 'min:6', 'max:60']
         ], $this->messages());
     }

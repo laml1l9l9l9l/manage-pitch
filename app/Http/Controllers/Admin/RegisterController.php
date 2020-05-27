@@ -54,7 +54,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
 			'email'  => ['required', 'string', 'max:255', 'min: 5', 'regex:/^\w+([\.\-]{0,1}\w+)*\@\w+\..+$/i', 'unique:admins'],
-			'password' => ['required', 'string', 'min:5', 'confirmed']
+			'password' => ['required', 'string', 'min:5', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'min:5']
         ], $this->messages());
     }
 
@@ -76,8 +77,8 @@ class RegisterController extends Controller
         $user_model = $this->admin;
 
         return Admin::create([
-            'email'          => $data['email'],
-            'password'       => $user_model->buildPassLender($data['password'])
+            'email'    => $data['email'],
+            'password' => $user_model->buildPassLender($data['password'])
         ]);
     }
 }

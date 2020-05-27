@@ -1,9 +1,9 @@
 <?php
 
 $group      = "customer";
-$LoginController = "Customer\LoginController";
+$LoginController    = "Customer\LoginController";
 $RegisterController = "Customer\RegisterController";
-$HomeController = "Customer\HomeController";
+$HomeController     = "Customer\HomeController";
 
 // login
 Route::get("login","$LoginController@index")
@@ -33,9 +33,19 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	// tách ra nhiều controller
 	$group = "customer";
 	$ProfileController = "Customer\Profile\ProfileController";
+	$BillController    = "Customer\Bill\BillController";
 
+
+	// profile
 	Route::get("profile","$ProfileController@index")
 		->name("$group.profile");
+	Route::get("information","$ProfileController@information")
+		->name("$group.infor");
+
+
+	// bill
+	Route::post("bill","$BillController@createBill")
+		->name("$group.bill.create");
 
 	
 	// logout

@@ -25,6 +25,12 @@ class ProfileController extends Controller
             ->with('success', 'Cập nhật thông tin các nhân thành công');
     }
 
+    public function information()
+    {
+        $account = $this->guard()->user();
+        return $account;
+    }
+
     public function logout(Request $request)
     {
         $this->guard()->logout();

@@ -91,7 +91,7 @@
 
 					
 					<div class="d-none">
-						<form class="d-none" method="POST" action="#" id="form-create-bill">
+						<form class="d-none" id="form-create-bill">
 							@csrf
 							<input type="hidden" class="d-none" id="date-rent" name="bill[date]">
 							<input type="hidden" class="d-none" id="pitch-rent" name="bill[pitch]">
@@ -503,6 +503,10 @@
     <script src="{{ asset('custom/js/component/calendar.js') }}"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
 	{{-- Process rent football field --}}
+	<script type="text/javascript">
+		var urlGetInformation = '{{ route('customer.infor') }}';
+		var urlCreateBill = '{{ route('customer.bill.create') }}';
+	</script>
     <script src="{{ asset('custom/js/component/home.js') }}"></script>
     <script src="{{ asset('custom/js/component/form-home.js') }}"></script>
 
