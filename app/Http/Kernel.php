@@ -41,6 +41,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\CheckAuthenticate::class,
         ],
 
+        'checkAuthenticateCustomer' => [
+            \App\Http\Middleware\CheckAuthenticateCustomer::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,

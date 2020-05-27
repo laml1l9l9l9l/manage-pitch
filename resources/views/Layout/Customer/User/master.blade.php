@@ -8,7 +8,7 @@
 <body>
 
     @include('Layout.Customer.header')
-
+    
     @yield('content')
 
 	@include('Layout.Customer.foot')

@@ -5,19 +5,19 @@ $prefix = "Admin";
 
 // login
 Route::get("login","$prefix\LoginController@index")
-	->name("$group.login")->middleware('logged.auth');
+	->name("$group.login");
 Route::post("login","$prefix\LoginController@login")
-	->name("$group.process_login")->middleware('logged.auth');
+	->name("$group.process_login");
 
 // register
 Route::get("register","$prefix\RegisterController@index")
-	->name("$group.register")->middleware('logged.auth');
+	->name("$group.register");
 Route::post("register","$prefix\RegisterController@register")
-	->name("$group.process_register")->middleware('logged.auth');
+	->name("$group.process_register");
 
 // forgot password
 Route::get("forgot-password","$prefix\ForgotPassword@index")
-	->name("$group.forgot.password")->middleware('logged.auth');
+	->name("$group.forgot.password");
 
 
 

@@ -15,10 +15,9 @@ class KhachHang extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('account');
+            $table->string('email')->unique();
             $table->string('password');
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->tinyInteger('status')->nullable()->comment('1: kich hoat, 0: khoa');
             $table->rememberToken();

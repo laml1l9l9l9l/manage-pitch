@@ -19,6 +19,7 @@ class LoginController extends Controller
 
     public function __construct(Admin $admin)
     {
+        $this->middleware('logged.auth');
         $this->admin = $admin;
     }
 

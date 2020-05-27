@@ -11,3 +11,4 @@
 <!-- CSS Files -->
 <link href="{{ asset('custom/css/bootstrap.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('custom/css/material-kit.css?v=1.2.1') }}" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('custom/css/custom-bootstrap.css') }}">
