@@ -81,6 +81,9 @@ $(document).ready(function() {
 			method: 'POST',
 			action: urlCreateBill
 		});
+		
+		// Update type rent
+		$('#type-rent').val(typeRent);
 		$('#form-create-bill').submit();
 	}
 

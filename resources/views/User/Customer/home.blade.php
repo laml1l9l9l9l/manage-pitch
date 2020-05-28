@@ -96,6 +96,7 @@
 							<input type="hidden" class="d-none" id="date-rent" name="bill[date]">
 							<input type="hidden" class="d-none" id="pitch-rent" name="bill[pitch]">
 							<input type="hidden" class="d-none" id="time-slot-rent" name="bill[time_slot]">
+							<input type="hidden" class="d-none" id="type-rent" name="type_rent">
 						</form>
 					</div>
 
@@ -505,7 +506,8 @@
 	{{-- Process rent football field --}}
 	<script type="text/javascript">
 		var urlGetInformation = '{{ route('customer.infor') }}';
-		var urlCreateBill = '{{ route('customer.bill.create') }}';
+		var urlCreateBill     = '{{ route('customer.bill.create') }}';
+		var typeRent          = '{{ SIMPLE }}';
 	</script>
     <script src="{{ asset('custom/js/component/home.js') }}"></script>
     <script src="{{ asset('custom/js/component/form-home.js') }}"></script>

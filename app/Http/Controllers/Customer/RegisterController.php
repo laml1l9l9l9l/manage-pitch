@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CustomerController;
 use App\Model\Customer\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-class RegisterController extends Controller
+class RegisterController extends CustomerController
 {
     use RegistersUsers;
     protected $redirectTo = '/';

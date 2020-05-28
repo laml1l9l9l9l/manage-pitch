@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Ngay extends Migration
+class SpecialDatetime extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class Ngay extends Migration
      */
     public function up()
     {
-        Schema::create('dates', function (Blueprint $table) {
+        Schema::create('special_datetime', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
-            $table->string('name');
-            // $table->tinyInteger('date_special')->comment('1: ngay dac biet, 0: ngay binh thuong');
-            // $table->integer('increase_price')->comment('gia tang');
+            $table->integer('time_slot_id');
+            $table->string('time_slot_name');
+            $table->integer('date_id');
+            $table->string('date_name');
+            $table->integer('increase_price');
             $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();
         });
@@ -31,6 +32,6 @@ class Ngay extends Migration
      */
     public function down()
     {
-        Schema::drop('dates');
+        Schema::drop('special_datetime');
     }
 }

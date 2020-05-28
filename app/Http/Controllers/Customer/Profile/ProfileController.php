@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Customer\Profile;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class ProfileController extends CustomerController
 {
     public function index()
     {
@@ -39,11 +39,6 @@ class ProfileController extends Controller
 
         $request->session()->regenerateToken();
     	return redirect()->route('customer.login');
-    }
-
-    protected function guard()
-    {
-        return Auth::guard('');
     }
 
     private function validateUpdateProfile(Request $request)

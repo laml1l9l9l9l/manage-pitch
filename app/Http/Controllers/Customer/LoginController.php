@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Customer;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CustomerController;
 use App\Model\Customer\Customer;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-class LoginController extends Controller
+class LoginController extends CustomerController
 {
+    use AuthenticatesUsers;
+
     protected $redirectTo = '/';
 
     public function __construct(Customer $customer)
@@ -76,10 +78,5 @@ class LoginController extends Controller
             'password.max' => 'Mật khẩu dài hơn :max ký tự',
             'password.min' => 'Mật khẩu ngắn hơn :min ký tự',
         ];
-    }
-
-    protected function guard()
-    {
-        return \Auth::guard('');
     }
 }

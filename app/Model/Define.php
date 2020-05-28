@@ -15,3 +15,7 @@
 
 	define('MANUALLY', '0');
 	define('INCREASE_PRICE', '1');
+
+
+	define('SIMPLE', '0');
+	define('MULTIPLE', '1');
