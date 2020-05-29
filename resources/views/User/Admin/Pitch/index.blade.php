@@ -171,6 +171,9 @@
 													</button>
 												</td>
 											</tr>
+											@php
+												$page_pitch++
+											@endphp
 										@endforeach
 									@else
 										<td class="text-center" colspan="7">

@@ -10,7 +10,7 @@ class Time extends Model
 
     public $status_model = array(
 		ACTIVE => 'Hoạt động',
-		LOCK   => 'Khóa'
+		LOCK   => 'Nghỉ'
     );
 
     public $time_special_model = array(

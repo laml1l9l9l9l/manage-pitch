@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Thời gian') }}
+		{{ __('Khung giờ') }}
 	</title>
 @endpush
 
@@ -93,7 +93,7 @@
 					<div class="card-content">
 						<a href="{{ route('admin.time.add') }}" class="btn btn-primary btn-fill btn-wd">
 							<i class="ti-menu"></i>
-							{{ __('Thêm thời gian') }}
+							{{ __('Thêm khung giờ') }}
 						</a>
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 			<div class="col-md-12 card">
 
 				<div class="card-header">
-					<h4 class="card-title">{{ __('Thời gian') }}</h4>
+					<h4 class="card-title">{{ __('Khung giờ') }}</h4>
 				</div>
 
 				<div class="card-content">
@@ -120,7 +120,6 @@
 									<th>{{ __('Thời gian') }}</th>
 									<th class="text-right">{{ __('Giờ bắt đầu') }}</th>
 									<th class="text-right">{{ __('Giờ kết thúc') }}</th>
-									<th class="text-right">{{ __('Giá tăng') }}</th>
 									<th class="text-center">{{ __('Trạng thái') }}</th>
 									<th class="text-right">{{ __('Ngày tạo') }}</th>
 									<th class="text-right">{{ __('Thao Tác') }}</th>
@@ -140,13 +139,6 @@
 											<td class="text-right">
 												{{ date('H:i', strtotime($time_slot->time_end)) }}
 											</td>
-											<td class="text-right">
-												@if (!empty($time_slot->increase_price))
-													{{ number_format(__($time_slot->increase_price)) . ' VNĐ' }}
-												@else
-													{{ __('Không có') }}
-												@endif
-											</td>
 											<td class="text-center">
 												{{ __($model_time->status_model[$time_slot->status]) }}
 											</td>
@@ -165,9 +157,12 @@
 												</button>
 											</td>
 										</tr>
+										@php
+											$page_time++
+										@endphp
 									@endforeach
 								@else
-									<td class="text-center" colspan="8">
+									<td class="text-center" colspan="7">
 										<h4 class="my-3">
 											{{ __('Chưa có thời gian') }}
 										</h4>

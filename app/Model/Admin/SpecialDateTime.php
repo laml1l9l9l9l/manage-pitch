@@ -4,9 +4,9 @@ namespace App\Model\Admin;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Date extends Model
+class SpecialDateTime extends Model
 {
-    protected $table = 'dates';
+    protected $table = 'special_datetime';
 
     public $status_model = array(
 		ACTIVE => 'Hoạt động',

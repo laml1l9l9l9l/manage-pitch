@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Ngày tháng') }}
+		{{ __('Thời gian tăng giá') }}
 	</title>
 @endpush
 
@@ -25,19 +25,19 @@
 						<div class="row card-content card-form-input collapse" id="form-search">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="name-date">
-										{{ __('Sự kiện') }}
+									<label for="name-time">
+										{{ __('Thời gian') }}
 									</label>
-									<input type="text" placeholder="Tên sự kiện" class="form-control" name="date[name]" id="name-date">
+									<input type="text" placeholder="Select 2" class="form-control" name="special_datetime[name]" id="name-time">
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>
-										{{ __('Ngày') }}
+									<label for="status-time">
+										{{ __('Trạng thái') }}
 									</label>
-									<input type="date" placeholder="Email" class="form-control" name="date[date]">
+									<input type="text" placeholder="select" class="form-control" id="status-time" name="special_datetime[status]" value="">
 								</div>
 							</div>
 
@@ -47,9 +47,9 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="bill[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="special_datetime[start_created_at]" value="">
 										-
-										<input type="date" placeholder="select" class="form-control" name="bill[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="special_datetime[end_created_at]" value="">
 									</div>
 								</div>
 							</div>
@@ -91,9 +91,17 @@
 						</h4>
 					</div>
 					<div class="card-content">
-						<a href="{{ route('admin.date.add') }}" class="btn btn-primary btn-fill btn-wd">
-							<i class="ti-menu"></i>
-							{{ __('Thêm ngày tháng') }}
+						<a href="{{ route('admin.specialdatetime.addtime') }}" class="btn btn-primary btn-fill btn-wd">
+							<i class="ti-alarm-clock"></i>
+							{{ __('Thêm khung giờ tăng giá') }}
+						</a>
+						<a href="{{ route('admin.specialdatetime.adddate') }}" class="btn btn-primary btn-fill btn-wd">
+							<i class="ti-calendar"></i>
+							{{ __('Thêm ngày tăng giá') }}
+						</a>
+						<a href="{{ route('admin.time.add') }}" class="btn btn-primary btn-fill btn-wd">
+							<i class="ti-check-box"></i>
+							{{ __('Thêm ngày giờ tăng giá') }}
 						</a>
 					</div>
 				</div>
@@ -108,7 +116,7 @@
 			<div class="col-md-12 card">
 
 				<div class="card-header">
-					<h4 class="card-title">{{ __('Ngày tháng') }}</h4>
+					<h4 class="card-title">{{ __('Thời gian') }}</h4>
 				</div>
 
 				<div class="card-content">
@@ -117,29 +125,37 @@
 							<thead>
 								<tr class="text-bold">
 									<th class="text-center">#</th>
-									<th>{{ __('Sự kiện') }}</th>
+									<th>{{ __('Khung giờ') }}</th>
 									<th class="text-right">{{ __('Ngày') }}</th>
+									<th class="text-right">{{ __('Giá tăng') }}</th>
 									<th class="text-center">{{ __('Trạng thái') }}</th>
 									<th class="text-right">{{ __('Ngày tạo') }}</th>
 									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								@if (count($dates) > 0)
-									@foreach ($dates as $date)
+								@if (count($special_datetime) > 0)
+									@foreach ($special_datetime as $element)
 										<tr>
-											<td class="text-center">{{ $page_date }}</td>
+											<td class="text-center">{{ $page_time }}</td>
 											<td>
-												{{ __($date->name) }}
+												{{ __($element->name) }}
 											</td>
 											<td class="text-right">
-												{{ date('d-m-Y', strtotime($date->date)) }}
+												{{ date('d-m-Y', strtotime($element->time_start)) }}
+											</td>
+											<td class="text-right">
+												@if (!empty($element->increase_price))
+													{{ number_format(__($element->increase_price)) . ' VNĐ' }}
+												@else
+													{{ __('Không có') }}
+												@endif
 											</td>
 											<td class="text-center">
-												{{ __($model_date->status_model[$date->status]) }}
+												{{ __($model_special_datetime->status_model[$element->status]) }}
 											</td>
 											<td class="text-right">
-												{{ date('d-m-Y H:i', strtotime($date->created_at)) }}
+												{{ date('d-m-Y', strtotime($element->created_at)) }}
 											</td>
 											<td class="td-actions text-right">
 												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
@@ -153,12 +169,9 @@
 												</button>
 											</td>
 										</tr>
-										@php
-											$page_date++
-										@endphp
 									@endforeach
 								@else
-									<td class="text-center" colspan="6">
+									<td class="text-center" colspan="8">
 										<h4 class="my-3">
 											{{ __('Chưa có thời gian') }}
 										</h4>
@@ -169,7 +182,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $dates->links() }}
+						{{ $special_datetime->links() }}
 					</div>
 				</div>
 			</div>

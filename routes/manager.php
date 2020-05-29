@@ -24,16 +24,17 @@ Route::get("forgot-password","$prefix\ForgotPassword@index")
 Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function() {
 	// tách ra nhiều controller
 	$group      = "admin";
-	$HomeController           = "Admin\HomeController";
-	$ProfileController        = "Admin\Profile\ProfileController";
-	$BillController           = "Admin\Bill\BillController";
-	$PitchController          = "Admin\Pitch\PitchController";
-	$CustomerController       = "Admin\Customer\CustomerController";
-	$DateController           = "Admin\Date\DateController";
-	$TimeController           = "Admin\Time\TimeController";
-	$ChangePasswordController = "Admin\Profile\ChangePasswordController";
-	$MenuController           = "Admin\Menu\MenuController";
-	$PermissionController     = "Admin\Permission\PermissionController";
+	$HomeController            = "Admin\HomeController";
+	$ProfileController         = "Admin\Profile\ProfileController";
+	$BillController            = "Admin\Bill\BillController";
+	$PitchController           = "Admin\Pitch\PitchController";
+	$CustomerController        = "Admin\Customer\CustomerController";
+	$DateController            = "Admin\Date\DateController";
+	$TimeController            = "Admin\Time\TimeController";
+	$SpecialDateTimeController = "Admin\SpecialDateTime\SpecialDateTimeController";
+	$ChangePasswordController  = "Admin\Profile\ChangePasswordController";
+	$MenuController            = "Admin\Menu\MenuController";
+	$PermissionController      = "Admin\Permission\PermissionController";
 
 	// home
 	Route::get("","$HomeController@home")
@@ -65,7 +66,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	Route::get("change-password","$ChangePasswordController@changePassword")
 		->name("$group.change.password");
 
-	// logout
+	//logout
 	Route::get("logout","$ProfileController@logout")
 		->name("$group.logout");
 
@@ -101,6 +102,14 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.time.add");
 	Route::post("time/add","$TimeController@store")
 		->name("$group.time.store");
+
+	//special date time
+	Route::get("special-datetime","$SpecialDateTimeController@index")
+		->name("$group.specialdatetime");
+	Route::get("add-special-time","$SpecialDateTimeController@addSpecialHour")
+		->name("$group.specialdatetime.addtime");
+	Route::get("add-special-date","$SpecialDateTimeController@addSpecialDate")
+		->name("$group.specialdatetime.adddate");
 
 });
 

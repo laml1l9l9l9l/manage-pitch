@@ -46,34 +46,15 @@ class TimeController extends Controller
     public function store(Request $request)
     {
 		$time_request = $request->get('time');
-		$time_request['increase_price'] = preg_replace('/[^0-9]/', '', $time_request['increase_price']);
+		// $time_request['increase_price'] = preg_replace('/[^0-9]/', '', $time_request['increase_price']);
 
-        if($time_request['time_special'] == MANUALLY)
-        {
-            $this->validatorManually($time_request)->validate();
-        }
-        elseif($time_request['time_special'] == INCREASE_PRICE)
-        {
-            $this->validatorIncreasePrice($time_request)->validate();
-        }
-        else
-        {
-            return redirect()->route('admin.time.add')
-                ->with('error', 'Bạn phải chọn đúng loại menu');
-        }
-
-
-        if ($time_request['time_special'] == MANUALLY) {
-        	$time_request['increase_price'] = 0;
-        }
+        $this->validatorManually($time_request)->validate();
 
 
 		$time_slot                 = $this->time;
 		$time_slot->time_start     = $time_request['time_start'];
 		$time_slot->time_end       = $time_request['time_end'];
 		$time_slot->name           = $time_request['name'];
-		$time_slot->time_special   = $time_request['time_special'];
-		$time_slot->increase_price = $time_request['increase_price'];
 		$time_slot->status         = $time_request['status'];
 		$time_slot->created_at     = Helper::getCurrentDateTime();
 		$time_slot->updated_at     = Helper::getCurrentDateTime();
@@ -89,7 +70,6 @@ class TimeController extends Controller
 		'status'       => ['required', 'string', 'min:1', 'max:1'],
 		'time_start'   => ['required', 'date_format:H:i'],
 		'time_end'     => ['required', 'date_format:H:i', 'after:time_start'],
-		'time_special' => ['required', 'string', 'min:1', 'max:1']
     ];
 
     private function validatorManually(array $data)
@@ -114,7 +94,7 @@ class TimeController extends Controller
 			'status.max'       => 'Sai định dạng',
 			'status.min'       => 'Sai định dạng',
 			'date_format'      => 'Sai định dạng',
-			'time_end.after'   => 'Ngày không hợp lệ',
+			'time_end.after'   => 'Giờ không hợp lệ',
 			'time_special.max' => 'Sai định dạng',
 			'time_special.min' => 'Sai định dạng',
         ];

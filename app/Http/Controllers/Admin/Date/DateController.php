@@ -20,12 +20,12 @@ class DateController extends Controller
     {
 		$model_date = $this->date;
 		
-		$offset     = 5;
+		$offset     = 10;
 		$start_page = 1;
 		$page       = $request->get('page');
 		$page_date  = $this->indexTable($page, $offset);
 
-        $dates = $model_date->paginate($offset);
+        $dates = $model_date->orderBy('date', 'desc')->paginate($offset);
         $dates->setPath(URL::current());
 
     	return view('User.Admin.Date.index',[
@@ -46,37 +46,34 @@ class DateController extends Controller
     public function store(Request $request)
     {
 		$date_request = $request->get('date');
-		$date_request['increase_price'] = preg_replace('/[^0-9]/', '', $date_request['increase_price']);
 
-        if($date_request['date_special'] == MANUALLY)
-        {
-            $this->validatorManually($date_request)->validate();
+        $this->validatorManually($date_request)->validate();
+
+        // Get all dates between two dates
+        $array_date = array();
+        $date_period = new \DatePeriod(
+             new \DateTime($date_request['date_start']),
+             new \DateInterval('P1D'),
+             new \DateTime($date_request['date_end'])
+        );
+        foreach ($date_period as $date) {
+            $date = $date->format('Y-m-d');
+            array_push($array_date, $date);
         }
-        elseif($date_request['date_special'] == INCREASE_PRICE)
-        {
-            $this->validatorIncreasePrice($date_request)->validate();
+        // Add date end to array
+        array_push($array_date, $date_request['date_end']);
+
+
+        // Save all dates
+        foreach ($array_date as $value_date) {
+            $date             = new Date();
+            $date->date       = $value_date;
+            $date->name       = $date_request['name'];
+            $date->status     = LOCK;
+            $date->created_at = Helper::getCurrentDateTime();
+            $date->updated_at = Helper::getCurrentDateTime();
+            $date->save();
         }
-        else
-        {
-            return redirect()->route('admin.date.add')
-                ->with('error', 'Bạn phải chọn đúng loại menu');
-        }
-
-
-        if ($date_request['date_special'] == MANUALLY) {
-        	$date_request['increase_price'] = 0;
-        }
-
-
-		$date                 = $this->date;
-		$date->date           = $date_request['date'];
-		$date->name           = $date_request['name'];
-		$date->date_special   = $date_request['date_special'];
-		$date->increase_price = $date_request['increase_price'];
-		$date->status         = $date_request['status'];
-		$date->created_at     = Helper::getCurrentDateTime();
-		$date->updated_at     = Helper::getCurrentDateTime();
-		$date->save();
 
         return redirect()->route('admin.date')
             ->with('success', 'Bạn đã thêm mới khoảng thời gian');
@@ -84,10 +81,9 @@ class DateController extends Controller
 
 
     private $array_validate = [
-		'name'         => ['required', 'string', 'min:2', 'max:25'],
-		'status'       => ['required', 'string', 'min:1', 'max:1'],
-		'date'         => ['required', 'date_format:Y-m-d'],
-		'date_special' => ['required', 'string', 'min:1', 'max:1']
+        'name'       => ['required', 'string', 'min:2', 'max:25'],
+        'date_start' => ['required', 'date_format:Y-m-d'],
+        'date_end'   => ['required', 'date_format:Y-m-d'],
     ];
 
     private function validatorManually(array $data)

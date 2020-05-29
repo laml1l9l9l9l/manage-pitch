@@ -59,14 +59,20 @@
 				</li>
 				<li>
 					<a href="{{ route('admin.date') }}">
-						<span class="sidebar-mini">NT</span>
-						<span class="sidebar-normal">Ngày Tháng</span>
+						<span class="sidebar-mini">NN</span>
+						<span class="sidebar-normal">Ngày Nghỉ</span>
 					</a>
 				</li>
 				<li>
 					<a href="{{ route('admin.time') }}">
+						<span class="sidebar-mini">KG</span>
+						<span class="sidebar-normal">Khung giờ</span>
+					</a>
+				</li>
+				<li>
+					<a href="{{ route('admin.specialdatetime') }}">
 						<span class="sidebar-mini">TG</span>
-						<span class="sidebar-normal">Thời Gian</span>
+						<span class="sidebar-normal">Tăng Giá</span>
 					</a>
 				</li>
 			</ul>

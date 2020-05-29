@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Thêm ngày tháng') }}
+		{{ __('Thêm ngày đặc biệt') }}
 	</title>
 @endpush
 
@@ -61,37 +61,14 @@
 									</div>
 								</div>
 							</div>
-							{{-- <div class="form-group">
+							<div class="form-group">
 								<div class="row">
-									<div class="col-sm-6">
-										<label>
-											{{ __('Khung giờ đặc biệt') }}
-										</label>
-										<br>
-										<div class="radio radio-inline">
-											<input type="radio" name="date[date_special]" id="manually" value="{{ MANUALLY }}" @if(!isset(old('date')['date_special']) || old('date')['date_special'] == MANUALLY) checked="checked" @endif>
-											<label for="manually">
-												{{ __('Bình thường') }}
-											</label>
-										</div>
-										<div class="radio radio-inline">
-											<input type="radio" name="date[date_special]" id="increase-price" value="{{ INCREASE_PRICE }}" @if(isset(old('date')['date_special']) && old('date')['date_special'] == INCREASE_PRICE) checked="checked" @endif>
-											<label for="increase-price">
-												{{ __('Tăng giá') }}
-											</label>
-										</div>
-		                				@if (!empty($errors) && $errors->has('date_special'))
-		                					<label class="error text-danger">
-		                						{{ $errors->first('date_special') }}
-		                					</label>
-		                				@endif
-									</div>
-									<div class="col-md-6 d-none">
-										<label for="time-increase-price">
+									<div class="col-md-6">
+										<label for="increase-price">
 											{{ __('Giá tăng') }}
 										</label>
 										<div class="input-group">
-											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="time-increase-price" name="date[increase_price]" value="@if(!empty(old('date')['increase_price'])) {{ old('date')['increase_price'] }} @endif">
+											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="increase-price" name="date[increase_price]" value="@if(!empty(old('date')['increase_price'])) {{ old('date')['increase_price'] }} @endif">
 											<span class="input-group-addon">
 												{{ __('VNĐ') }}
 											</span>
@@ -103,7 +80,7 @@
 		                				@endif
 									</div>
 								</div>
-							</div> --}}
+							</div>
 							<button type="submit" class="btn btn-fill btn-info">
 								{{ __('Thêm mới') }}
 							</button>

@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Thêm thời gian') }}
+		{{ __('Thêm khung giờ') }}
 	</title>
 @endpush
 
@@ -73,7 +73,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="form-group">
+							{{-- <div class="form-group">
 								<div class="row">
 									<div class="col-sm-6">
 										<label>
@@ -115,7 +115,7 @@
 		                				@endif
 									</div>
 								</div>
-							</div>
+							</div> --}}
 							<button type="submit" class="btn btn-fill btn-info">
 								{{ __('Thêm mới') }}
 							</button>

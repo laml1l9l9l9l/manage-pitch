@@ -15,10 +15,9 @@ class SpecialDatetime extends Migration
     {
         Schema::create('special_datetime', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('time_slot_id');
-            $table->string('time_slot_name');
-            $table->integer('date_id');
-            $table->string('date_name');
+            $table->integer('time_slot_id')->nullable();
+            $table->string('time_slot_name')->nullable();
+            $table->date('date');
             $table->integer('increase_price');
             $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();
