@@ -137,12 +137,20 @@
 								@if (count($special_datetime) > 0)
 									@foreach ($special_datetime as $element)
 										<tr>
-											<td class="text-center">{{ $page_time }}</td>
+											<td class="text-center">{{ $page_special_datetime }}</td>
 											<td>
-												{{ __($element->name) }}
+												@if (!empty($element->time_slot_name))
+													{{ __($element->time_slot_name) }}
+												@else
+													{{ __('Không có') }}
+												@endif
 											</td>
 											<td class="text-right">
-												{{ date('d-m-Y', strtotime($element->time_start)) }}
+												@if (!empty($element->date))
+													{{ date('d-m-Y', strtotime($element->date)) }}
+												@else
+													{{ __('Không có') }}
+												@endif
 											</td>
 											<td class="text-right">
 												@if (!empty($element->increase_price))
@@ -169,6 +177,9 @@
 												</button>
 											</td>
 										</tr>
+										@php
+											$page_special_datetime++
+										@endphp
 									@endforeach
 								@else
 									<td class="text-center" colspan="8">

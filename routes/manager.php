@@ -23,7 +23,7 @@ Route::get("forgot-password","$prefix\ForgotPassword@index")
 
 Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function() {
 	// tách ra nhiều controller
-	$group      = "admin";
+	$group = "admin";
 	$HomeController            = "Admin\HomeController";
 	$ProfileController         = "Admin\Profile\ProfileController";
 	$BillController            = "Admin\Bill\BillController";
@@ -108,8 +108,12 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.specialdatetime");
 	Route::get("add-special-time","$SpecialDateTimeController@addSpecialHour")
 		->name("$group.specialdatetime.addtime");
+	Route::post("add-special-time","$SpecialDateTimeController@storeSpecialHour")
+		->name("$group.specialdatetime.storetime");
 	Route::get("add-special-date","$SpecialDateTimeController@addSpecialDate")
 		->name("$group.specialdatetime.adddate");
+	Route::post("add-special-date","$SpecialDateTimeController@storeSpecialDate")
+		->name("$group.specialdatetime.storedate");
 
 });
 

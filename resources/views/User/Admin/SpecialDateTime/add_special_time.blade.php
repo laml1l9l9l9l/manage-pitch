@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Thêm ngày đặc biệt') }}
+		{{ __('Thêm khung giờ đặc biệt') }}
 	</title>
 @endpush
 
@@ -16,11 +16,11 @@
 			
 			<div class="col-md-6">
 				<div class="card">
-					<form method="post" action="{{ route('admin.specialdatetime.storedate') }}" enctype="multipart/form-data">
+					<form method="post" action="{{ route('admin.specialdatetime.storetime') }}" enctype="multipart/form-data">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
-								{{ __('Thêm mới ngày đặc biệt') }}
+								{{ __('Thêm mới khung giờ đặc biệt') }}
 							</h4>
 						</div>
 						<div class="card-content">
@@ -28,23 +28,31 @@
 								<div class="row">
 									<div class="col-md-6">
 										<label>
-											{{ __('Ngày bắt đầu') }}
+											{{ __('Khung giờ bắt đầu') }}
 										</label>
-										<input type="date" placeholder="select" class="form-control" name="date[date_start]" value="@if(!empty(old('date')['date_start'])){{old('date')['date_start']}}@endif">
-		                				@if (!empty($errors) && $errors->has('date_start'))
+										<select class="selectpicker" data-style="btn btn-block" title="Chọn khung giờ" data-size="5" name="time[time_slot_start]">
+											@php
+												Helpers::optionSelectArray($array_time_slot, (isset(old('time')['time_slot_start']) && old('time')['time_slot_start'] !== null) ? old('time')['time_slot_start'] : '' );
+											@endphp
+										</select>
+		                				@if (!empty($errors) && $errors->has('time_slot_start'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('date_start') }}
+		                						{{ $errors->first('time_slot_start') }}
 		                					</label>
 		                				@endif
 									</div>
 									<div class="col-md-6">
 										<label>
-											{{ __('Ngày kết thúc') }}
+											{{ __('Khung giờ kết thúc') }}
 										</label>
-										<input type="date" placeholder="select" class="form-control" name="date[date_end]" value="@if(!empty(old('date')['date_end'])){{old('date')['date_end']}}@endif">
-		                				@if (!empty($errors) && $errors->has('date_end'))
+										<select class="selectpicker" data-style="btn btn-block" title="Chọn khung giờ" data-size="5" name="time[time_slot_end]">
+											@php
+												Helpers::optionSelectArray($array_time_slot, (isset(old('time')['time_slot_end']) && old('time')['time_slot_end'] !== null) ? old('time')['time_slot_end'] : '' );
+											@endphp
+										</select>
+		                				@if (!empty($errors) && $errors->has('time_slot_end'))
 		                					<label class="error text-danger">
-		                						{{ $errors->first('date_end') }}
+		                						{{ $errors->first('time_slot_end') }}
 		                					</label>
 		                				@endif
 									</div>
@@ -57,7 +65,7 @@
 											{{ __('Giá tăng') }}
 										</label>
 										<div class="input-group">
-											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="increase-price" name="date[increase_price]" value="@if(!empty(old('date')['increase_price'])) {{ old('date')['increase_price'] }} @endif">
+											<input type="text" placeholder="200,000" class="form-control text-right" data-type="currency" id="increase-price" name="time[increase_price]" value="@if(!empty(old('time')['increase_price'])) {{ old('time')['increase_price'] }} @endif">
 											<span class="input-group-addon">
 												{{ __('VNĐ') }}
 											</span>

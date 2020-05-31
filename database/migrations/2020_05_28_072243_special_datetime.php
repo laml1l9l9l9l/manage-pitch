@@ -17,7 +17,7 @@ class SpecialDatetime extends Migration
             $table->increments('id');
             $table->integer('time_slot_id')->nullable();
             $table->string('time_slot_name')->nullable();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->integer('increase_price');
             $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();

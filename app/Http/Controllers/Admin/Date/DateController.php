@@ -50,18 +50,29 @@ class DateController extends Controller
         $this->validatorManually($date_request)->validate();
 
         // Get all dates between two dates
+        $model_date = $this->date;
         $array_date = array();
-        $date_period = new \DatePeriod(
-             new \DateTime($date_request['date_start']),
-             new \DateInterval('P1D'),
-             new \DateTime($date_request['date_end'])
-        );
+        $date_start = new \DateTime($date_request['date_start']);
+        $interval   = new \DateInterval('P1D');
+        $date_end   = new \DateTime($date_request['date_end']);
+        $date_end->setTime(0,0,1);
+        $date_period = new \DatePeriod($date_start, $interval, $date_end);
         foreach ($date_period as $date) {
             $date = $date->format('Y-m-d');
+            $isset_date = $model_date->where('date', '=', $date)->count();
+            if($isset_date > 0){
+                continue;
+            }
             array_push($array_date, $date);
         }
-        // Add date end to array
-        array_push($array_date, $date_request['date_end']);
+        
+
+        $name_route = 'admin.date';
+        // Return if array null
+        if(empty($array_date)){
+            return redirect()->route($name_route)
+                ->with('error', 'Ngày bạn chọn đã tồn tại');
+        }
 
 
         // Save all dates
@@ -75,7 +86,7 @@ class DateController extends Controller
             $date->save();
         }
 
-        return redirect()->route('admin.date')
+        return redirect()->route($name_route)
             ->with('success', 'Bạn đã thêm mới khoảng thời gian');
     }
 
@@ -83,7 +94,7 @@ class DateController extends Controller
     private $array_validate = [
         'name'       => ['required', 'string', 'min:2', 'max:25'],
         'date_start' => ['required', 'date_format:Y-m-d'],
-        'date_end'   => ['required', 'date_format:Y-m-d'],
+        'date_end'   => ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'],
     ];
 
     private function validatorManually(array $data)
@@ -101,16 +112,16 @@ class DateController extends Controller
     private function messages()
     {
         return [
-			'required'         => 'Không được để trống',
-			'string'           => 'Sai định dạng',
-			'max'              => 'Sai định dạng, dài hơn :max ký tự',
-			'min'              => 'Sai định dạng, ngắn hơn :min ký tự',
-			'status.max'       => 'Sai định dạng',
-			'status.min'       => 'Sai định dạng',
-			'date_format'      => 'Sai định dạng',
-			'time_end.after'   => 'Ngày không hợp lệ',
-			'date_special.max' => 'Sai định dạng',
-			'date_special.min' => 'Sai định dạng',
+            'required'                => 'Không được để trống',
+            'string'                  => 'Sai định dạng',
+            'max'                     => 'Sai định dạng, dài hơn :max ký tự',
+            'min'                     => 'Sai định dạng, ngắn hơn :min ký tự',
+            'status.max'              => 'Sai định dạng',
+            'status.min'              => 'Sai định dạng',
+            'date_format'             => 'Sai định dạng',
+            'date_end.after_or_equal' => 'Ngày không hợp lệ',
+            'date_special.max'        => 'Sai định dạng',
+            'date_special.min'        => 'Sai định dạng',
         ];
     }
 
