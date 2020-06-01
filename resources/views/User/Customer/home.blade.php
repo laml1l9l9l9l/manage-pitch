@@ -33,6 +33,7 @@
 						</div>
 
 						<div class="col-md-12 p-0" id="alert-select-warning"></div>
+						@include('Layout.Customer.Notification.message_basic')
 					</div>
 
 					{{-- Calendar --}}

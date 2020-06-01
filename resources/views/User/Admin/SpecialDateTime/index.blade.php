@@ -99,7 +99,7 @@
 							<i class="ti-calendar"></i>
 							{{ __('Thêm ngày tăng giá') }}
 						</a>
-						<a href="{{ route('admin.time.add') }}" class="btn btn-primary btn-fill btn-wd">
+						<a href="{{ route('admin.specialdatetime.adddatetime') }}" class="btn btn-primary btn-fill btn-wd">
 							<i class="ti-check-box"></i>
 							{{ __('Thêm ngày giờ tăng giá') }}
 						</a>

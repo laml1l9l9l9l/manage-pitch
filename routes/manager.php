@@ -114,6 +114,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.specialdatetime.adddate");
 	Route::post("add-special-date","$SpecialDateTimeController@storeSpecialDate")
 		->name("$group.specialdatetime.storedate");
+	Route::get("add-special-date-time","$SpecialDateTimeController@addSelectSpecialDateTime")
+		->name("$group.specialdatetime.adddatetime");
+	Route::post("add-special-date-time","$SpecialDateTimeController@storeSpecialDateTime")
+		->name("$group.specialdatetime.storedatetime");
 
 });
 

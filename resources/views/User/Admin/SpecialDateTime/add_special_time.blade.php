@@ -16,7 +16,7 @@
 			
 			<div class="col-md-6">
 				<div class="card">
-					<form method="post" action="{{ route('admin.specialdatetime.storetime') }}" enctype="multipart/form-data">
+					<form method="post" action="{{ route('admin.specialdatetime.storetime') }}">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">

@@ -19,3 +19,8 @@
 
 	define('SIMPLE', '0');
 	define('MULTIPLE', '1');
+
+
+	define('UNPAID', '-1');
+	define('DEPOSITED', '0');
+	define('PAID', '1');

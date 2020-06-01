@@ -76,7 +76,7 @@
 										<label>
 											{{ __('Ảnh sân') }}
 										</label>
-										<input type="file" class="form-control-file" id="pitch-img" name="pitch[image]">
+										<input type="file" class="form-control-file form-control" id="pitch-img" name="pitch[image]">
 		                				@if (!empty($errors) && $errors->has('image'))
 		                					<label class="error text-danger">
 		                						{{ $errors->first('image') }}

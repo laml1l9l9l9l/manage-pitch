@@ -29,7 +29,7 @@ class SpecialDateTimeController extends Controller
 		$page                  = $request->get('page');
 		$page_special_datetime = $this->indexTable($page, $offset);
 
-        $special_datetime = $model_special_datetime->paginate($offset);
+        $special_datetime = $model_special_datetime->orderBy('date', 'desc')->paginate($offset);
         $special_datetime->setPath(URL::current());
 
     	return view('User.Admin.SpecialDateTime.index',[
@@ -60,8 +60,12 @@ class SpecialDateTimeController extends Controller
     public function storeSpecialHour(Request $request)
     {
         $time_request = $request->get('time');
-        $time_request['time_slot_start'] = intval($time_request['time_slot_start']);
-        $time_request['time_slot_end']   = intval($time_request['time_slot_end']);
+        if(!empty($datetime_request['time_slot_start'])){
+            $datetime_request['time_slot_start'] = intval($datetime_request['time_slot_start']);
+        }
+        if(!empty($datetime_request['time_slot_end'])){
+            $datetime_request['time_slot_end'] = intval($datetime_request['time_slot_end']);
+        }
         $time_request['increase_price']  = preg_replace('/[^0-9]/', '', $time_request['increase_price']);
 
         $this->validatorSpecialTime($time_request)->validate();
@@ -70,7 +74,8 @@ class SpecialDateTimeController extends Controller
         $model_time = $this->time;
         $array_time = array();
         for ($time=$time_request['time_slot_start']; $time <= $time_request['time_slot_end']; $time++) { 
-            $isset_time = $model_special_datetime->where('time_slot_id', '=', $time)->count();
+            $isset_time = $model_special_datetime->where('time_slot_id', '=', $time)
+                ->whereNull('date')->count();
             if($isset_time > 0){
                 continue;
             }
@@ -128,7 +133,8 @@ class SpecialDateTimeController extends Controller
         $date_period = new \DatePeriod($date_start, $interval, $date_end);
         foreach ($date_period as $date) {
             $date = $date->format('Y-m-d');
-            $isset_date = $model_special_datetime->where('date', '=', $date)->count();
+            $isset_date = $model_special_datetime->where('date', '=', $date)
+                ->whereNull('time_slot_id')->count();
             if($isset_date > 0){
                 continue;
             }
@@ -163,10 +169,95 @@ class SpecialDateTimeController extends Controller
 
     public function addSelectSpecialDateTime()
     {
-        $model_time = $this->time;
-    	return view('User.Admin.Time.add', [
-    		'model_time' => $model_time
+        $model_special_datetime = $this->special_datetime;
+        $model_time             = $this->time;
+
+        // Create array time slot
+        $array_time_slot = array();
+        $time_slots = $model_time->all();
+        foreach ($time_slots as $time_slot) {
+            $array_time_slot[$time_slot->id] = $time_slot->name;
+        }
+
+    	return view('User.Admin.SpecialDateTime.add_special_datetime', [
+            'model_special_datetime' => $model_special_datetime,
+            'array_time_slot'        => $array_time_slot
     	]);
+    }
+
+    public function storeSpecialDateTime(Request $request)
+    {
+        $datetime_request = $request->get('datetime');
+        if(!empty($datetime_request['time_slot_start'])){
+            $datetime_request['time_slot_start'] = intval($datetime_request['time_slot_start']);
+        }
+        if(!empty($datetime_request['time_slot_end'])){
+            $datetime_request['time_slot_end'] = intval($datetime_request['time_slot_end']);
+        }
+        $datetime_request['increase_price']  = preg_replace('/[^0-9]/', '', $datetime_request['increase_price']);
+        
+        $this->validatorSpecialDateTime($datetime_request)->validate();
+
+        $model_special_datetime = $this->special_datetime;
+        $model_time = $this->time;
+        $model_date = $this->date;
+        $array_time = array();
+        $array_date = array();
+        $array_datetime = array();
+        $array_value_datetime = array();
+        // Get all times between two times
+        for ($time = $datetime_request['time_slot_start']; $time <= $datetime_request['time_slot_end']; $time++) {
+            array_push($array_time, $time);
+        }
+        // Get all dates between two dates
+        $date_start = new \DateTime($datetime_request['date_start']);
+        $interval   = new \DateInterval('P1D');
+        $date_end   = new \DateTime($datetime_request['date_end']);
+        $date_end->setTime(0,0,1);
+        $date_period = new \DatePeriod($date_start, $interval, $date_end);
+        foreach ($date_period as $date) {
+            $date = $date->format('Y-m-d');
+            array_push($array_date, $date);
+        }
+
+        foreach ($array_date as $date) {
+            foreach ($array_time as $time) {
+                $isset_datetime = $model_special_datetime->where('date', '=', $date)
+                    ->where('time_slot_id', '=', $time)->count();
+                if($isset_datetime > 0){
+                    continue;
+                }
+                $array_value_datetime = array(
+                    'date'         => $date,
+                    'time_slot_id' => $time,
+                );
+                array_push($array_datetime, $array_value_datetime);
+            }
+        }
+
+        $name_route = 'admin.specialdatetime';
+        // Return if array null
+        if(empty($array_datetime)){
+            return redirect()->route($name_route)
+                ->with('error', 'Khoảng thời gian bạn chọn đã tồn tại');
+        }
+
+        // Save all dates
+        foreach ($array_datetime as $datetime) {
+            $time_slot = $model_time->where('id', '=', $datetime['time_slot_id'])->first();
+            $special_date                 = new SpecialDateTime();
+            $special_date->time_slot_id   = $time_slot->id;
+            $special_date->time_slot_name = $time_slot->name;
+            $special_date->date           = $datetime['date'];
+            $special_date->increase_price = $datetime_request['increase_price'];
+            $special_date->status         = ACTIVE;
+            $special_date->created_at     = Helper::getCurrentDateTime();
+            $special_date->updated_at     = Helper::getCurrentDateTime();
+            $special_date->save();
+        }
+
+        return redirect()->route($name_route)
+            ->with('success', 'Bạn đã thêm mới khoảng thời gian tăng giá');
     }
 
 
@@ -185,6 +276,16 @@ class SpecialDateTimeController extends Controller
     private function validatorSpecialTime(array $data)
     {
         $array_validate = $this->array_validate;
+        $array_validate['time_slot_start'] = ['required', 'integer'];
+        $array_validate['time_slot_end']   = ['required', 'integer', 'gte:time_slot_start'];
+        return Validator::make($data, $array_validate, $this->messages());
+    }
+
+    private function validatorSpecialDateTime(array $data)
+    {
+        $array_validate = $this->array_validate;
+        $array_validate['date_start']      = ['required', 'date_format:Y-m-d'];
+        $array_validate['date_end']        = ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'];
         $array_validate['time_slot_start'] = ['required', 'integer'];
         $array_validate['time_slot_end']   = ['required', 'integer', 'gte:time_slot_start'];
         return Validator::make($data, $array_validate, $this->messages());
