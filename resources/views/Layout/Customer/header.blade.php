@@ -72,74 +72,34 @@
 						</ul>
 					</li>
 
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="material-icons">view_carousel</i> Examples
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu dropdown-with-icons">
-							<li>
-								<a href="../examples/about-us.html">
-									<i class="material-icons">account_balance</i> About Us
-								</a>
-							</li>
-							<li>
-								<a href="../examples/blog-post.html">
-									<i class="material-icons">art_track</i> Blog Post
-								</a>
-							</li>
-							<li>
-								<a href="../examples/blog-posts.html">
-									<i class="material-icons">view_quilt</i> Blog Posts
-								</a>
-							</li>
-							<li>
-								<a href="../examples/contact-us.html">
-									<i class="material-icons">location_on</i> Contact Us
-								</a>
-							</li>
-							<li>
-								<a href="../examples/landing-page.html">
-									<i class="material-icons">view_day</i> Landing Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/login-page.html">
-									<i class="material-icons">fingerprint</i> Login Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/pricing.html">
-									<i class="material-icons">attach_money</i> Pricing Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/ecommerce.html">
-									<i class="material-icons">shop</i> Ecommerce Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/product-page.html">
-									<i class="material-icons">beach_access</i> Product Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/profile-page.html">
-									<i class="material-icons">account_circle</i> Profile Page
-								</a>
-							</li>
-							<li>
-								<a href="../examples/signup-page.html">
-									<i class="material-icons">person_add</i> Signup Page
-								</a>
-							</li>
-						</ul>
-					</li>
-
 					<li>
 						<a href="http://www.creative-tim.com/buy/material-kit-pro?ref=presentation" target="_blank" class="btn btn-white btn-simple">
 							<i class="material-icons">shopping_cart</i> Buy Now
 						</a>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="material-icons">account_box</i> {{ __('Cá Nhân') }}
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu dropdown-with-icons">
+							<li>
+								<a href="{{ route('customer.profile') }}">
+									<i class="material-icons">account_circle</i> {{ __('Thông tin cá nhân') }}
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('customer.profile.bill') }}">
+									<i class="material-icons">assignment</i> {{ __('Hóa đơn') }}
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('customer.logout') }}">
+									<i class="material-icons">power_settings_new</i> {{ __('Đăng xuất') }}
+								</a>
+							</li>
+						</ul>
 					</li>
 				@else
 					<li>

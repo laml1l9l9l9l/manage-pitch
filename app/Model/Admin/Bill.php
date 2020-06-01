@@ -2,9 +2,23 @@
 
 namespace App\Model\Admin;
 
+use App\Model\Admin\Customer;
 use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
 {
     protected $table = 'bills';
+
+    public $status_model = array(
+		UNPAID    => 'Chưa đặt cọc',
+		DEPOSITED => 'Đã đặt cọc',
+		PAID      => 'Đã thanh toán',
+    );
+
+    public function getCustomer($id_customer)
+    {
+    	$model_customer = new Customer;
+    	$customer = $model_customer->find($id_customer);
+    	return $customer;
+    }
 }

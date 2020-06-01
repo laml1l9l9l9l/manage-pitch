@@ -39,6 +39,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	// profile
 	Route::get("profile","$ProfileController@index")
 		->name("$group.profile");
+	Route::post("profile/update","$ProfileController@update")
+		->name("$group.profile.update");
+	Route::get("profile/bill","$ProfileController@bill")
+		->name("$group.profile.bill");
 	Route::get("information","$ProfileController@information")
 		->name("$group.infor");
 

@@ -96,21 +96,65 @@
 								<tr class="text-bold">
 									<th class="text-center">#</th>
 									<th>{{ __('Khách hàng') }}</th>
-									<th>{{ __('Tiền đặt cọc') }}</th>
-									<th>{{ __('Thành tiền') }}</th>
-									<th>{{ __('Trạng thái') }}</th>
-									<th>{{ __('Ngày tạo') }}</th>
-									<th class="text-center">{{ __('Thao Tác') }}</th>
+									<th class="text-right">{{ __('Tiền đặt cọc') }}</th>
+									<th class="text-right">{{ __('Thành tiền') }}</th>
+									<th class="text-right">{{ __('Trạng thái') }}</th>
+									<th class="text-right">{{ __('Ngày tạo') }}</th>
+									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								{{-- Dữ liệu --}}
+								@if (count($bills) > 0)
+									@foreach ($bills as $bill)
+										<tr>
+											<td class="text-center">{{ $page_bill }}</td>
+											@php
+												$customer = $model_bill->getCustomer($bill->id_customer);
+											@endphp
+											<td>
+												{{ __($customer->name) }}
+											</td>
+											<td class="text-right">
+												{{ number_format($bill->down_payment) }}
+											</td>
+											<td class="text-right">
+												{{ number_format($bill->into_money) }}
+											</td>
+											<td class="text-right">
+												{{ __($model_bill->status_model[$bill->status]) }}
+											</td>
+											<td class="text-right">
+												{{ date('d-m-Y H:i', strtotime($bill->created_at)) }}
+											</td>
+											<td class="td-actions text-right">
+												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
+													<i class="fa fa-file"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+													<i class="fa fa-edit"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+													<i class="fa fa-times"></i>
+												</button>
+											</td>
+										</tr>
+										@php
+											$page_bill++
+										@endphp
+									@endforeach
+								@else
+									<td class="text-center" colspan="7">
+										<h4 class="my-3">
+											{{ __('Chưa có thời gian') }}
+										</h4>
+									</td>
+								@endif
 							</tbody>
 						</table>
 					</div>
 
 					<div class="text-right">
-						{{-- Phân trang --}}
+						{{ $bills->links() }}
 					</div>
 				</div>
 			</div>

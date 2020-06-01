@@ -20,6 +20,11 @@ class Customer extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public $status_model = array(
+        LOCK   => 'Khóa',
+        ACTIVE => 'Kích hoạt',
+    );
+
     public function buildPassLender($password = ''){
         return (trim($password) != '')? md5($password.'_'.env('KEY_PASS_ADMIN')): '';
     }

@@ -26,3 +26,9 @@
 
 <!--    Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc    -->
 <script src="{{ asset('custom/js/material-kit.js?v=1.2.1') }}" type="text/javascript"></script>
+<script src="{{ asset('custom/js/template-custom.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+       	template_custom.getTitlePageCurrent();
+	});
+</script>

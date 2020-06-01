@@ -99,10 +99,5 @@
 
 @include('Layout.Admin.foot')
 @stack('js')
-<script type="text/javascript">
-	$(document).ready(function(){
-       	template_custom.getTitlePageCurrent();
-	});
-</script>
 
 </html>
