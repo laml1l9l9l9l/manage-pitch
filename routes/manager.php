@@ -35,6 +35,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	$ChangePasswordController  = "Admin\Profile\ChangePasswordController";
 	$MenuController            = "Admin\Menu\MenuController";
 	$PermissionController      = "Admin\Permission\PermissionController";
+	$RoleController            = "Admin\Role\RoleController";
 
 	// home
 	Route::get("","$HomeController@home")
@@ -57,6 +58,14 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.permission.add");
 	Route::post("permission/add","$PermissionController@store")
 		->name("$group.permission.store");
+
+	// role
+	Route::get("role","$RoleController@index")
+		->name("$group.role");
+	Route::get("role/add","$RoleController@add")
+		->name("$group.role.add");
+	Route::post("role/add","$RoleController@store")
+		->name("$group.role.store");
 
 	// profile
 	Route::get("profile","$ProfileController@index")
@@ -96,27 +105,27 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.date.store");
 
 	//time
-	Route::get("time","$TimeController@index")
+	Route::get("time-slots","$TimeController@index")
 		->name("$group.time");
-	Route::get("time/add","$TimeController@add")
+	Route::get("time-slots/add","$TimeController@add")
 		->name("$group.time.add");
-	Route::post("time/add","$TimeController@store")
+	Route::post("time-slots/add","$TimeController@store")
 		->name("$group.time.store");
 
 	//special date time
 	Route::get("special-datetime","$SpecialDateTimeController@index")
 		->name("$group.specialdatetime");
-	Route::get("add-special-time","$SpecialDateTimeController@addSpecialHour")
+	Route::get("special-datetime/add-time","$SpecialDateTimeController@addSpecialHour")
 		->name("$group.specialdatetime.addtime");
-	Route::post("add-special-time","$SpecialDateTimeController@storeSpecialHour")
+	Route::post("special-datetime/add-time","$SpecialDateTimeController@storeSpecialHour")
 		->name("$group.specialdatetime.storetime");
-	Route::get("add-special-date","$SpecialDateTimeController@addSpecialDate")
+	Route::get("special-datetime/add-date","$SpecialDateTimeController@addSpecialDate")
 		->name("$group.specialdatetime.adddate");
-	Route::post("add-special-date","$SpecialDateTimeController@storeSpecialDate")
+	Route::post("special-datetime/add-date","$SpecialDateTimeController@storeSpecialDate")
 		->name("$group.specialdatetime.storedate");
-	Route::get("add-special-date-time","$SpecialDateTimeController@addSelectSpecialDateTime")
+	Route::get("special-datetime/add-date-time","$SpecialDateTimeController@addSelectSpecialDateTime")
 		->name("$group.specialdatetime.adddatetime");
-	Route::post("add-special-date-time","$SpecialDateTimeController@storeSpecialDateTime")
+	Route::post("special-datetime/add-date-time","$SpecialDateTimeController@storeSpecialDateTime")
 		->name("$group.specialdatetime.storedatetime");
 
 });

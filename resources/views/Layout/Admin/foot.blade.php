@@ -67,5 +67,6 @@
 <script type="text/javascript">
 	$(document).ready(function(){
        	template_custom.getTitlePageCurrent();
+       	template_custom.activeMenuSelected();
 	});
 </script>
