@@ -10,6 +10,8 @@ Route::get("login","$LoginController@index")
 ->name("$group.login");
 Route::post("login","$LoginController@login")
 ->name("$group.process_login");
+Route::post("login/ajax","$LoginController@ajaxLogin")
+->name("$group.login.ajax");
 
 // view register
 Route::get("register","$RegisterController@index")

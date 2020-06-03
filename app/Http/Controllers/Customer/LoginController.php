@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Exception;
 
 class LoginController extends CustomerController
 {
@@ -36,16 +37,11 @@ class LoginController extends CustomerController
         $model_customer = $this->customer;
         $request_customer['password'] = $model_customer->buildPassLender($request_customer['password']);
 
-        $user = $this->customer->where('email','=',$request_customer['email'])
-            ->where('password','=',$request_customer['password'])
-            ->first();
+        $user = $this->getUser($request_customer);
             
 
         if (!empty($user)) {
-            $this->guard()->login($user);
-            $request->session()->regenerate();
-
-            $this->clearLoginAttempts($request);
+            $this->createSessionLogin($user, $request);
 
             return $this->authenticated($request, $this->guard()->user())
                 ?: redirect()->intended($this->redirectPath());
@@ -54,11 +50,60 @@ class LoginController extends CustomerController
         return $this->customSendFailedLoginResponse($request_customer);
     }
 
+    public function ajaxLogin(Request $request)
+    {
+        try
+        {
+            $request_customer = $request->only('email', 'password');;
+            $model_customer = $this->customer;
+            $request_customer['password'] = $model_customer->buildPassLender($request_customer['password']);
+
+            $user = $this->getUser($request_customer);
+            
+
+            if (!empty($user)) {
+                $this->createSessionLogin($user, $request);
+
+                return response()->json([
+                    'success' => 'Đăng nhập thành công',
+                    '_token'  => csrf_token()
+                ]);
+            }
+
+            return response()->json([
+                'error' => 'Bạn nhập sai email hoặc mật khẩu'
+            ]);
+        }
+        catch(Exception $e)
+        {
+            return response()->json([
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
     protected function customSendFailedLoginResponse($request)
     {
         throw ValidationException::withMessages([
             'email' => [trans('auth.custom_failed')],
         ]);
+    }
+
+    protected function getUser($request_customer)
+    {
+        $user = $this->customer->where('email','=',$request_customer['email'])
+            ->where('password','=',$request_customer['password'])
+            ->first();
+
+        return $user;
+    }
+
+    protected function createSessionLogin($user,Request $request)
+    {
+        $this->guard()->login($user);
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
     }
 
     private function validateLogin(array $data)

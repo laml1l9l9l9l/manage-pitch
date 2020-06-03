@@ -76,17 +76,6 @@ $(document).ready(function() {
 		}
 	}
 
-	function submitFormCreateBill() {
-		$('#form-create-bill').attr({
-			method: 'POST',
-			action: urlCreateBill
-		});
-		
-		// Update type rent
-		$('#type-rent').val(typeRent);
-		$('#form-create-bill').submit();
-	}
-
 
 	// Show modal
 	$('.btn-register').click(function() {
@@ -104,3 +93,15 @@ $(document).ready(function() {
 		$('#modalLogin').modal('hide');
 	});
 });
+
+
+function submitFormCreateBill() {
+	$('#form-create-bill').attr({
+		method: 'POST',
+		action: urlCreateBill
+	});
+	
+	// Update type rent
+	$('#type-rent').val(typeRent);
+	$('#form-create-bill').submit();
+}

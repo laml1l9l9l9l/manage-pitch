@@ -22,13 +22,17 @@ template_custom = {
     	}
 
     	// Check link
-		var $response = $('#menu');
-		var $links    = $response.find("a[href$='"+nameLink+"']").parent().addClass('active');
-
-	    $links.closest('#dashboardOverview').removeClass('collapse out').addClass('collapse in');
-    	// Active collapse
-    	$links.closest('#dashboardOverview').closest('li').addClass('active');
-    	
+    	activeMenu('#menu', '#dashboardOverview');
+    	activeMenu('#profile', '#profile');
     	console.log(nameLink);
+
+    	function activeMenu(id_menu, id_collapse) {
+			var $response = $(id_menu);
+			var $links    = $response.find("a[href$='"+nameLink+"']").parent().addClass('active');
+
+		    $links.closest(id_collapse).removeClass('collapse out').addClass('collapse in');
+	    	// Active collapse
+	    	$links.closest(id_collapse).closest('li').addClass('active');
+    	}
     }
 };

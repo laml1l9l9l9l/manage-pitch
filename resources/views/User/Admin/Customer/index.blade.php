@@ -46,16 +46,7 @@
 									<label for="phone-customer">
 										{{ __('Số điện thoại') }}
 									</label>
-									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="phone-customer" name="bill[icon]" value="">
-								</div>
-							</div>
-
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="account-customer">
-										{{ __('Tài khoản') }}
-									</label>
-									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="account-customer" name="bill[icon]" value="">
+									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="phone-customer" name="customer[phone]" value="">
 								</div>
 							</div>
 
@@ -64,7 +55,7 @@
 									<label for="status-customer">
 										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="Sử dụng select" class="form-control" id="status-customer" name="bill[icon]" value="">
+									<input type="text" placeholder="Sử dụng select" class="form-control" id="status-customer" name="customer[status]" value="">
 								</div>
 							</div>
 
@@ -74,9 +65,9 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="bill[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="customer[start_created_at]" value="">
 										-
-										<input type="date" placeholder="select" class="form-control" name="bill[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="customer[end_created_at]" value="">
 									</div>
 								</div>
 							</div>
@@ -122,23 +113,67 @@
 							<thead>
 								<tr class="text-bold">
 									<th class="text-center">#</th>
-									<th>{{ __('Tài khoản') }}</th>
-									<th>{{ __('Họ tên') }}</th>
 									<th>{{ __('Email') }}</th>
-									<th>{{ __('Số điện thoại') }}</th>
-									<th>{{ __('Trạng thái') }}</th>
-									<th>{{ __('Ngày tạo') }}</th>
-									<th class="text-center">{{ __('Thao Tác') }}</th>
+									<th>{{ __('Họ tên') }}</th>
+									<th class="text-center">{{ __('Số điện thoại') }}</th>
+									<th class="text-center">{{ __('Trạng thái') }}</th>
+									<th class="text-right">{{ __('Ngày tạo') }}</th>
+									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
 							</thead>
 							<tbody>
-								{{-- Dữ liệu --}}
+								@if (count($customers) > 0)
+									@foreach ($customers as $customer)
+										<tr>
+											<td class="text-center">{{ $page_customer }}</td>
+											<td>
+												{{ __($customer->email) }}
+											</td>
+											<td>
+												{{ __($customer->name) }}
+											</td>
+											<td class="text-center">
+												@if (!empty($customer->phone))
+													{{ __($customer->phone) }}
+												@else
+													{{ __('Không có') }}
+												@endif
+											</td>
+											<td class="text-center">
+												{{ __($model_customer->status_model[$customer->status]) }}
+											</td>
+											<td class="text-right">
+												{{ date('d-m-Y H:i', strtotime($customer->created_at)) }}
+											</td>
+											<td class="td-actions text-right">
+												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
+													<i class="fa fa-file"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+													<i class="fa fa-edit"></i>
+												</button>
+												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+													<i class="fa fa-times"></i>
+												</button>
+											</td>
+										</tr>
+										@php
+											$page_customer++
+										@endphp
+									@endforeach
+								@else
+									<td class="text-center" colspan="7">
+										<h4 class="my-3">
+											{{ __('Chưa có thời gian') }}
+										</h4>
+									</td>
+								@endif
 							</tbody>
 						</table>
 					</div>
 
 					<div class="text-right">
-						{{-- Phân trang --}}
+						{{ $customers->links() }}
 					</div>
 				</div>
 			</div>

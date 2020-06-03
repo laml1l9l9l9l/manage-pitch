@@ -1,4 +1,4 @@
-<footer class="footer">
+{{-- <footer class="footer">
     <div class="container">
         <nav class="pull-left">
 			<ul>
@@ -28,4 +28,4 @@
             &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com" target="_blank">Creative Tim</a>
         </div>
     </div>
-</footer>
+</footer> --}}

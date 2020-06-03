@@ -90,7 +90,9 @@
 								@else
 									<tr>
 										<td class="text-center" colspan="6">
-											{{ __('Chưa có menu') }}
+											<h4 class="my-3">
+												{{ __('Chưa có menu') }}
+											</h4>
 										</td>
 									</tr>
 								@endif

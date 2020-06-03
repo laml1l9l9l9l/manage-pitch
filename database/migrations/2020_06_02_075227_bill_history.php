@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SpecialDatetime extends Migration
+class BillHistory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class SpecialDatetime extends Migration
      */
     public function up()
     {
-        Schema::create('special_datetime', function (Blueprint $table) {
+        Schema::create('bill_history', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_time_slot')->nullable();
-            $table->string('name_time_slot')->nullable();
-            $table->date('date')->nullable();
-            $table->integer('increase_price');
+            $table->integer('id_bill');
+            $table->integer('id_admin')->nullable();
+            $table->string('log_change')->nullable();
             $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ class SpecialDatetime extends Migration
      */
     public function down()
     {
-        Schema::drop('special_datetime');
+        Schema::drop('bill_history');
     }
 }

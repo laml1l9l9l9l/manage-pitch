@@ -82,7 +82,9 @@
 									@else
 										<tr>
 											<td class="text-center" colspan="4">
-												{{ __('Chưa có quyền quản trị') }}
+												<h4 class="my-3">
+													{{ __('Chưa có quyền quản trị') }}
+												</h4>
 											</td>
 										</tr>
 									@endif
