@@ -28,7 +28,11 @@
 									<label for="name-time">
 										{{ __('Thời gian') }}
 									</label>
-									<input type="text" placeholder="Select 2" class="form-control" name="special_datetime[name]" id="name-time">
+									<div class="form-inline custom-form-inline">
+										<input type="time" placeholder="select" class="form-control" name="special_datetime[time_start]" value="@if(!empty($request_special_datetime['time_start'])){{ $request_special_datetime['time_start'] }}@endif">
+										-
+										<input type="time" placeholder="select" class="form-control" name="special_datetime[time_end]" value="@if(!empty($request_special_datetime['time_end'])){{ $request_special_datetime['time_end'] }}@endif">
+									</div>
 								</div>
 							</div>
 
@@ -37,7 +41,11 @@
 									<label for="status-time">
 										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="select" class="form-control" id="status-time" name="special_datetime[status]" value="">
+									<select class="selectpicker" id="status-customer" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="special_datetime[status]">
+										@php
+											Helpers::optionSelectArray($model_special_datetime->status_model, (isset($request_special_datetime['status']) && $request_special_datetime['status'] !== null) ? $request_special_datetime['status'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 
@@ -47,19 +55,19 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="special_datetime[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="special_datetime[start_created_at]" value="@if(!empty($request_special_datetime['start_created_at'])){{ $request_special_datetime['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" name="special_datetime[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="special_datetime[end_created_at]" value="@if(!empty($request_special_datetime['end_created_at'])){{ $request_special_datetime['end_created_at'] }}@endif">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.specialdatetime') }}" class="btn btn-fill btn-wd" id="btn-reset">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -193,7 +201,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $special_datetime->links() }}
+						{{ $special_datetime->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

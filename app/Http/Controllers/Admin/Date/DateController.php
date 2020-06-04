@@ -18,6 +18,7 @@ class DateController extends Controller
 
     public function index(Request $request)
     {
+        $request_date = $request->date;
 		$model_date = $this->date;
 		
 		$offset     = 10;
@@ -25,14 +26,30 @@ class DateController extends Controller
 		$page       = $request->get('page');
 		$page_date  = $this->indexTable($page, $offset);
 
-        $dates = $model_date->orderBy('date', 'desc')->paginate($offset);
+        $dates = !empty($request_date) ? $this->search($request_date) : $model_date;
+        $dates = $dates->orderBy('date', 'desc')->paginate($offset);
         $dates->setPath(URL::current());
 
     	return view('User.Admin.Date.index',[
-			'dates'      => $dates,
-			'model_date' => $model_date,
-			'page_date'  => $page_date
+            'dates'        => $dates,
+            'model_date'   => $model_date,
+            'page_date'    => $page_date,
+            'request_date' => $request_date,
+            'request'      => $request->all()
     	]);
+    }
+
+    public function search($request_date)
+    {
+        $dates = $this->date;
+
+        !empty($request_date['name']) ? $dates = $dates->where('name', 'like', '%'.$request_date['name'].'%') : '';
+        !empty($request_date['start_date']) ? $dates = $dates->where('date', '>=', $request_date['start_date'].' 00:00:00') : '';
+        !empty($request_date['end_date']) ? $dates = $dates->where('date', '<=', $request_date['end_date'].' 23:59:59') : '';
+        !empty($request_date['start_created_at']) ? $dates = $dates->where('created_at', '>=', $request_date['start_created_at'].' 00:00:00') : '';
+        !empty($request_date['end_created_at']) ? $dates = $dates->where('created_at', '<=', $request_date['end_created_at'].' 23:59:59') : '';
+
+        return $dates;
     }
 
     public function add()

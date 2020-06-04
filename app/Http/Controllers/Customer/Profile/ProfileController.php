@@ -29,10 +29,15 @@ class ProfileController extends CustomerController
     {
         $this->validateUpdateProfile($request);
         $profile = $request['profile'];
-        dd($profile);
         $account = $this->guard()->user();
-        $model_customer = $this->customer;
-        return redirect()->route('admin.profile')
+
+        $model_customer  = $this->customer;
+        $customer        = $model_customer->find($account->id);
+        $customer->name  = $profile['name'];
+        $customer->phone = $profile['phone'];
+        $customer->save();
+
+        return redirect()->route('customer.profile')
             ->with('success', 'Cập nhật thông tin các nhân thành công');
     }
 

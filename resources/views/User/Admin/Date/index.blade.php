@@ -28,16 +28,20 @@
 									<label for="name-date">
 										{{ __('Sự kiện') }}
 									</label>
-									<input type="text" placeholder="Tên sự kiện" class="form-control" name="date[name]" id="name-date">
+									<input type="text" placeholder="Tên sự kiện" class="form-control" id="name-date" name="date[name]" value="@if(!empty($request_date['name'])){{ $request_date['name'] }}@endif">
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>
-										{{ __('Ngày') }}
+										{{ __('Ngày nghỉ') }}
 									</label>
-									<input type="date" placeholder="Email" class="form-control" name="date[date]">
+									<div class="form-inline custom-form-inline">
+										<input type="date" class="form-control" name="date[start_date]" value="@if(!empty($request_date['start_date'])){{ $request_date['start_date'] }}@endif">
+										-
+										<input type="date" class="form-control" name="date[end_date]" value="@if(!empty($request_date['end_date'])){{ $request_date['end_date'] }}@endif">
+									</div>
 								</div>
 							</div>
 
@@ -47,19 +51,19 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="bill[start_created_at]" value="">
+										<input type="date" class="form-control" name="date[start_created_at]" value="@if(!empty($request_date['start_created_at'])){{ $request_date['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" name="bill[end_created_at]" value="">
+										<input type="date" class="form-control" name="date[end_created_at]" value="@if(!empty($request_date['end_created_at'])){{ $request_date['end_created_at'] }}@endif">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.date') }}" class="btn btn-fill btn-wd" id="btn-reset">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -169,7 +173,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $dates->links() }}
+						{{ $dates->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

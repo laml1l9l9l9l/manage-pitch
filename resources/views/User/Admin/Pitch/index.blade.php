@@ -28,25 +28,20 @@
 									<label for="name-pitch">
 										{{ __('Tên sân bóng') }}
 									</label>
-									<input type="text" placeholder="Tên sân bóng" class="form-control" name="pitch[name]" id="name-pitch">
+									<input type="text" placeholder="Tên sân bóng" class="form-control" id="name-pitch" name="pitch[name]" value="@if(!empty($request_pitch['name'])){{ $request_pitch['name'] }}@endif">
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="type-pitch">
-										{{ __('Loại sân') }}
+									<label for="price-start-pitch">
+										{{ __('Giá sân') }}
 									</label>
-									<input type="text" placeholder="Email" class="form-control" name="pitch[type]" id="type-pitch">
-								</div>
-							</div>
-
-							<div class="col-md-4">
-								<div class="form-group">
-									<label for="price-pitch">
-										{{ __('Giá') }}
-									</label>
-									<input type="text" placeholder="Giá sân" class="form-control" id="price-pitch" name="pitch[price]" value="">
+									<div class="form-inline custom-form-inline">
+										<input type="text" placeholder="Giá thấp nhất" class="form-control text-right" id="price-start-pitch" data-type="currency" name="pitch[price_start]" value="@if(!empty($request_pitch['price_start'])){{ $request_pitch['price_start'] }}@endif">
+										-
+										<input type="text" placeholder="Giá cao nhất" class="form-control text-right" id="price-end-pitch" data-type="currency" name="pitch[price_end]" value="@if(!empty($request_pitch['price_end'])){{ $request_pitch['price_end'] }}@endif">
+									</div>
 								</div>
 							</div>
 
@@ -56,19 +51,32 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="bill[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="pitch[start_created_at]" value="@if(!empty($request_pitch['start_created_at'])){{ $request_pitch['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" name="bill[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="pitch[end_created_at]" value="@if(!empty($request_pitch['end_created_at'])){{ $request_pitch['end_created_at'] }}@endif">
 									</div>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="type-pitch">
+										{{ __('Loại sân') }}
+									</label>
+									<select class="selectpicker" id="type-pitch" data-style="btn btn-block" title="Chọn loại sân" data-size="5" name="pitch[type]">
+										@php
+											Helpers::optionSelectArray($model_pitch->status_model, (isset($request_pitch['type']) && $request_pitch['type'] !== null) ? $request_pitch['type'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.pitch') }}" class="btn btn-fill btn-wd">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -188,7 +196,7 @@
 					</div>
 
 					<div class="text-right">
-						{{-- Phân trang --}}
+						{{ $pitch->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

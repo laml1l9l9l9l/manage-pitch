@@ -16,15 +16,20 @@ template_custom = {
 		indexOfURL       += stringLength;
 		var nameLink     = pageURL.substring(indexOfURL);
     	// Get link - check submenu
-    	if(nameLink.includes("/")){
+    	if(nameLink.includes("/"))
+        {
 			indexOfURL = nameLink.indexOf("/");
 			nameLink   = nameLink.substring(0, indexOfURL);    		
     	}
+        else if(nameLink.includes("?"))
+        {
+            indexOfURL = nameLink.indexOf("?");
+            nameLink   = nameLink.substring(0, indexOfURL);     
+        }
 
     	// Check link
     	activeMenu('#menu', '#dashboardOverview');
     	activeMenu('#profile', '#profile');
-    	console.log(nameLink);
 
     	function activeMenu(id_menu, id_collapse) {
 			var $response = $(id_menu);

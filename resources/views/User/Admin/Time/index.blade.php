@@ -25,10 +25,14 @@
 						<div class="row card-content card-form-input collapse" id="form-search">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="name-time">
+									<label>
 										{{ __('Thời gian') }}
 									</label>
-									<input type="text" placeholder="Select 2" class="form-control" name="time_slots[name]" id="name-time">
+									<div class="form-inline custom-form-inline">
+										<input type="time" placeholder="select" class="form-control" name="time_slots[time_start]" value="@if(!empty($request_time_slots['time_start'])){{ $request_time_slots['time_start'] }}@endif">
+										-
+										<input type="time" placeholder="select" class="form-control" name="time_slots[time_end]" value="@if(!empty($request_time_slots['time_end'])){{ $request_time_slots['time_end'] }}@endif">
+									</div>
 								</div>
 							</div>
 
@@ -37,7 +41,11 @@
 									<label for="status-time">
 										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="select" class="form-control" id="status-time" name="time_slots[status]" value="">
+									<select class="selectpicker" id="status-time" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="time_slots[status]">
+										@php
+											Helpers::optionSelectArray($model_time->status_model, (isset($request_time_slots['status']) && $request_time_slots['status'] !== null) ? $request_time_slots['status'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 
@@ -47,19 +55,19 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="time_slots[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="time_slots[start_created_at]" value="@if(!empty($request_time_slots['start_created_at'])){{ $request_time_slots['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" name="time_slots[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="time_slots[end_created_at]" value="@if(!empty($request_time_slots['end_created_at'])){{ $request_time_slots['end_created_at'] }}@endif">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.time') }}" class="btn btn-fill btn-wd" id="btn-reset">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -173,7 +181,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $time_slots->links() }}
+						{{ $time_slots->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

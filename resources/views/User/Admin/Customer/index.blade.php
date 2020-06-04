@@ -25,19 +25,19 @@
 						<div class="row card-content card-form-input collapse" id="form-search">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="name-customer">
-										{{ __('Họ và tên') }}
+									<label for="email-customer">
+										{{ __('Email') }}
 									</label>
-									<input type="text" placeholder="Họ và tên" class="form-control" name="customer[name]" id="name-customer">
+									<input type="text" placeholder="Email" class="form-control" id="email-customer" name="customer[email]" value="@if(!empty($request_customer['email'])){{ $request_customer['email'] }}@endif">
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label for="email-customer">
-										{{ __('Email') }}
+									<label for="name-customer">
+										{{ __('Họ và tên') }}
 									</label>
-									<input type="text" placeholder="Email" class="form-control" name="customer[email]" id="email-customer">
+									<input type="text" placeholder="Họ và tên" class="form-control" id="name-customer" name="customer[name]" value="@if(!empty($request_customer['name'])){{ $request_customer['name'] }}@endif">
 								</div>
 							</div>
 
@@ -46,7 +46,11 @@
 									<label for="phone-customer">
 										{{ __('Số điện thoại') }}
 									</label>
-									<input type="text" placeholder="Sử dụng select 2" class="form-control" id="phone-customer" name="customer[phone]" value="">
+									<select class="selectpicker" id="phone-customer" data-style="btn btn-block" title="Chọn số điện thoại" data-size="5" name="customer[phone]">
+										@php
+											Helpers::optionSelectArray($array_phone_customer, (isset($request_customer['phone']) && $request_customer['phone'] !== null) ? $request_customer['phone'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 
@@ -55,7 +59,11 @@
 									<label for="status-customer">
 										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="Sử dụng select" class="form-control" id="status-customer" name="customer[status]" value="">
+									<select class="selectpicker" id="status-customer" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="customer[status]">
+										@php
+											Helpers::optionSelectArray($model_customer->status_model, (isset($request_customer['status']) && $request_customer['status'] !== null) ? $request_customer['status'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 
@@ -65,19 +73,19 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" name="customer[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="customer[start_created_at]" value="@if(!empty($request_customer['start_created_at'])){{ $request_customer['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" name="customer[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" name="customer[end_created_at]" value="@if(!empty($request_customer['end_created_at'])){{ $request_customer['end_created_at'] }}@endif">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.customer') }}" class="btn btn-fill btn-wd" id="btn-reset">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -173,7 +181,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $customers->links() }}
+						{{ $customers->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

@@ -18,21 +18,38 @@ class TimeController extends Controller
 
     public function index(Request $request)
     {
-		$model_time = $this->time;
+        $request_time_slots = $request->time_slots;
+        $model_time         = $this->time;
 		
 		$offset     = 5;
 		$start_page = 1;
 		$page       = $request->get('page');
 		$page_time  = $this->indexTable($page, $offset);
 
-        $time_slots = $model_time->paginate($offset);
+        $time_slots = !empty($request_time_slots) ? $this->search($request_time_slots) : $model_time;
+        $time_slots = $time_slots->paginate($offset);
         $time_slots->setPath(URL::current());
 
     	return view('User.Admin.Time.index',[
-			'time_slots' => $time_slots,
-			'model_time' => $model_time,
-			'page_time'  => $page_time
+            'time_slots'         => $time_slots,
+            'model_time'         => $model_time,
+            'page_time'          => $page_time,
+            'request_time_slots' => $request_time_slots,
+            'request'            => $request->all()
     	]);
+    }
+
+    public function search($request_time_slots)
+    {
+        $time_slots = $this->time;
+
+        !empty($request_time_slots['time_start']) ? $time_slots = $time_slots->where('time_start', '>=', $request_time_slots['time_start']) : '';
+        !empty($request_time_slots['time_end']) ? $time_slots = $time_slots->where('time_end', '<=', $request_time_slots['time_end']) : '';
+        (isset($request_time_slots['status']) && $request_time_slots['status'] !== null) ? $time_slots = $time_slots->where('status', $request_time_slots['status']) : '';
+        !empty($request_time_slots['start_created_at']) ? $time_slots = $time_slots->where('created_at', '>=', $request_time_slots['start_created_at'].' 00:00:00') : '';
+        !empty($request_time_slots['end_created_at']) ? $time_slots = $time_slots->where('created_at', '<=', $request_time_slots['end_created_at'].' 23:59:59') : '';
+
+        return $time_slots;
     }
 
     public function add()

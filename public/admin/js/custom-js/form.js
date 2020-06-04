@@ -11,8 +11,14 @@ if(btn_expand !== 'undefined' && btn_expand !== null){
 
 
 $(document).ready(function() {
-	// Format money input
+	// Show form search when isset data
+	var path_name = window.location.href;
 
+	if(path_name.includes('?')){
+		$('#btn-expand').click();
+	}
+
+	// Format money input
 	$("input[data-type='currency']").on({
 	    keyup: function() {
 	      formatCurrency($(this));

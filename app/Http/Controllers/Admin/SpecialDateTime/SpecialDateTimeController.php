@@ -22,21 +22,40 @@ class SpecialDateTimeController extends Controller
 
     public function index(Request $request)
     {
-		$model_special_datetime = $this->special_datetime;
+        $request_special_datetime = $request->special_datetime;
+        $model_special_datetime   = $this->special_datetime;
 		
 		$offset     = 10;
 		$start_page = 1;
 		$page                  = $request->get('page');
 		$page_special_datetime = $this->indexTable($page, $offset);
 
-        $special_datetime = $model_special_datetime->orderBy('date', 'desc')->paginate($offset);
+        $special_datetime = !empty($request_special_datetime) ? $this->search($request_special_datetime) : $model_special_datetime;
+        $special_datetime = $special_datetime->orderBy('date', 'desc')->paginate($offset);
         $special_datetime->setPath(URL::current());
 
     	return view('User.Admin.SpecialDateTime.index',[
-			'special_datetime'       => $special_datetime,
-			'model_special_datetime' => $model_special_datetime,
-			'page_special_datetime'  => $page_special_datetime
+            'special_datetime'         => $special_datetime,
+            'model_special_datetime'   => $model_special_datetime,
+            'page_special_datetime'    => $page_special_datetime,
+            'request_special_datetime' => $request_special_datetime,
+            'request'                  => $request->all()
     	]);
+    }
+
+    public function search($request_special_datetime)
+    {
+        $special_datetime = $this->special_datetime;
+        $special_datetime = $special_datetime->join('time_slots', 'time_slots.id', 'special_datetime.time_slot_id')
+            ->select('special_datetime.*', 'time_slots.time_start', 'time_slots.time_end');
+
+        !empty($request_special_datetime['time_start']) ? $special_datetime = $special_datetime->where('time_slots.time_start', '>=', $request_special_datetime['time_start']) : '';
+        !empty($request_special_datetime['time_end']) ? $special_datetime = $special_datetime->where('time_slots.time_end', '<=', $request_special_datetime['time_end']) : '';
+        (isset($request_special_datetime['status']) && $request_special_datetime['status'] !== null) ? $special_datetime = $special_datetime->where('special_datetime.status', $request_special_datetime['status']) : '';
+        !empty($request_special_datetime['start_created_at']) ? $special_datetime = $special_datetime->where('special_datetime.created_at', '>=', $request_special_datetime['start_created_at'].' 00:00:00') : '';
+        !empty($request_special_datetime['end_created_at']) ? $special_datetime = $special_datetime->where('special_datetime.created_at', '<=', $request_special_datetime['end_created_at'].' 23:59:59') : '';
+
+        return $special_datetime;
     }
 
     public function addSpecialHour()

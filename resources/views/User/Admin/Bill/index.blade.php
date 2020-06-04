@@ -28,7 +28,7 @@
 									<label for="name-customer">
 										{{ __('Khách hàng') }}
 									</label>
-									<input type="text" placeholder="Họ và tên" class="form-control" name="bill[name]" id="name-customer">
+									<input type="text" placeholder="Họ và tên" class="form-control" id="name-customer" name="bill[name]" value="@if(!empty($request_bill['name'])){{ $request_bill['name'] }}@endif">
 								</div>
 							</div>
 
@@ -37,7 +37,11 @@
 									<label for="status-bill">
 										{{ __('Trạng thái') }}
 									</label>
-									<input type="text" placeholder="select" class="form-control" id="status-bill" name="bill[status]" value="">
+									<select class="selectpicker" id="status-bill" data-style="btn btn-block" title="Chọn trạng thái" data-size="5" name="bill[status]">
+										@php
+											Helpers::optionSelectArray($model_bill->status_model, (isset($request_bill['status']) && $request_bill['status'] !== null) ? $request_bill['status'] : '' );
+										@endphp
+									</select>
 								</div>
 							</div>
 
@@ -47,19 +51,19 @@
 										{{ __('Ngày tạo') }}
 									</label>
 									<div class="form-inline custom-form-inline">
-										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[start_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[start_created_at]" value="@if(!empty($request_bill['start_created_at'])){{ $request_bill['start_created_at'] }}@endif">
 										-
-										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[end_created_at]" value="">
+										<input type="date" placeholder="select" class="form-control" id="create-date-bill" name="bill[end_created_at]" value="@if(!empty($request_bill['end_created_at'])){{ $request_bill['end_created_at'] }}@endif">
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-content card-form-btn">
 							<div class="form-btn">
-								<button class="btn btn-fill btn-wd" id="btn-reset" type="reset">
+								<a href="{{ route('admin.bill') }}" class="btn btn-fill btn-wd" id="btn-reset">
 									<i class="ti-reload"></i>
 									{{ __('Làm mới') }}
-								</button>
+								</a>
 							</div>
 							<div class="form-btn">
 								<a href="#form-search" class="btn btn-info btn-fill btn-wd collapsed" id="btn-expand" data-toggle="collapse">
@@ -154,7 +158,7 @@
 					</div>
 
 					<div class="text-right">
-						{{ $bills->links() }}
+						{{ $bills->appends($request)->links() }}
 					</div>
 				</div>
 			</div>

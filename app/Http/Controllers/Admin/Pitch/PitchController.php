@@ -20,21 +20,44 @@ class PitchController extends Controller
 
     public function index(Request $request)
     {
-		$model_pitch = $this->pitch;
+		$request_pitch = $request->pitch;
+		$format_data_request = !empty($request_pitch) ? $request_pitch : '';
+		$model_pitch   = $this->pitch;
 		
 		$offset      = 5;
 		$start_page  = 1;
 		$page        = $request->get('page');
 		$page_pitch  = $this->indexTable($page, $offset);
 
-        $pitch = $model_pitch->paginate($offset);
+		// Format data
+		!empty($format_data_request) ? $format_data_request['price_start'] = preg_replace('/[^0-9]/', '', $request_pitch['price_start']) : '';
+		!empty($format_data_request) ? $format_data_request['price_end'] = preg_replace('/[^0-9]/', '', $request_pitch['price_end']) : '';
+
+		$pitch = !empty($request_pitch) ? $this->search($format_data_request) : $model_pitch;
+        $pitch = $pitch->paginate($offset);
         $pitch->setPath(URL::current());
 
     	return view('User.Admin.Pitch.index',[
-			'pitch'       => $pitch,
-			'model_pitch' => $model_pitch,
-			'page_pitch'  => $page_pitch
+            'pitch'         => $pitch,
+            'model_pitch'   => $model_pitch,
+            'page_pitch'    => $page_pitch,
+            'request_pitch' => $request_pitch,
+            'request'       => $request->all()
     	]);
+    }
+
+    public function search($request_pitch)
+    {
+        $pitch = $this->pitch;
+
+        !empty($request_pitch['name']) ? $pitch = $pitch->where('name', 'like', '%'.$request_pitch['name'].'%') : '';
+        !empty($request_pitch['price_start']) ? $pitch = $pitch->where('price', '>=', $request_pitch['price_start']) : '';
+        !empty($request_pitch['price_end']) ? $pitch = $pitch->where('price', '<=', $request_pitch['price_end']) : '';
+        (isset($request_pitch['type']) && $request_pitch['type'] !== null) ? $pitch = $pitch->where('type', $request_pitch['type']) : '';
+        !empty($request_pitch['start_created_at']) ? $pitch = $pitch->where('created_at', '>=', $request_pitch['start_created_at'].' 00:00:00') : '';
+        !empty($request_pitch['end_created_at']) ? $pitch = $pitch->where('created_at', '<=', $request_pitch['end_created_at'].' 23:59:59') : '';
+
+        return $pitch;
     }
 
     public function add()
