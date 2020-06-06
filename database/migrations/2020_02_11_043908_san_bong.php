@@ -17,6 +17,7 @@ class SanBong extends Migration
             $table->increments('id')->comment('ma san bong');
             $table->string('name');
             $table->tinyInteger('type')->comment('1: san 7, 2: san 9, 3: san 11');
+            $table->tinyInteger('status')->comment('1: hoat dong, 0: khoa');
             $table->integer('price');
             $table->string('image');
             $table->timestamps();

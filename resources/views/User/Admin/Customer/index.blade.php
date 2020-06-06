@@ -154,12 +154,9 @@
 												{{ date('d-m-Y H:i', strtotime($customer->created_at)) }}
 											</td>
 											<td class="td-actions text-right">
-												<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
+												<a href="{{ route('admin.customer.detail', ['id' => $customer->id]) }}" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
 													<i class="fa fa-file"></i>
-												</button>
-												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
-													<i class="fa fa-edit"></i>
-												</button>
+												</a>
 												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
 													<i class="fa fa-times"></i>
 												</button>

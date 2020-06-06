@@ -1,4 +1,6 @@
 <?php
+	define('INCREASE', '-1');
+	define('DECREASE', '0');
 
 	define('MENU', '0');
 	define('SUB_MENU', '1');

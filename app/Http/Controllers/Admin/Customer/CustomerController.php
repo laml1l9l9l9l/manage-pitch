@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Admin\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Customer;
+use App\Model\Admin\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
 class CustomerController extends Controller
 {
-    public function __construct(Customer $customer)
+    public function __construct(Customer $customer, Bill $bill)
     {
 		$this->customer = $customer;
+		$this->bill     = $bill;
     }
 
     public function index(Request $request)
@@ -58,6 +60,23 @@ class CustomerController extends Controller
         !empty($request_customer['end_created_at']) ? $customers = $customers->where('created_at', '<=', $request_customer['end_created_at'].' 23:59:59') : '';
 
         return $customers;
+    }
+
+    public function detail($id)
+    {
+		$model_customer = $this->customer;
+		$model_bill     = $this->bill;
+
+		$customer = $model_customer->find($id);
+		$bills    = $model_bill->where('id_customer', $id)
+			->orderBy('created_at', 'desc')
+			->get();
+		return view('User.Admin.Customer.detail', [
+			'model_customer' => $model_customer,
+			'model_bill'     => $model_bill,
+			'customer'       => $customer,
+			'bills'          => $bills,
+		]);
     }
 
 }

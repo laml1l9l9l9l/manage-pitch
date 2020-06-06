@@ -118,7 +118,7 @@
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="numbers pull-left">
-                                        Menu
+                                        {{ __('Khách hàng') }}
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
@@ -128,6 +128,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khách hàng') }}</span> {{ $account_customer_statistical['count'].__(' tài khoản') }}</h6>
                         </div>
                         <div class="card-footer">
                             <hr>
@@ -136,37 +138,6 @@
                             </div>
                             <div class="pull-right">
                                 <button class="btn btn-info btn-fill btn-icon btn-sm">
-                                    <i class="ti-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col-xs-7">
-                                    <div class="numbers pull-left">
-                                        169
-                                    </div>
-                                </div>
-                                <div class="col-xs-5">
-                                    <div class="pull-right">
-                                        <span class="label label-danger">
-                                            -14%
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <h6 class="big-title">total subscriptions <span class="text-muted">in last</span> 7 days</h6>
-                            <div id="chartTotalSubscriptions"></div>
-                        </div>
-                        <div class="card-footer">
-                            <hr>
-                            <div class="footer-title">View all members</div>
-                            <div class="pull-right">
-                                <button class="btn btn-default btn-fill btn-icon btn-sm">
                                     <i class="ti-angle-right"></i>
                                 </button>
                             </div>
@@ -179,14 +150,45 @@
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="numbers pull-left">
-                                        8,960
+                                        {{ __('Sân bóng') }}
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        <span class="label label-warning">
+                                        {{-- <span class="label label-danger">
+                                            -14%
+                                        </span> --}}
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('sân bóng') }}</span> 7 days</h6>
+                            <div id="chartTotalSubscriptions"></div>
+                        </div>
+                        <div class="card-footer">
+                            <hr>
+                            <div class="footer-title">View all members</div>
+                            <div class="pull-right">
+                                <button class="btn btn-info btn-fill btn-icon btn-sm">
+                                    <i class="ti-angle-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="numbers pull-left">
+                                        {{ __('Khung giờ') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <div class="pull-right">
+                                        {{-- <span class="label label-warning">
                                             ~51%
-                                        </span>
+                                        </span> --}}
                                     </div>
                                 </div>
                             </div>

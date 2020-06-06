@@ -50,19 +50,27 @@
                         <div class="text-center">
                         	<h3 class="info-title">{{ __('Chọn sân') }}</h3>
                         </div>
-						@foreach ($pitchs as $pitch)
-							<div class="col-md-6 text-center">
-								@php
-									$path_image = str_replace('public', 'storage', $pitch->image);
-								@endphp
-								<div class="img-container">
-									<img src="{{ asset($path_image) }}" class="img-raised rounded img-custom img-pitch" data-pitch="{{ $pitch->id }}">
+                        @if (count($pitchs) > 0)
+							@foreach ($pitchs as $pitch)
+								<div class="col-md-6 text-center">
+									@php
+										$path_image = str_replace('public', 'storage', $pitch->image);
+									@endphp
+									<div class="img-container">
+										<img src="{{ asset($path_image) }}" class="img-raised rounded img-custom img-pitch" data-pitch="{{ $pitch->id }}">
+									</div>
+									<h3>
+										{{ __($pitch->name) }}
+									</h3>
 								</div>
+							@endforeach
+						@else
+							<div class="col-md-12 text-center">
 								<h3>
-									{{ __($pitch->name) }}
+									{{ __('Chưa có sân bóng') }}
 								</h3>
 							</div>
-						@endforeach
+                        @endif
 
 						<div class="col-md-12 text-center">
 							<button class="btn btn-round" id="return-select-date">

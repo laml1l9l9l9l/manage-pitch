@@ -15,6 +15,12 @@ class Bill extends Model
 		PAID      => 'Đã thanh toán',
     );
 
+    public $class_color_status_model = array(
+        UNPAID    => 'text-danger',
+        DEPOSITED => 'text-warning',
+        PAID      => 'text-success',
+    );
+
     public function getCustomer($id_customer)
     {
     	$model_customer = new Customer;

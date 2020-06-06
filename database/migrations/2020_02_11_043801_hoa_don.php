@@ -15,6 +15,7 @@ class HoaDon extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('code')->unique();
             $table->integer('down_payment')->comment('tien dat coc');
             $table->integer('into_money')->comment('thanh tien');
             $table->tinyInteger('status')->comment('1: da thanh toan, 0: da dat coc, -1: chua dat coc');

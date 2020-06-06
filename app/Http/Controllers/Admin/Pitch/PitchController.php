@@ -54,6 +54,7 @@ class PitchController extends Controller
         !empty($request_pitch['price_start']) ? $pitch = $pitch->where('price', '>=', $request_pitch['price_start']) : '';
         !empty($request_pitch['price_end']) ? $pitch = $pitch->where('price', '<=', $request_pitch['price_end']) : '';
         (isset($request_pitch['type']) && $request_pitch['type'] !== null) ? $pitch = $pitch->where('type', $request_pitch['type']) : '';
+        (isset($request_pitch['status']) && $request_pitch['status'] !== null) ? $pitch = $pitch->where('status', $request_pitch['status']) : '';
         !empty($request_pitch['start_created_at']) ? $pitch = $pitch->where('created_at', '>=', $request_pitch['start_created_at'].' 00:00:00') : '';
         !empty($request_pitch['end_created_at']) ? $pitch = $pitch->where('created_at', '<=', $request_pitch['end_created_at'].' 23:59:59') : '';
 
@@ -84,20 +85,84 @@ class PitchController extends Controller
 		$imagePath  = '/public/img/pitch';
 		$imagePathFull = $imagePath . '/' . $imageName;
 
-		// save image
+		// Save image
 		Storage::disk('local')->put($imagePathFull, file_get_contents($image));
 
 		$pitch = $this->pitch;
-		$pitch->name       = $pitch_request['name'];
-		$pitch->type       = $pitch_request['type'];
-		$pitch->price      = $pitch_request['price'];
-		$pitch->image      = $imagePathFull; //path image
-		$pitch->created_at = Helper::getCurrentDateTime();
-		$pitch->updated_at = Helper::getCurrentDateTime();
+        $pitch->name       = $pitch_request['name'];
+        $pitch->type       = $pitch_request['type'];
+        $pitch->status     = ACTIVE;
+        $pitch->price      = $pitch_request['price'];
+        $pitch->image      = $imagePathFull; //path image
+        $pitch->created_at = Helper::getCurrentDateTime();
+        $pitch->updated_at = Helper::getCurrentDateTime();
 		$pitch->save();
 
         return redirect()->route('admin.pitch')
             ->with('success', 'Bạn đã thêm mới một sân bóng');
+    }
+
+    public function edit($id)
+    {
+        $model_pitch = $this->pitch;
+
+        $pitch      = $model_pitch->find($id);
+        $path_image = str_replace('public', 'storage', $pitch->image);
+        return view('User.Admin.Pitch.edit', [
+            'pitch'       => $pitch,
+            'model_pitch' => $model_pitch,
+            'path_image'  => $path_image,
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $model_pitch = $this->pitch;
+        $pitch_request = $request->pitch;
+        $pitch_request['price'] = preg_replace('/[^0-9]/', '', $pitch_request['price']);
+
+
+        $this->validatorEditPitch($pitch_request)->validate();
+
+        // Get pitch
+        $pitch = $model_pitch->find($id);
+
+        // Check isset image
+        if(!empty($pitch_request['image']))
+        {
+            // Create path image
+            $image      = $pitch_request['image'];
+            $hashedName = hash_file('md5', $image->path());
+            $imageName  = $hashedName . time() . '.' . $image->getClientOriginalExtension();
+            $imagePath  = '/public/img/pitch';
+            $imagePathFull = $imagePath . '/' . $imageName;
+
+            // Save new image and delete old image
+            Storage::disk('local')->put($imagePathFull, file_get_contents($image));
+            Storage::disk('local')->delete($pitch->image);
+        }
+        $pitch->name       = $pitch_request['name'];
+        $pitch->type       = $pitch_request['type'];
+        $pitch->status     = $pitch_request['status'];
+        $pitch->price      = $pitch_request['price'];
+        !empty($pitch_request['image']) ? $pitch->image = $imagePathFull : '';
+        $pitch->updated_at = Helper::getCurrentDateTime();
+        $pitch->save();
+
+        return redirect()->route('admin.pitch.edit', ['id' => $id])
+            ->with('success', 'Bạn đã sửa sân bóng');
+    }
+
+    public function delete($id)
+    {
+        $model_pitch = $this->pitch;
+
+        $pitch = $model_pitch->find($id);
+        Storage::disk('local')->delete($pitch->image);
+        $pitch->delete();
+
+        return redirect()->route('admin.pitch')
+            ->with('success', 'Bạn đã xóa sân bóng');
     }
 
 
@@ -108,6 +173,17 @@ class PitchController extends Controller
 			'type'  => ['required', 'string', 'min:1', 'max:1'],
 			'price' => ['required', 'string', 'min:5', 'max:7'],
 			'image' => ['required', 'image'],
+        ], $this->messages());
+    }
+
+    private function validatorEditPitch(array $data)
+    {
+        return Validator::make($data, [
+            'name'   => ['required', 'string', 'min:2', 'max:25'],
+            'type'   => ['required', 'string', 'min:1', 'max:1'],
+            'status' => ['required', 'string', 'min:1', 'max:1'],
+            'price'  => ['required', 'string', 'min:5', 'max:7'],
+            'image'  => ['image'],
         ], $this->messages());
     }
 

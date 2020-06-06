@@ -99,6 +99,7 @@
 							<thead>
 								<tr class="text-bold">
 									<th class="text-center">#</th>
+									<th>{{ __('Mã') }}</th>
 									<th>{{ __('Khách hàng') }}</th>
 									<th class="text-right">{{ __('Tiền đặt cọc') }}</th>
 									<th class="text-right">{{ __('Thành tiền') }}</th>
@@ -110,11 +111,14 @@
 							<tbody>
 								@if (count($bills) > 0)
 									@foreach ($bills as $bill)
+										@php
+											$customer = $model_bill->getCustomer($bill->id_customer);
+										@endphp
 										<tr>
 											<td class="text-center">{{ $page_bill }}</td>
-											@php
-												$customer = $model_bill->getCustomer($bill->id_customer);
-											@endphp
+											<td>
+												{{ __($bill->code) }}
+											</td>
 											<td>
 												{{ __($customer->name) }}
 											</td>
@@ -147,7 +151,7 @@
 										@endphp
 									@endforeach
 								@else
-									<td class="text-center" colspan="7">
+									<td class="text-center" colspan="8">
 										<h4 class="my-3">
 											{{ __('Chưa có thời gian') }}
 										</h4>

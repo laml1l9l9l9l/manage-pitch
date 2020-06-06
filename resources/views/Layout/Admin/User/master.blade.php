@@ -29,7 +29,16 @@
 	                <div class="info">
 						<a data-toggle="collapse" href="#profile" class="collapsed">
 	                        <span>
-								Chet Faker
+	                        	@php
+	                        		$profile_admin = \Auth::guard('admin')->user();
+	                        	@endphp
+	                        	@if (!empty($profile_admin->name))
+									{{ $profile_admin->name }}
+								@else
+									<i>
+										{{ __('Chưa có tên') }}
+									</i>
+	                        	@endif
 		                        <b class="caret"></b>
 							</span>
 	                    </a>

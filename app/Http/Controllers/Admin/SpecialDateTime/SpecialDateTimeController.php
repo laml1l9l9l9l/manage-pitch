@@ -46,7 +46,7 @@ class SpecialDateTimeController extends Controller
     public function search($request_special_datetime)
     {
         $special_datetime = $this->special_datetime;
-        $special_datetime = $special_datetime->join('time_slots', 'time_slots.id', 'special_datetime.time_slot_id')
+        $special_datetime = $special_datetime->join('time_slots', 'time_slots.id', 'special_datetime.id_time_slot')
             ->select('special_datetime.*', 'time_slots.time_start', 'time_slots.time_end');
 
         !empty($request_special_datetime['time_start']) ? $special_datetime = $special_datetime->where('time_slots.time_start', '>=', $request_special_datetime['time_start']) : '';
@@ -93,7 +93,7 @@ class SpecialDateTimeController extends Controller
         $model_time = $this->time;
         $array_time = array();
         for ($time=$time_request['time_slot_start']; $time <= $time_request['time_slot_end']; $time++) { 
-            $isset_time = $model_special_datetime->where('time_slot_id', '=', $time)
+            $isset_time = $model_special_datetime->where('id_time_slot', '=', $time)
                 ->whereNull('date')->count();
             if($isset_time > 0){
                 continue;
@@ -109,11 +109,11 @@ class SpecialDateTimeController extends Controller
         }
 
         // Save all dates
-        foreach ($array_time as $time_slot_id) {
-            $time_slot = $model_time->where('id', '=', $time_slot_id)->first();
+        foreach ($array_time as $id_time_slot) {
+            $time_slot = $model_time->where('id', '=', $id_time_slot)->first();
             $special_date                 = new SpecialDateTime();
-            $special_date->time_slot_id   = $time_slot_id;
-            $special_date->time_slot_name = $time_slot->name;
+            $special_date->id_time_slot   = $id_time_slot;
+            $special_date->name_time_slot = $time_slot->name;
             $special_date->date           = null;
             $special_date->increase_price = $time_request['increase_price'];
             $special_date->status         = ACTIVE;
@@ -153,7 +153,7 @@ class SpecialDateTimeController extends Controller
         foreach ($date_period as $date) {
             $date = $date->format('Y-m-d');
             $isset_date = $model_special_datetime->where('date', '=', $date)
-                ->whereNull('time_slot_id')->count();
+                ->whereNull('id_time_slot')->count();
             if($isset_date > 0){
                 continue;
             }
@@ -172,8 +172,8 @@ class SpecialDateTimeController extends Controller
         // Save all dates
         foreach ($array_date as $value_date) {
             $special_date                 = new SpecialDateTime();
-            $special_date->time_slot_id   = null;
-            $special_date->time_slot_name = null;
+            $special_date->id_time_slot   = null;
+            $special_date->name_time_slot = null;
             $special_date->date           = $value_date;
             $special_date->increase_price = $date_request['increase_price'];
             $special_date->status         = ACTIVE;
@@ -242,13 +242,13 @@ class SpecialDateTimeController extends Controller
         foreach ($array_date as $date) {
             foreach ($array_time as $time) {
                 $isset_datetime = $model_special_datetime->where('date', '=', $date)
-                    ->where('time_slot_id', '=', $time)->count();
+                    ->where('id_time_slot', '=', $time)->count();
                 if($isset_datetime > 0){
                     continue;
                 }
                 $array_value_datetime = array(
                     'date'         => $date,
-                    'time_slot_id' => $time,
+                    'id_time_slot' => $time,
                 );
                 array_push($array_datetime, $array_value_datetime);
             }
@@ -263,10 +263,10 @@ class SpecialDateTimeController extends Controller
 
         // Save all dates
         foreach ($array_datetime as $datetime) {
-            $time_slot = $model_time->where('id', '=', $datetime['time_slot_id'])->first();
+            $time_slot = $model_time->where('id', '=', $datetime['id_time_slot'])->first();
             $special_date                 = new SpecialDateTime();
-            $special_date->time_slot_id   = $time_slot->id;
-            $special_date->time_slot_name = $time_slot->name;
+            $special_date->id_time_slot   = $time_slot->id;
+            $special_date->name_time_slot = $time_slot->name;
             $special_date->date           = $datetime['date'];
             $special_date->increase_price = $datetime_request['increase_price'];
             $special_date->status         = ACTIVE;

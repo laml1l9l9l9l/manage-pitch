@@ -65,7 +65,20 @@
 									</label>
 									<select class="selectpicker" id="type-pitch" data-style="btn btn-block" title="Chọn loại sân" data-size="5" name="pitch[type]">
 										@php
-											Helpers::optionSelectArray($model_pitch->status_model, (isset($request_pitch['type']) && $request_pitch['type'] !== null) ? $request_pitch['type'] : '' );
+											Helpers::optionSelectArray($model_pitch->type_model, (isset($request_pitch['type']) && $request_pitch['type'] !== null) ? $request_pitch['type'] : '' );
+										@endphp
+									</select>
+								</div>
+							</div>
+
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="type-pitch">
+										{{ __('Trạng thái sân') }}
+									</label>
+									<select class="selectpicker" id="type-pitch" data-style="btn btn-block" title="Chọn trạng thái sân" data-size="5" name="pitch[status]">
+										@php
+											Helpers::optionSelectArray($model_pitch->status_model, (isset($request_pitch['status']) && $request_pitch['status'] !== null) ? $request_pitch['status'] : '' );
 										@endphp
 									</select>
 								</div>
@@ -136,8 +149,9 @@
 									<th class="text-center">#</th>
 									<th>{{ __('Tên sân bóng') }}</th>
 									<th>{{ __('Loại sân') }}</th>
-									<th class="text-center">{{ __('Giá') }}</th>
+									<th class="text-right">{{ __('Giá') }}</th>
 									<th class="text-center">{{ __('Hình ảnh') }}</th>
+									<th class="text-center">{{ __('Trạng thái') }}</th>
 									<th class="text-right">{{ __('Ngày tạo') }}</th>
 									<th class="text-right">{{ __('Thao Tác') }}</th>
 								</tr>
@@ -152,7 +166,7 @@
 													{{ __($element_pitch->name) }}
 												</td>
 												<td>
-													{{ __($model_pitch->status_model[$element_pitch->type]) }}
+													{{ __($model_pitch->type_model[$element_pitch->type]) }}
 												</td>
 												<td class="text-right">
 													{{ number_format(__($element_pitch->price)) . ' VNĐ' }}
@@ -162,21 +176,20 @@
 														$path_image = str_replace('public', 'storage', $element_pitch->image);
 													@endphp
 													<img src="{{ asset($path_image) }}" class="image-list">
-													{{-- <img src="{{ asset($element_pitch->image) }}"> --}}
+												</td>
+												<td class="text-center">
+													{{ __($model_pitch->status_model[$element_pitch->status]) }}
 												</td>
 												<td class="text-right">
 													{{ date('d-m-Y', strtotime($element_pitch->created_at)) }}
 												</td>
 												<td class="td-actions text-right">
-													<button type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
-														<i class="fa fa-file"></i>
-													</button>
-													<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+													<a href="{{ route('admin.pitch.edit', ['id' => $element_pitch->id]) }}" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
 														<i class="fa fa-edit"></i>
-													</button>
-													<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+													</a>
+													<a href="{{ route('admin.pitch.delete', ['id' => $element_pitch->id]) }}" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
 														<i class="fa fa-times"></i>
-													</button>
+													</a>
 												</td>
 											</tr>
 											@php
@@ -184,7 +197,7 @@
 											@endphp
 										@endforeach
 									@else
-										<td class="text-center" colspan="7">
+										<td class="text-center" colspan="8">
 											<h4 class="my-3">
 												{{ __('Chưa có sân bóng') }}
 											</h4>

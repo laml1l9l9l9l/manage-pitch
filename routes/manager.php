@@ -74,6 +74,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.profile.update");
 	Route::get("change-password","$ChangePasswordController@changePassword")
 		->name("$group.change.password");
+	Route::post("change-password","$ChangePasswordController@updatePassword")
+		->name("$group.update.password");
 
 	//logout
 	Route::get("logout","$ProfileController@logout")
@@ -90,11 +92,19 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.pitch.add");
 	Route::post("pitch/add","$PitchController@store")
 		->name("$group.pitch.store");
+	Route::get("pitch/edit/{id}","$PitchController@edit")
+		->name("$group.pitch.edit");
+	Route::post("pitch/update/{id}","$PitchController@update")
+		->name("$group.pitch.update");
+	Route::get("pitch/delete/{id}","$PitchController@delete")
+		->name("$group.pitch.delete");
 
 
 	//customer
 	Route::get("customer","$CustomerController@index")
 		->name("$group.customer");
+	Route::get("customer/detail/{id}","$CustomerController@detail")
+		->name("$group.customer.detail");
 
 	//date
 	Route::get("date","$DateController@index")

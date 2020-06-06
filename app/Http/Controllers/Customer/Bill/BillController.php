@@ -87,19 +87,19 @@ class BillController extends CustomerController
 
 
 		$date = $model_special_datetime->where('date', '=', $data['date'])
-			->whereNull('time_slot_id')->first();
+			->whereNull('id_time_slot')->first();
 		if(!empty($date)){
 			$increase_price_date += $date->increase_price;
 		}
 
-		$time = $model_special_datetime->where('time_slot_id', '=', $data['time_slot'])
+		$time = $model_special_datetime->where('id_time_slot', '=', $data['time_slot'])
 			->whereNull('date')->first();
 		if(!empty($time)){
 			$increase_price_date += $time->increase_price;
 		}
 
 		$datetime = $model_special_datetime->where('date', '=', $data['date'])
-			->where('time_slot_id', '=', $data['time_slot'])->first();
+			->where('id_time_slot', '=', $data['time_slot'])->first();
 		if(!empty($datetime)){
 			$increase_price_date += $datetime->increase_price;
 		}
@@ -130,12 +130,13 @@ class BillController extends CustomerController
     public function storeBill($customer)
     {
 		$model_bill = $this->bill;
+		$model_bill->code         = 'HĐ_'.strtotime('now');
 		$model_bill->down_payment = 0;
-		$model_bill->into_money = 0;
-		$model_bill->status = UNPAID;
-		$model_bill->id_customer = $customer->id;
-		$model_bill->created_at = Helper::getCurrentDateTime();
-		$model_bill->updated_at = Helper::getCurrentDateTime();
+		$model_bill->into_money   = 0;
+		$model_bill->status       = UNPAID;
+		$model_bill->id_customer  = $customer->id;
+		$model_bill->created_at   = Helper::getCurrentDateTime();
+		$model_bill->updated_at   = Helper::getCurrentDateTime();
 		$model_bill->save();
 		$id_bill = $model_bill->id;
 
