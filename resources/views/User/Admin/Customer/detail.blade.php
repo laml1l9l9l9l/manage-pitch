@@ -67,17 +67,23 @@
 							</div>
 							<div class="form-group">
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<label>
 											{{ __('Email') }}
 										</label>
-										<input type="text" placeholder="Email" class="form-control" name="date[date_end]" value="@if(!empty($customer->email)){{$customer->email}}@endif" disabled="disabled">
+										<input type="text" placeholder="Email" class="form-control" value="@if(!empty($customer->email)){{$customer->email}}@endif" disabled="disabled">
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<label>
 											{{ __('Ngày tạo') }}
 										</label>
 										<input type="text" placeholder="Ngày tạo" class="form-control" value="@if(!empty($customer->created_at)){{ date('H:i:s d-m-Y', strtotime($customer->created_at))}}@endif" disabled="disabled">
+									</div>
+									<div class="col-md-4">
+										<label>
+											{{ __('Ngày cập nhật') }}
+										</label>
+										<input type="text" placeholder="Ngày cập nhật" class="form-control" value="@if(!empty($customer->updated_at)){{ date('H:i:s d-m-Y', strtotime($customer->updated_at))}}@endif" disabled="disabled">
 									</div>
 								</div>
 							</div>
@@ -110,7 +116,7 @@
 								<h4 class="card-title">
 									{{ __('Hóa đơn - '.$bill->code) }}
 									<div class="pull-right">
-										<a href="#" class="btn">
+										<a href="{{ route('admin.bill.detail', ['id' => $bill->id]) }}" class="btn">
 											{{ __('Chi tiết') }}
 										</a>
 									</div>
@@ -164,6 +170,12 @@
 				@endforeach
 
 			</div>{{-- end row --}}
+
+			<div class="row">
+				<div class="text-right">
+					{{ $bills->links() }}
+				</div>
+			</div>
 		@endif
 
 	</div>

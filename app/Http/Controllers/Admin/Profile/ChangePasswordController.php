@@ -26,12 +26,13 @@ class ChangePasswordController extends Controller
     	$request_profile = $request->profile;
         $this->validator($request_profile)->validate();
 
-        $model_admin = $this->admin;
-        $name_route  = 'admin.change.password';
-        $new_password = $model_admin->buildPassLender($request_profile['password']);
-		$user    = $this->guard()->user();
+        $model_admin  = $this->admin;
+        $name_route   = 'admin.change.password';
+        $old_password = $model_admin->buildPassAdmin($request_profile['old_password']);
+        $new_password = $model_admin->buildPassAdmin($request_profile['password']);
+        $user         = $this->guard()->user();
         // Check old password
-        if($user->password != $request_profile['old_password'])
+        if($user->password != $old_password)
         {
             return redirect()->route($name_route)
             ->with('error', 'Mật khẩu hiện tại không chính xác');
@@ -66,7 +67,6 @@ class ChangePasswordController extends Controller
 	    return [
 			'required'           => 'Không được để trống',
 			'string'             => 'Không đúng định dạng',
-			'unique'             => 'Tài khoản đã tồn tại',
 			'max'                => 'Không được dài hơn :max ký tự',
 			'min'                => 'Không được ngắn hơn hơn :min ký tự',
 			'confirmed'          => 'Hai mật khẩu chưa trùng khớp nhau',

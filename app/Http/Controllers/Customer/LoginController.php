@@ -35,7 +35,7 @@ class LoginController extends CustomerController
     	$request_customer = $request->customer;
         $this->validateLogin($request_customer)->validate();
         $model_customer = $this->customer;
-        $request_customer['password'] = $model_customer->buildPassLender($request_customer['password']);
+        $request_customer['password'] = $model_customer->buildPassCustomer($request_customer['password']);
 
         $user = $this->getUser($request_customer);
             
@@ -56,7 +56,7 @@ class LoginController extends CustomerController
         {
             $request_customer = $request->only('email', 'password');;
             $model_customer = $this->customer;
-            $request_customer['password'] = $model_customer->buildPassLender($request_customer['password']);
+            $request_customer['password'] = $model_customer->buildPassCustomer($request_customer['password']);
 
             $user = $this->getUser($request_customer);
             

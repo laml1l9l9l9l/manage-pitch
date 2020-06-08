@@ -90,8 +90,13 @@
 								</a>
 							</li>
 							<li>
-								<a href="{{ route('customer.profile.bill') }}">
+								<a href="{{ route('customer.bill') }}">
 									<i class="material-icons">assignment</i> {{ __('Hóa đơn') }}
+								</a>
+							</li>
+							<li>
+								<a href="{{ route('customer.profile.change.password') }}">
+									<i class="material-icons">settings</i> {{ __('Đổi mật khẩu') }}
 								</a>
 							</li>
 							<li>

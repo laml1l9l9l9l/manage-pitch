@@ -80,7 +80,7 @@ class RegisterController extends CustomerController
             'name'     => $data['name'],
             'email'    => $data['email'],
             'status'   => ACTIVE,
-            'password' => $user_model->buildPassLender($data['password'])
+            'password' => $user_model->buildPassCustomer($data['password'])
         ]);
     }
 }

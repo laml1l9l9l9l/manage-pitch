@@ -62,15 +62,16 @@ class CustomerController extends Controller
         return $customers;
     }
 
-    public function detail($id)
+    public function detail($id, Request $request)
     {
 		$model_customer = $this->customer;
 		$model_bill     = $this->bill;
+		$offset         = 6;
 
 		$customer = $model_customer->find($id);
 		$bills    = $model_bill->where('id_customer', $id)
 			->orderBy('created_at', 'desc')
-			->get();
+			->paginate($offset);
 		return view('User.Admin.Customer.detail', [
 			'model_customer' => $model_customer,
 			'model_bill'     => $model_bill,

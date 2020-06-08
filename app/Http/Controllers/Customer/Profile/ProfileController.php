@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Customer\Profile;
 
 use App\Http\Controllers\CustomerController;
 use App\Model\Customer\Customer;
-use App\Model\Customer\Bill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends CustomerController
 {
-    public function __construct(Customer $customer, Bill $bill)
+    public function __construct(Customer $customer)
     {
         $this->customer = $customer;
-        $this->bill     = $bill;
     }
+    
     public function index()
     {
         $account = $this->guard()->user();
@@ -45,15 +44,6 @@ class ProfileController extends CustomerController
     {
         $account = $this->guard()->user();
         return $account;
-    }
-
-    public function bill(Request $request)
-    {
-        $account    = $this->guard()->user();
-        $model_bill = $this->bill;
-        return view('User.Customer.Bill.index', [
-            'account' => $account,
-        ]);
     }
 
     public function logout(Request $request)

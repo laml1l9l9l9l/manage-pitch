@@ -32,7 +32,7 @@ class LoginController extends Controller
     {
         $this->validateLogin($request);
         $model_admin = $this->admin;
-        $request['password'] = $model_admin->buildPassLender($request['password']);
+        $request['password'] = $model_admin->buildPassAdmin($request['password']);
 
         $credentials = $request->only('email', 'password');
 

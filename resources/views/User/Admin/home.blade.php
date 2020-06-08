@@ -123,23 +123,31 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        {{-- <span class="label label-success">
-                                        </span> --}}
+                                        <span class="label label-success">
+                                            ? %
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khách hàng') }}</span> {{ $account_customer_statistical['count'].__(' tài khoản') }}</h6>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khách hàng') }}</span> {{ __($customer_statistical['count']) }}</h6>
+                            <div class="card-title">
+                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                    <div>{{ __('Hoạt động: '.$customer_statistical['count_acitve']) }}</div>
+                                    -
+                                    <div>{{ __('Khóa: '.$customer_statistical['count_lock']) }}</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <hr>
                             <div class="footer-title">
-                                {{ __('Quản lý menu') }}
+                                {{ __('Chi tiết') }}
                             </div>
                             <div class="pull-right">
-                                <button class="btn btn-info btn-fill btn-icon btn-sm">
+                                <a href="{{ route('admin.customer') }}" class="btn btn-info btn-fill btn-icon btn-sm">
                                     <i class="ti-angle-right"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -161,16 +169,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('sân bóng') }}</span> 7 days</h6>
-                            <div id="chartTotalSubscriptions"></div>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('sân bóng') }}</span> {{ __($pitch_statistical['count']) }}</h6>
+                            <div class="card-title">
+                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                    <div>{{ __('Hoạt động: '.$pitch_statistical['count_acitve']) }}</div>
+                                    -
+                                    <div>{{ __('Khóa: '.$pitch_statistical['count_lock']) }}</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <hr>
-                            <div class="footer-title">View all members</div>
+                            <div class="footer-title">
+                                {{ __('Chi tiết') }}
+                            </div>
                             <div class="pull-right">
-                                <button class="btn btn-info btn-fill btn-icon btn-sm">
+                                <a href="{{ route('admin.pitch') }}" class="btn btn-info btn-fill btn-icon btn-sm">
                                     <i class="ti-angle-right"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -192,16 +208,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <h6 class="big-title">total downloads <span class="text-muted">in last</span> 6 years</h6>
-                            <div id="chartTotalDownloads" ></div>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khung giờ') }}</span> {{ __($time_slots_statistical['count']) }}</h6>
+                            <div class="card-title">
+                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                    <div>{{ __('Hoạt động: '.$time_slots_statistical['count_acitve']) }}</div>
+                                    -
+                                    <div>{{ __('Khóa: '.$time_slots_statistical['count_lock']) }}</div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <hr>
-                            <div class="footer-title">View more details</div>
+                            <div class="footer-title">
+                                {{ __('Chi tiết') }}
+                            </div>
                             <div class="pull-right">
-                                <button class="btn btn-success btn-fill btn-icon btn-sm">
-                                    <i class="ti-info"></i>
-                                </button>
+                                <a href="{{ route('admin.time') }}" class="btn btn-info btn-fill btn-icon btn-sm">
+                                    <i class="ti-angle-right"></i>
+                                </a>
                             </div>
                         </div>
                     </div>

@@ -275,10 +275,22 @@
   margin-left: auto!important;
 }
 
+
+/*Flex*/
+.d-flex{
+  display: flex;
+}
+
+.justify-content-between{
+  justify-content: space-between;
+}
+
+
 /*Text*/
 .text-white{
   color: #FFF !important;
 }
+
 
 /*Input*/
 input:focus{

@@ -20,7 +20,7 @@ class Admin extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function buildPassLender($password = ''){
+    public function buildPassAdmin($password = ''){
         return (trim($password) != '')? md5($password.'_'.env('KEY_PASS_ADMIN')): '';
     }
 }

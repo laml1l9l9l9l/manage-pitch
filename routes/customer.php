@@ -34,8 +34,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 {
 	// tách ra nhiều controller
 	$group = "customer";
-	$ProfileController = "Customer\Profile\ProfileController";
-	$BillController    = "Customer\Bill\BillController";
+	$ProfileController        = "Customer\Profile\ProfileController";
+	$ChangePasswordController = "Customer\Profile\ChangePasswordController";
+	$BillController           = "Customer\Bill\BillController";
+	$ListBillController       = "Customer\Bill\ListBillController";
 
 
 	// profile
@@ -43,15 +45,19 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 		->name("$group.profile");
 	Route::post("profile/update","$ProfileController@update")
 		->name("$group.profile.update");
-	Route::get("profile/bill","$ProfileController@bill")
-		->name("$group.profile.bill");
 	Route::get("information","$ProfileController@information")
 		->name("$group.infor");
+	Route::get("change-password","$ChangePasswordController@index")
+		->name("$group.profile.change.password");
+	Route::post("change-password","$ChangePasswordController@update")
+		->name("$group.profile.update.password");
 
 
 	// bill
 	Route::post("bill","$BillController@createBill")
 		->name("$group.bill.create");
+	Route::get("bill","$ListBillController@bill")
+		->name("$group.bill");
 
 	
 	// logout

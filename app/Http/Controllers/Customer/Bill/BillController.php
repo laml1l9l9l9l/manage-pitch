@@ -42,7 +42,7 @@ class BillController extends CustomerController
     	$count_detail_bill = $this->checkIssetBillDetail($request_bill);
 
 		if($count_detail_bill > 0){
-			return redirect()->route($name_route, $id_element)->with('error', 'Xảy ra lỗi, vui lòng thử lại');
+			return redirect()->route($name_route, $id_element)->with('error', 'Khoảng thời gian bạn chọn đã được thuê, vui lòng thử lại');
 		}
 
 		// Create bill then create detail bill

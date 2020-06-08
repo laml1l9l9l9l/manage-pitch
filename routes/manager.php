@@ -84,6 +84,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	//bill
 	Route::get("bill","$BillController@index")
 		->name("$group.bill");
+	Route::get("bill/detail/{id}","$BillController@detail")
+		->name("$group.bill.detail");
 
 	//pitch
 	Route::get("pitch","$PitchController@index")

@@ -4,15 +4,19 @@ namespace App\Http\Controllers\Admin\Bill;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Bill;
+use App\Model\Admin\DetailBill;
+use App\Model\Admin\SpecialDateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
-    public function __construct(Bill $bill)
+    public function __construct(Bill $bill, DetailBill $detail_bill, SpecialDateTime $special_datetime)
     {
-		$this->bill = $bill;
+        $this->bill        = $bill;
+        $this->detail_bill = $detail_bill;
+        $this->special_datetime = $special_datetime;
     }
 
     public function index(Request $request)
@@ -52,5 +56,31 @@ class BillController extends Controller
         $bills = $bills->paginate($offset);
 
         return $bills;
+    }
+
+    public function detail($id, Request $request)
+    {
+        $model_bill             = $this->bill;
+        $model_detail_bill      = $this->detail_bill;
+        $model_special_datetime = $this->special_datetime;
+        $offset = 6;
+
+        $bill         = $model_bill->join('customers', 'customers.id', '=', 'bills.id_customer')
+            ->where('bills.id', $id)
+            ->select('bills.*', 'customers.id as id_customer', 'customers.name')
+            ->first();
+        $detail_bills = $model_detail_bill->join('time_slots', 'time_slots.id', '=', 'detail_bills.id_time_slot')
+            ->join('pitchs', 'pitchs.id', '=', 'detail_bills.id_pitch')
+            ->where('id_bill', $id)
+            ->orderBy('created_at', 'desc')
+            ->select('detail_bills.*', 'time_slots.name as name_time_slot', 'pitchs.name as name_pitch', 'pitchs.price as price_pitch')
+            ->paginate($offset);
+        return view('User.Admin.Bill.detail', [
+            'model_bill'             => $model_bill,
+            'model_detail_bill'      => $model_detail_bill,
+            'model_special_datetime' => $model_special_datetime,
+            'bill'                   => $bill,
+            'detail_bills'           => $detail_bills,
+        ]);
     }
 }

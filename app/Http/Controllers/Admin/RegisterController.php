@@ -78,7 +78,7 @@ class RegisterController extends Controller
 
         return Admin::create([
             'email'    => $data['email'],
-            'password' => $user_model->buildPassLender($data['password'])
+            'password' => $user_model->buildPassAdmin($data['password'])
         ]);
     }
 }

@@ -25,7 +25,7 @@ class Customer extends Authenticatable
         ACTIVE => 'Kích hoạt',
     );
 
-    public function buildPassLender($password = ''){
+    public function buildPassCustomer($password = ''){
         return (trim($password) != '')? md5($password.'_'.env('KEY_PASS_ADMIN')): '';
     }
 }

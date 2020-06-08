@@ -62,6 +62,9 @@
 									<h3>
 										{{ __($pitch->name) }}
 									</h3>
+									<i>
+										{{ __('Giá từ '.number_format($pitch->price).' VNĐ') }}
+									</i>
 								</div>
 							@endforeach
 						@else
