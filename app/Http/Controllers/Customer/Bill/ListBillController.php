@@ -26,6 +26,7 @@ class ListBillController extends CustomerController
 
         return view('User.Customer.Bill.index', [
 			'account'     => $account,
+			'model_bill'  => $model_bill,
 			'bills'       => $bills,
 			'count_bills' => $count_bills,
         ]);

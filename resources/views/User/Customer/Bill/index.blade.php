@@ -68,13 +68,13 @@
 								<div class="col-md-6">
 									<div class="card card-raised card-profile">
 										<div class="card-content">
-											<h6 class="category text-danger
-											">{{ __('Chưa đặt cọc') }}</h6>
+											<h6 class="category {{ __($model_bill->class_color_status_model[$bill->status]) }}
+											">{{ __($model_bill->status_model[$bill->status]) }}</h6>
 											<h3 class="card-title">
 												{{ __($bill->code) }}
 											</h3>
 											<p class="card-description">
-												{{ __('Phí thêm: '.number_format($bill->down_payment).' VNĐ') }}
+												{{ __('Đặt cọc: '.number_format($bill->down_payment).' VNĐ') }}
 											</p>
 											<hr>
 											<p class="card-description">
@@ -84,7 +84,7 @@
 											<p class="card-description">
 												{{ __( 'Ngày tạo: '.date('H:i, d-m-Y', strtotime($bill->created_at)) ) }}
 											</p>
-											<a href="#pablo" class="btn btn-primary btn-round">
+											<a href="{{ route('customer.bill.detail', ['id' => $bill->id]) }}" class="btn btn-primary btn-round">
 												<i class="material-icons">format_align_left</i> {{ __('Xem chi tiết') }}
 											</a>
 										</div>
@@ -93,7 +93,7 @@
 							@endforeach
 							
 							<div class="col-md-12 text-right">
-								{{ $bills->links() }}
+								{{ $bills->fragment('row-title-notice')->links() }}
 							</div>
 						</div>
 					@else

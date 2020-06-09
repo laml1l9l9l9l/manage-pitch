@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Model\Admin\Pitch;
-use App\Model\Admin\Time;
+use App\Model\Customer\Pitch;
+use App\Model\Customer\Time;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller

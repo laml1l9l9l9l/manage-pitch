@@ -325,6 +325,7 @@
 	{{-- Process rent football field --}}
 	<script type="text/javascript">
 		var urlGetInformation = '{{ route('customer.infor') }}';
+		var urlGetDatesOff    = '{{ route('customer.api.date.off') }}';
 		var urlCreateBill     = '{{ route('customer.bill.create') }}';
 		var typeRent          = '{{ SIMPLE }}';
 		var urlLogin          = '{{ route('customer.login.ajax') }}';

@@ -53,3 +53,7 @@
 .fc-content tbody{
 	cursor: pointer;
 }
+
+.fc-day-off{
+	background-color: #EEEEEE;
+}

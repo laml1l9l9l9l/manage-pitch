@@ -23,6 +23,7 @@ class SpecialDateTime extends Model
 
         $date = $model_special_datetime->where('date', '=', $soccer_day)
             ->whereNull('id_time_slot')
+            ->where('status', ACTIVE)
             ->where('created_at', '<=', $created_at)
             ->first();
         if(!empty($date)){
@@ -31,6 +32,7 @@ class SpecialDateTime extends Model
 
         $time = $model_special_datetime->where('id_time_slot', '=', $id_time_slot)
             ->whereNull('date')
+            ->where('status', ACTIVE)
             ->where('created_at', '<=', $created_at)
             ->first();
         if(!empty($time)){
@@ -39,6 +41,7 @@ class SpecialDateTime extends Model
 
         $datetime = $model_special_datetime->where('date', '=', $soccer_day)
             ->where('id_time_slot', '=', $id_time_slot)
+            ->where('status', ACTIVE)
             ->where('created_at', '<=', $created_at)
             ->first();
         if(!empty($datetime)){

@@ -113,7 +113,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h2>
-						{{ __('Tổng hóa đơn: '.count($detail_bills)) }}
+						{{ __('Tổng hóa đơn con: '.count($detail_bills)) }}
 					</h2>
 				</div>
 			</div>

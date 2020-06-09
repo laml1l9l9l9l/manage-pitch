@@ -42,16 +42,20 @@ $(document).ready(function() {
 			var month = date.getMonth()+1;
 			var day   = date.getDate();
 			var full_day = date.getFullYear() + '-' +(month<10 ? '0' : '') + month + '-' +(day<10 ? '0' : '') + day;
-			if(new Date(rent_date) < new Date(full_day))
+
+            // Check date off
+            var array_date_off = getDatesOff();
+            var check_date_off = array_date_off.find(element => element == rent_date);
+
+            if(check_date_off)
+            {
+                var message = 'Ngày này không hoạt động';
+                showErrorWarning(message);
+            }
+			else if(new Date(rent_date) < new Date(full_day))
 			{
-				var row_title_notice = document.getElementById('row-title-notice');
-				row_title_notice.scrollIntoView({behavior: 'smooth'});
-
-
 				var message = 'Ngày thuê nhỏ hơn ngày hiện tại';
-				var alert_html = '<div class="alert alert-warning alert-rounded alert-message"><div class="alert-icon"><i class="material-icons">warning</i></div><h4 class="m-0" id="message">'+message+'</h4><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="material-icons">clear</i></span></button></div>';
-
-				$('#alert-select-warning').html(alert_html);
+				showErrorWarning(message);
 			}
 			else
 			{
@@ -68,17 +72,54 @@ $(document).ready(function() {
 				var row_title = document.getElementById('row-title');
 				row_title.scrollIntoView({behavior: 'smooth'});
 
-            	// get date to form
+            	// Get date to form
 				$('#date-rent').val(rent_date);
 			}
-
-
-    		function animateOpacity(selector) {
-				$(selector).animate({opacity: "0.2"});
-				$(selector).animate({opacity: "1"});
-    		}
         }
     });
     
     $('#calendar').find('table').addClass('table-responsive');
+
+    // Add class date off
+    checkDateOff();
+
+    function checkDateOff() {
+        var array_date_off = getDatesOff();
+        for(var date of array_date_off){
+            $('*[data-date="'+date+'"]').addClass('fc-day-off');
+        }
+    }
+
+    function getDatesOff() {
+        var date_off = null;
+
+        $.ajax({
+            async: false,
+            url: urlGetDatesOff,
+            type: 'GET',
+            dataType: 'json',
+            data: {},
+            success: function(response) {
+                date_off = response;
+            }
+        });
+
+        return date_off;
+    }
+
+    function animateOpacity(selector) {
+        $(selector).animate({opacity: "0.2"});
+        $(selector).animate({opacity: "1"});
+    }
+
+    function showErrorWarning(message) {
+        $('#alert-select-warning').empty();
+        var row_title_notice = document.getElementById('row-title-notice');
+        row_title_notice.scrollIntoView({behavior: 'smooth'});
+
+
+        var alert_html = '<div class="alert alert-warning alert-rounded alert-message"><div class="alert-icon"><i class="material-icons">warning</i></div><h4 class="m-0" id="message">'+message+'</h4><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"><i class="material-icons">clear</i></span></button></div>';
+
+        $('#alert-select-warning').html(alert_html);
+    }
 });

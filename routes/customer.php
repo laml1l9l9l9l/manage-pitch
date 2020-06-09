@@ -4,6 +4,7 @@ $group      = "customer";
 $LoginController    = "Customer\LoginController";
 $RegisterController = "Customer\RegisterController";
 $HomeController     = "Customer\HomeController";
+$DateOffController  = "Customer\API\DateOffController";
 
 // login
 Route::get("login","$LoginController@index")
@@ -29,6 +30,10 @@ Route::get("/home","$HomeController@home")
 	->name("$group.home");
 
 
+// Get date off
+Route::get("date-off","$DateOffController@getAllDateOff")
+	->name("$group.api.date.off");
+
 
 Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],function()
 {
@@ -38,6 +43,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	$ChangePasswordController = "Customer\Profile\ChangePasswordController";
 	$BillController           = "Customer\Bill\BillController";
 	$ListBillController       = "Customer\Bill\ListBillController";
+	$DetailBillController     = "Customer\Bill\DetailBillController";
 
 
 	// profile
@@ -58,6 +64,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 		->name("$group.bill.create");
 	Route::get("bill","$ListBillController@bill")
 		->name("$group.bill");
+	Route::get("bill/detail/{id}","$DetailBillController@index")
+		->name("$group.bill.detail");
 
 	
 	// logout
