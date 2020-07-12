@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Customer\API;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CustomerController;
 use App\Model\Customer\Date;
 use Illuminate\Http\Request;
 
-class DateOffController extends Controller
+class DateOffController extends CustomerController
 {
     public function __construct(Date $date)
     {

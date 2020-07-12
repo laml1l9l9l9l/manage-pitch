@@ -1,12 +1,13 @@
 <?php
 
 $group      = "customer";
-$LoginController    = "Customer\LoginController";
-$RegisterController = "Customer\RegisterController";
-$HomeController     = "Customer\HomeController";
-$DateOffController  = "Customer\API\DateOffController";
+$LoginController      = "Customer\LoginController";
+$RegisterController   = "Customer\RegisterController";
+$HomeController       = "Customer\HomeController";
+$BookPitchsController = "Customer\BookPitchs\BookPitchsController";
+$DateOffController    = "Customer\API\DateOffController";
 
-// login
+// Login
 Route::get("login","$LoginController@index")
 ->name("$group.login");
 Route::post("login","$LoginController@login")
@@ -14,20 +15,26 @@ Route::post("login","$LoginController@login")
 Route::post("login/ajax","$LoginController@ajaxLogin")
 ->name("$group.login.ajax");
 
-// view register
+// View Register
 Route::get("register","$RegisterController@index")
 ->name("$group.register");
 
-// process register
+// Process Register
 Route::post("register","$RegisterController@register")
-->name("$group.process_register");
+->name("$group.process.register");
 
 
-// home
+// Home
 Route::get("","$HomeController@home")
 	->name("$group.home");
 Route::get("/home","$HomeController@home")
 	->name("$group.home");
+
+// Book Pitchs
+Route::get("check-book-pitchs","$BookPitchsController@check")
+	->name("$group.check.book.pitchs");
+Route::post("select-book-pitchs","$BookPitchsController@selectDateTimeRent")
+	->name("$group.select.book.pitchs");
 
 
 // Get date off
@@ -46,7 +53,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	$DetailBillController     = "Customer\Bill\DetailBillController";
 
 
-	// profile
+	// Profile
 	Route::get("profile","$ProfileController@index")
 		->name("$group.profile");
 	Route::post("profile/update","$ProfileController@update")
@@ -59,7 +66,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 		->name("$group.profile.update.password");
 
 
-	// bill
+	// Bill
 	Route::post("bill","$BillController@createBill")
 		->name("$group.bill.create");
 	Route::get("bill","$ListBillController@bill")
@@ -68,7 +75,7 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 		->name("$group.bill.detail");
 
 	
-	// logout
+	// Logout
 	Route::get("logout","$ProfileController@logout")
 		->name("$group.logout");
 

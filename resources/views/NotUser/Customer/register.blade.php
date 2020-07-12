@@ -19,7 +19,7 @@
                             <h4> Vui lòng điền đầy đủ thông tin </h4>
                         </div>
 
-						<form class="form" method="POST" action="{{ route('customer.process_register') }}">
+						<form class="form" method="POST" action="{{ route('customer.process.register') }}">
 							@csrf
 							<div class="card-content">
 								<div class="input-group">

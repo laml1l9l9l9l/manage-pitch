@@ -9,109 +9,55 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
+
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
+                <div class="col-lg-4 col-sm-6">
                     <div class="card">
                         <div class="card-content">
                             <div class="row">
-                                <div class="col-xs-5">
-                                    <div class="icon-big icon-warning text-center">
-                                        <i class="ti-server"></i>
+                                <div class="col-xs-7">
+                                    <div class="numbers pull-left">
+                                        {{ __('Hóa đơn') }}
                                     </div>
                                 </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Capacity</p>
-                                        105GB
+                                <div class="col-xs-5">
+                                    <div class="pull-right">
+                                        @if ($bill_statistical['percent'] !== null)
+                                            <span class="label {{ __($bill_statistical['color_statistical']) }}">
+                                                <i class="ti-arrow-up"></i>
+                                                {{ __($bill_statistical['percent']."%") }}
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('hóa đơn') }}</span> {{ __($bill_statistical['count']) }}</h6>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-12">
+                                        <div>{{ __('Chưa thanh toán: '.$bill_statistical['count_unpaid']) }}</div>
+                                        -
+                                        <div>{{ __('Đã đặt cọc: '.$bill_statistical['count_deposited']) }}</div>
+                                        -
+                                        <div>{{ __('Đã thanh toán: '.$bill_statistical['count_paid']) }}</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            <hr />
-                            <div class="stats">
-                                <i class="ti-reload"></i> Updated now
+                            <hr>
+                            <div class="footer-title">
+                                {{ __('Chi tiết') }}
+                            </div>
+                            <div class="pull-right">
+                                <a href="{{ route('admin.bill') }}" class="btn btn-info btn-fill btn-icon btn-sm">
+                                    <i class="ti-angle-right"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <div class="icon-big icon-success text-center">
-                                        <i class="ti-wallet"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Revenue</p>
-                                        $1,345
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <hr />
-                            <div class="stats">
-                                <i class="ti-calendar"></i> Last day
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <div class="icon-big icon-danger text-center">
-                                        <i class="ti-pulse"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Errors</p>
-                                        23
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <hr />
-                            <div class="stats">
-                                <i class="ti-timer"></i> In the last hour
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="row">
-                                <div class="col-xs-5">
-                                    <div class="icon-big icon-info text-center">
-                                        <i class="ti-twitter-alt"></i>
-                                    </div>
-                                </div>
-                                <div class="col-xs-7">
-                                    <div class="numbers">
-                                        <p>Followers</p>
-                                        +45
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <hr />
-                            <div class="stats">
-                                <i class="ti-reload"></i> Updated now
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-lg-4 col-sm-6">
                     <div class="card">
                         <div class="card-content">
@@ -131,11 +77,13 @@
                             </div>
 
                             <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khách hàng') }}</span> {{ __($customer_statistical['count']) }}</h6>
-                            <div class="card-title">
-                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
-                                    <div>{{ __('Hoạt động: '.$customer_statistical['count_acitve']) }}</div>
-                                    -
-                                    <div>{{ __('Khóa: '.$customer_statistical['count_lock']) }}</div>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                        <div>{{ __('Hoạt động: '.$customer_statistical['count_acitve']) }}</div>
+                                        -
+                                        <div>{{ __('Khóa: '.$customer_statistical['count_lock']) }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,23 +106,108 @@
                             <div class="row">
                                 <div class="col-xs-7">
                                     <div class="numbers pull-left">
+                                        {{ __('Tăng giá') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <div class="pull-right">
+                                        <span class="label label-warning">
+                                            0%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('thời điểm tăng giá') }}</span> {{ __($special_date_time_statistical['count']) }}</h6>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                        <div>{{ __('Hoạt động: '.$special_date_time_statistical['count_acitve']) }}</div>
+                                        -
+                                        <div>{{ __('Khóa: '.$special_date_time_statistical['count_lock']) }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <hr>
+                            <div class="footer-title">
+                                {{ __('Chi tiết') }}
+                            </div>
+                            <div class="pull-right">
+                                <a href="{{ route('admin.specialdatetime') }}" class="btn btn-info btn-fill btn-icon btn-sm">
+                                    <i class="ti-angle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="numbers pull-left">
+                                        {{ __('Ngày nghỉ') }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <div class="pull-right">
+                                        <span class="label label-danger">
+                                            <i class="ti-arrow-down"></i>
+                                            14%
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('ngày nghỉ') }}</span> {{ __($date_statistical['count']) }}</h6>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                        <div>{{ __('Hoạt động: '.$date_statistical['count_lock']) }}</div>
+                                        -
+                                        <div>{{ __('Khóa: '.$date_statistical['count_acitve']) }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <hr>
+                            <div class="footer-title">
+                                {{ __('Chi tiết') }}
+                            </div>
+                            <div class="pull-right">
+                                <a href="{{ route('admin.date') }}" class="btn btn-info btn-fill btn-icon btn-sm">
+                                    <i class="ti-angle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <div class="numbers pull-left">
                                         {{ __('Sân bóng') }}
                                     </div>
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        {{-- <span class="label label-danger">
-                                            -14%
-                                        </span> --}}
                                     </div>
                                 </div>
                             </div>
                             <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('sân bóng') }}</span> {{ __($pitch_statistical['count']) }}</h6>
-                            <div class="card-title">
-                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
-                                    <div>{{ __('Hoạt động: '.$pitch_statistical['count_acitve']) }}</div>
-                                    -
-                                    <div>{{ __('Khóa: '.$pitch_statistical['count_lock']) }}</div>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                        <div>{{ __('Hoạt động: '.$pitch_statistical['count_acitve']) }}</div>
+                                        -
+                                        <div>{{ __('Khóa: '.$pitch_statistical['count_lock']) }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -202,18 +235,17 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        {{-- <span class="label label-warning">
-                                            ~51%
-                                        </span> --}}
                                     </div>
                                 </div>
                             </div>
                             <h6 class="big-title">{{ __('Tổng số') }} <span class="text-muted">{{ __('khung giờ') }}</span> {{ __($time_slots_statistical['count']) }}</h6>
-                            <div class="card-title">
-                                <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
-                                    <div>{{ __('Hoạt động: '.$time_slots_statistical['count_acitve']) }}</div>
-                                    -
-                                    <div>{{ __('Khóa: '.$time_slots_statistical['count_lock']) }}</div>
+                            <div class="row">
+                                <div class="card-title">
+                                    <div class="d-flex justify-content-between col-md-6 col-md-offset-3">
+                                        <div>{{ __('Hoạt động: '.$time_slots_statistical['count_acitve']) }}</div>
+                                        -
+                                        <div>{{ __('Khóa: '.$time_slots_statistical['count_lock']) }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -231,52 +263,99 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card card-circle-chart" data-background-color="blue">
-                        <div class="card-header text-center">
-                            <h5 class="card-title">Dashboard</h5>
-                            <p class="description">Monthly sales target</p>
-                        </div>
+                <div class="col-md-12">
+                    <h3>
+                        {{ __('Thống kê tài chính tháng') }}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
                         <div class="card-content">
-                            <div id="chartDashboard" class="chart-circle" data-percent="70">70%</div>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <div class="icon-big icon-danger text-center">
+                                        <i class="ti-receipt"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-9">
+                                    <div class="numbers">
+                                        <p>{{ __('Chưa thanh toán') }}</p>
+                                        {{ number_format($bill_statistical['amount_unpaid']).' VNĐ' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <hr />
+                            <div class="stats">
+                                <a href="{{ route('admin.bill').'manager/bill?bill%5Bstatus%5D='.UNPAID }}">
+                                    <i class="ti-search"></i> {{ __('Xem chi tiết') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card card-circle-chart" data-background-color="green">
-                        <div class="card-header text-center">
-                            <h5 class="card-title">Orders</h5>
-                            <p class="description">Completed</p>
-                        </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
                         <div class="card-content">
-                            <div id="chartOrders" class="chart-circle" data-percent="34">34%</div>
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-warning text-center">
+                                        <i class="ti-write"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>{{ __('Đã đặt cọc') }}</p>
+                                        {{ number_format($bill_statistical['amount_deposited']).' VNĐ' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <hr />
+                            <div class="stats">
+                                <a href="{{ route('admin.bill').'?bill%5Bstatus%5D='.DEPOSITED }}">
+                                    <i class="ti-search"></i> {{ __('Xem chi tiết') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card card-circle-chart" data-background-color="orange">
-                        <div class="card-header text-center">
-                            <h5 class="card-title">New Visitors</h5>
-                            <p class="description">Out of total number</p>
-                        </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="card">
                         <div class="card-content">
-                            <div id="chartNewVisitors" class="chart-circle" data-percent="62">62%</div>
+                            <div class="row">
+                                <div class="col-xs-5">
+                                    <div class="icon-big icon-success text-center">
+                                        <i class="ti-wallet"></i>
+                                    </div>
+                                </div>
+                                <div class="col-xs-7">
+                                    <div class="numbers">
+                                        <p>{{ __('Đã thanh toán') }}</p>
+                                        {{ number_format($bill_statistical['amount_paid']).' VNĐ' }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="card card-circle-chart" data-background-color="brown">
-                        <div class="card-header text-center">
-                            <h5 class="card-title">Subscriptions</h5>
-                            <p class="description">Monthly newsletter</p>
-                        </div>
-                        <div class="card-content">
-                            <div id="chartSubscriptions" class="chart-circle" data-percent="10">10%</div>
+                        <div class="card-footer">
+                            <hr />
+                            <div class="stats">
+                                <a href="{{ route('admin.bill').'?bill%5Bstatus%5D='.PAID }}">
+                                    <i class="ti-search"></i> {{ __('Xem chi tiết') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 @endsection

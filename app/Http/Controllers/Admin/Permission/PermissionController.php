@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\URL;
 
 class PermissionController extends Controller
 {
-    public function __construct(Helper $helper, Permissions $permissions)
+    public function __construct(Permissions $permissions)
     {
 		$this->permission = $permissions;
-		$this->helper     = $helper;
     }
 
     public function index(Request $request)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Pitch;
 
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Pitch;
+use App\Model\Admin\DetailBill;
 use App\Model\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -13,9 +14,10 @@ use Validator;
 
 class PitchController extends Controller
 {
-    public function __construct(Pitch $pitch)
+    public function __construct(Pitch $pitch, DetailBill $detail_bill)
     {
-		$this->pitch = $pitch;
+        $this->pitch       = $pitch;
+        $this->detail_bill = $detail_bill;
     }
 
     public function index(Request $request)
@@ -155,14 +157,28 @@ class PitchController extends Controller
 
     public function delete($id)
     {
-        $model_pitch = $this->pitch;
+        $model_pitch       = $this->pitch;
+        $model_detail_bill = $this->detail_bill;
+        $isset_pitch = false;
+        $name_route  = 'admin.pitch';
 
         $pitch = $model_pitch->find($id);
-        Storage::disk('local')->delete($pitch->image);
-        $pitch->delete();
 
-        return redirect()->route('admin.pitch')
-            ->with('success', 'Bạn đã xóa sân bóng');
+        // Check isset pitch in bill
+        $detail_bill = $model_detail_bill->where('id_pitch', $id)
+            ->first();
+        $isset_pitch = !empty($detail_bill) ? true : false;
+        if(!$isset_pitch)
+        {
+            Storage::disk('local')->delete($pitch->image);
+            $pitch->delete();
+
+            return redirect()->route($name_route)
+                ->with('success', 'Bạn đã xóa sân bóng');
+        }
+
+        return redirect()->route($name_route)
+            ->with('error', 'Sân bóng đã được đặt, không thể xóa');
     }
 
 

@@ -21,6 +21,12 @@ class Bill extends Model
         PAID      => 'text-success',
     );
 
+    public $class_color_status_statistical = array(
+        DECREASE    => 'label-danger',
+        KEEP_STABLE => 'label-warning',
+        INCREASE    => 'label-success',
+    );
+
     public function getCustomer($id_customer)
     {
     	$model_customer = new Customer;

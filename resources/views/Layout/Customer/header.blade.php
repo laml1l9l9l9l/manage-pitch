@@ -73,8 +73,8 @@
 					</li>
 
 					<li>
-						<a href="http://www.creative-tim.com/buy/material-kit-pro?ref=presentation" target="_blank" class="btn btn-white btn-simple">
-							<i class="material-icons">shopping_cart</i> Buy Now
+						<a href="{{ route('customer.bill') }}">
+							<i class="material-icons">assignment</i> {{ __('Hóa đơn') }}
 						</a>
 					</li>
 
@@ -87,11 +87,6 @@
 							<li>
 								<a href="{{ route('customer.profile') }}">
 									<i class="material-icons">account_circle</i> {{ __('Thông tin cá nhân') }}
-								</a>
-							</li>
-							<li>
-								<a href="{{ route('customer.bill') }}">
-									<i class="material-icons">assignment</i> {{ __('Hóa đơn') }}
 								</a>
 							</li>
 							<li>

@@ -157,9 +157,6 @@
 												<a href="{{ route('admin.customer.detail', ['id' => $customer->id]) }}" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
 													<i class="fa fa-file"></i>
 												</a>
-												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
-													<i class="fa fa-times"></i>
-												</button>
 											</td>
 										</tr>
 										@php

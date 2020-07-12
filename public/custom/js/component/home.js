@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	// Book pitch view
+	$('#book-a-pitch, #book-pitchs').on('click', function() {
+		bookView($(this).attr('id'));
+	});
+
 	// Return show
 	$('#return-select-date').click(function() {
 		showHiddenRow('#row-calendar', '#row-pitch');
@@ -104,4 +109,17 @@ function submitFormCreateBill() {
 	// Update type rent
 	$('#type-rent').val(typeRent);
 	$('#form-create-bill').submit();
+}
+
+function bookView(id_element) {
+	let row;
+	switch (id_element) {
+		case 'book-a-pitch':
+			row = document.getElementById('row-calendar');
+			break;
+		case 'book-pitchs':
+			row = document.getElementById('booking-pitchs');
+			break;
+	}
+	row.scrollIntoView({behavior: 'smooth'});
 }

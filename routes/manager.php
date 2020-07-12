@@ -13,7 +13,7 @@ Route::post("login","$prefix\LoginController@login")
 Route::get("register","$prefix\RegisterController@index")
 	->name("$group.register");
 Route::post("register","$prefix\RegisterController@register")
-	->name("$group.process_register");
+	->name("$group.process.register");
 
 // forgot password
 Route::get("forgot-password","$prefix\ForgotPassword@index")
@@ -86,6 +86,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.bill");
 	Route::get("bill/detail/{id}","$BillController@detail")
 		->name("$group.bill.detail");
+	Route::get("bill/delete/{id}","$BillController@delete")
+		->name("$group.bill.delete");
 
 	//pitch
 	Route::get("pitch","$PitchController@index")
@@ -115,6 +117,12 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.date.add");
 	Route::post("date/add","$DateController@store")
 		->name("$group.date.store");
+	Route::get("date/edit/{id}","$DateController@edit")
+		->name("$group.date.edit");
+	Route::post("date/update/{id}","$DateController@update")
+		->name("$group.date.update");
+	Route::get("date/delete/{id}","$DateController@delete")
+		->name("$group.date.delete");
 
 	//time
 	Route::get("time-slots","$TimeController@index")
@@ -123,6 +131,10 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.time.add");
 	Route::post("time-slots/add","$TimeController@store")
 		->name("$group.time.store");
+	Route::get("time-slots/edit/{id}","$TimeController@edit")
+		->name("$group.time.edit");
+	Route::post("time-slots/update/{id}","$TimeController@update")
+		->name("$group.time.update");
 
 	//special date time
 	Route::get("special-datetime","$SpecialDateTimeController@index")
@@ -139,6 +151,12 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 		->name("$group.specialdatetime.adddatetime");
 	Route::post("special-datetime/add-date-time","$SpecialDateTimeController@storeSpecialDateTime")
 		->name("$group.specialdatetime.storedatetime");
+	Route::get("special-datetime/edit/{id}","$SpecialDateTimeController@edit")
+		->name("$group.specialdatetime.edit");
+	Route::post("special-datetime/update/{id}","$SpecialDateTimeController@update")
+		->name("$group.specialdatetime.update");
+	Route::get("special-datetime/delete/{id}","$SpecialDateTimeController@delete")
+		->name("$group.specialdatetime.delete");
 
 });
 

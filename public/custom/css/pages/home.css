@@ -1,0 +1,22 @@
+#row-title-notice .title{
+	cursor: default;
+}
+
+#row-title-notice .title .book-pitch{
+	cursor: pointer;
+    transition: text-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: text-shadow, color;
+    transition-duration: 0.2s, 0.2s;
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1), cubic-bezier(0.4, 0, 0.2, 1);
+    transition-delay: 0s, 0s;
+}
+
+#row-title-notice .title #book-a-pitch:hover{
+	color: #00bcd4;
+    text-shadow: -3px 5px 25px #00bcd4;
+}
+
+#row-title-notice .title #book-pitchs:hover{
+	color: #ec991a;
+    text-shadow: -3px 5px 25px #ec991a;
+}

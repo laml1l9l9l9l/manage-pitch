@@ -107,6 +107,48 @@ class DateController extends Controller
             ->with('success', 'Bạn đã thêm mới khoảng thời gian');
     }
 
+    public function edit($id)
+    {
+        $model_date = $this->date;
+        $date       = $model_date->find($id);
+
+        return view('User.Admin.Date.edit', [
+            'date'       => $date,
+            'model_date' => $model_date,
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $model_date = $this->date;
+        $date_request = $request->date;
+
+        $this->validatorEditDate($date_request)->validate();
+
+        // Get pitch
+        $date = $model_date->find($id);
+
+        $date->name       = $date_request['name'];
+        $date->date       = $date_request['date'];
+        $date->status     = $date_request['status'];
+        $date->updated_at = Helper::getCurrentDateTime();
+        $date->save();
+
+        return redirect()->route('admin.date.edit', ['id' => $id])
+            ->with('success', 'Bạn đã sửa ngày nghỉ');
+    }
+
+    public function delete($id)
+    {
+        $model_date = $this->date;
+
+        $date = $model_date->find($id);
+        $date->delete();
+
+        return redirect()->route('admin.date')
+            ->with('success', 'Bạn đã xóa một ngày nghỉ');
+    }
+
 
     private $array_validate = [
         'name'       => ['required', 'string', 'min:2', 'max:25'],
@@ -124,6 +166,15 @@ class DateController extends Controller
     	$array_validate = $this->array_validate;
     	$array_validate['increase_price'] = ['required', 'string', 'min:5', 'max:7'];
         return Validator::make($data, $array_validate, $this->messages());
+    }
+
+    private function validatorEditDate(array $data)
+    {
+        return Validator::make($data, [
+            'name'   => ['required', 'string', 'min:2', 'max:25'],
+            'date'   => ['required', 'date_format:Y-m-d'],
+            'status' => ['required', 'string', 'min:1', 'max:1'],
+        ], $this->messages());
     }
 
     private function messages()

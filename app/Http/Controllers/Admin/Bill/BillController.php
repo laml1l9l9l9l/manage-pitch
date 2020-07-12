@@ -22,7 +22,7 @@ class BillController extends Controller
     public function index(Request $request)
     {
         $request_bill = $request->bill;
-    	$model_bill = $this->bill;
+        $model_bill   = $this->bill;
 
 
 		$offset     = 10;
@@ -30,7 +30,9 @@ class BillController extends Controller
 		$page       = $request->get('page');
 		$page_bill  = $this->indexTable($page, $offset);
 
-        !empty($request_bill) ? $bills = $this->search($request_bill, $offset) : $bills = $model_bill->paginate($offset);
+        $bills = !empty($request_bill) ? $this->search($request_bill, $offset) : $model_bill;
+        $bills = $bills->orderBy('created_at', 'desc')
+            ->paginate($offset);
         $bills->setPath(URL::current());
 
     	return view('User.Admin.Bill.index', [
@@ -52,8 +54,6 @@ class BillController extends Controller
         (isset($request_bill['status']) && $request_bill['status'] !== null) ? $bills->where('bills.status', $request_bill['status']) : '';
         !empty($request_bill['start_created_at']) ? $bills->where('bills.created_at', '>=', $request_bill['start_created_at'].' 00:00:00') : '';
         !empty($request_bill['end_created_at']) ? $bills->where('bills.created_at', '<=', $request_bill['end_created_at'].' 23:59:59') : '';
-
-        $bills = $bills->paginate($offset);
 
         return $bills;
     }
@@ -82,5 +82,22 @@ class BillController extends Controller
             'bill'                   => $bill,
             'detail_bills'           => $detail_bills,
         ]);
+    }
+
+    public function delete($id)
+    {
+        $model_bill        = $this->bill;
+        $model_detail_bill = $this->detail_bill;
+
+        $bill         = $model_bill->find($id);
+        $detail_bills = $model_detail_bill->where('id_bill', $id)
+            ->get();
+        foreach ($detail_bills as $detail_bill) {
+            $detail_bill->delete();
+        }
+        $bill->delete();
+
+        return redirect()->route('admin.bill')
+            ->with('success', 'Bạn đã xóa hóa đơn');
     }
 }

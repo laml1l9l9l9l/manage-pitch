@@ -5,6 +5,7 @@
 	</title>
 	<link rel="stylesheet" type="text/css" href="{{ asset('custom/css/fullcalendar.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('custom/css/custom-fullcalendar.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('custom/css/pages/home.css') }}">
 @endpush
 
 @section('content')
@@ -28,18 +29,34 @@
 				<div class="section">
 					<div class="row" id="row-title-notice">
 						<div class="col-md-6 col-md-offset-3 text-center">
-                        	<h2 class="title">{{ __('Đặt sân bóng') }}</h2>
+							<p>
+								<i>
+									{{ __('Lựa chọn phương thức đặt sân') }}
+								</i>
+							</p>
+                        	<div class="title d-flex flex-column flex-md-row justify-content-center h2">
+								<div class="book-pitch" id="book-a-pitch">
+									{{ __('Đặt sân bóng') }}
+								</div>
+                        		<div class="mx-3">
+                        			{{ __('|') }}
+                        		</div>
+                        		<div class="book-pitch" id="book-pitchs">
+                        			{{ __('Đặt giải đấu') }}
+                        		</div>
+                        	</div>
 							<div class="tab-space" id="row-title"></div>
 						</div>
 
-						<div class="col-md-12 p-0" id="alert-select-warning"></div>
-						@include('Layout.Customer.Notification.message_basic')
+						<div class="col-md-12 p-0" id="alert-select-warning">
+							@include('Layout.Customer.Notification.message_basic')
+						</div>
 					</div>
 
 					{{-- Calendar --}}
 					<div class="row" id="row-calendar">
                         <div class="text-center">
-                        	<h3 class="info-title">{{ __('Đặt ngày') }}</h3>
+                        	<h3 class="info-title">{{ __('Đặt sân bóng') }}</h3>
                         </div>
                         <div id="calendar"></div>
 						<div class="tab-space"></div>
@@ -114,7 +131,7 @@
 
 
 					{{-- Rent league --}}
-					<div class="row">
+					<div class="row" id="booking-pitchs">
 
 						<div class="col-md-12">
 							<div class="card card-raised card-background" style="background-image: url('{{ asset('custom/img/bg-rent-league.jpg') }}')">
@@ -123,7 +140,7 @@
 									<p class="card-description">
 										Hỗ trợ các cá nhân, tổ chức, tập thể đặt giải đấu nhanh chóng, dễ dàng
 									</p>
-									<a href="#pablo" class="btn btn-warning btn-round">
+									<a href="{{ route('customer.check.book.pitchs') }}" class="btn btn-warning btn-round">
 										<i class="material-icons">subject</i> {{ __('Đặt giải') }}
 									</a>
 
@@ -173,14 +190,14 @@
 									<span class="input-group-addon">
 										<i class="material-icons">email</i>
 									</span>
-									<input type="text" class="form-control" id="email_custom_login" placeholder="Email..." >
+									<input type="text" class="form-control" id="email_custom_login" placeholder="Email..." />
 								</div>
 
 								<div class="input-group">
 									<span class="input-group-addon">
 										<i class="material-icons">lock_outline</i>
 									</span>
-									<input type="password" class="form-control" id="password_custom_login" placeholder="Mật khẩu..."/>
+									<input type="password" class="form-control" id="password_custom_login" placeholder="Mật khẩu..." />
 								</div>
 
 								<div class="col-md-12 d-flex justify-content-between pr-0">

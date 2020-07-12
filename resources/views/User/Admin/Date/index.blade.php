@@ -146,10 +146,10 @@
 												{{ date('d-m-Y H:i', strtotime($date->created_at)) }}
 											</td>
 											<td class="td-actions text-right">
-												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+												<a href="{{ route('admin.date.edit', ['id' => $date->id]) }}" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
 													<i class="fa fa-edit"></i>
-												</button>
-												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
+												</a>
+												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs btn-delete" data-toggle="modal" data-target="#confirmDelete" data-id-item="{{ __($date->id) }}">
 													<i class="fa fa-times"></i>
 												</button>
 											</td>
@@ -179,4 +179,32 @@
 		</div>
 	</div>
 </div>
+
+<!-- Modal confirm delete -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header d-flex">
+				<h5 class="modal-title" id="exampleModalLabel">{{ __('Xác nhận') }}</h5>
+				<button type="button" class="close ml-auto" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				{{ __('Bạn có muốn xóa?') }}
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Đóng') }}</button>
+				<a type="button" class="btn btn-danger" id="btn-delete-item">{{ __('Xóa') }}</a>
+			</div>
+		</div>
+	</div>
+</div>
 @endsection
+
+@push('js')
+	<script type="text/javascript">
+		var urlDeleteItem = '{{ route('admin.date.delete', ['id' => 0]) }}';
+	</script>
+	<script src="{{ asset('admin/js/custom-js/modal-confirm.js') }}"></script>
+@endpush

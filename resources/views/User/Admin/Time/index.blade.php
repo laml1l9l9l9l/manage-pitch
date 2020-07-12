@@ -154,12 +154,9 @@
 												{{ date('d-m-Y', strtotime($time_slot->created_at)) }}
 											</td>
 											<td class="td-actions text-right">
-												<button type="button" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+												<a href="{{ route('admin.time.edit', ['id' => $time_slot->id]) }}" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
 													<i class="fa fa-edit"></i>
-												</button>
-												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs">
-													<i class="fa fa-times"></i>
-												</button>
+												</a>
 											</td>
 										</tr>
 										@php

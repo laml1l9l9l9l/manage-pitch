@@ -24,7 +24,7 @@
 						<div class="card-content">
 							<a href="{{ route('admin.menu.add') }}" class="btn btn-primary btn-fill btn-wd">
 								<i class="ti-key"></i>
-								{{ __('Thêm Permission') }}
+								{{ __('Thêm quyền quản trị') }}
 							</a>
 						</div>
 					</div>
@@ -38,7 +38,7 @@
 				<div class="col-md-12 card">
 
 					<div class="card-header">
-						<h4 class="card-title">Permission</h4>
+						<h4 class="card-title">{{ __('Quyền quản trị') }}</h4>
 					</div>
 
 					<div class="card-content">
@@ -76,7 +76,7 @@
 												</td>
 											</tr>
 											@php
-												$page_menu++
+												$page_permission++
 											@endphp
 										@endforeach
 									@else

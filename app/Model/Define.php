@@ -1,6 +1,7 @@
 <?php
-	define('INCREASE', '-1');
-	define('DECREASE', '0');
+	define('DECREASE', '-1');
+	define('KEEP_STABLE', '0');
+	define('INCREASE', '1');
 
 	define('MENU', '0');
 	define('SUB_MENU', '1');
@@ -26,3 +27,8 @@
 	define('UNPAID', '-1');
 	define('DEPOSITED', '0');
 	define('PAID', '1');
+
+
+	define('EMPTY_HOUR', '1');
+	define('EMPTY_DATE', '2');
+	define('ENOUGH', '3');

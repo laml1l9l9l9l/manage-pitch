@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Admin\SpecialDateTime;
 use App\Model\Admin\Time;
 use App\Model\Admin\Date;
+use App\Model\Admin\DetailBill;
 use App\Model\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -13,11 +14,12 @@ use Validator;
 
 class SpecialDateTimeController extends Controller
 {
-    public function __construct(SpecialDateTime $special_datetime, Time $time, Date $date)
+    public function __construct(SpecialDateTime $special_datetime, Time $time, Date $date, DetailBill $detail_bill)
     {
         $this->special_datetime = $special_datetime;
         $this->time             = $time;
         $this->date             = $date;
+        $this->detail_bill      = $detail_bill;
     }
 
     public function index(Request $request)
@@ -61,14 +63,10 @@ class SpecialDateTimeController extends Controller
     public function addSpecialHour()
     {
         $model_special_datetime = $this->special_datetime;
-        $model_time             = $this->time;
 
         // Create array time slot
         $array_time_slot = array();
-        $time_slots = $model_time->all();
-        foreach ($time_slots as $time_slot) {
-            $array_time_slot[$time_slot->id] = $time_slot->name;
-        }
+        $array_time_slot = $this->arrayTimeSlot();
         
     	return view('User.Admin.SpecialDateTime.add_special_time', [
             'model_special_datetime' => $model_special_datetime,
@@ -189,14 +187,10 @@ class SpecialDateTimeController extends Controller
     public function addSelectSpecialDateTime()
     {
         $model_special_datetime = $this->special_datetime;
-        $model_time             = $this->time;
 
         // Create array time slot
         $array_time_slot = array();
-        $time_slots = $model_time->all();
-        foreach ($time_slots as $time_slot) {
-            $array_time_slot[$time_slot->id] = $time_slot->name;
-        }
+        $array_time_slot = $this->arrayTimeSlot();
 
     	return view('User.Admin.SpecialDateTime.add_special_datetime', [
             'model_special_datetime' => $model_special_datetime,
@@ -279,9 +273,237 @@ class SpecialDateTimeController extends Controller
             ->with('success', 'Bạn đã thêm mới khoảng thời gian tăng giá');
     }
 
+    public function edit($id)
+    {
+        $model_special_datetime = $this->special_datetime;
+        $special_datetime       = $model_special_datetime->find($id);
+        $type_special_datetime  = '';
+
+        // Create array time slot
+        $array_time_slot = array();
+        $array_time_slot = $this->arrayTimeSlot();
+
+        if(!empty($special_datetime->id_time_slot) && !empty($special_datetime->date))
+        {
+            $type_special_datetime = ENOUGH;
+        }
+        elseif(!empty($special_datetime->id_time_slot))
+        {
+            $type_special_datetime = EMPTY_HOUR;
+        }
+        elseif(!empty($special_datetime->date))
+        {
+            $type_special_datetime = EMPTY_DATE;
+        }
+
+        return view('User.Admin.SpecialDateTime.edit', [
+            'special_datetime'       => $special_datetime,
+            'type_special_datetime'  => $type_special_datetime,
+            'array_time_slot'        => $array_time_slot,
+            'model_special_datetime' => $model_special_datetime,
+        ]);
+    }
+
+    public function update($id, Request $request)
+    {
+        $model_special_datetime   = $this->special_datetime;
+        $model_detail_bill        = $this->detail_bill;
+        $special_datetime_request = $request->special_datetime;
+        $name_route               = 'admin.specialdatetime.edit';
+        $isset_special_datetime_in_bill = false;
+        $isset_special_datetime         = false;
+
+        $special_datetime_request['increase_price']  = preg_replace('/[^0-9]/', '', $special_datetime_request['increase_price']);
+
+        switch ($special_datetime_request['type_special_datetime']) {
+            case ENOUGH:
+                $this->validatorEditSpecialDateTime($special_datetime_request)->validate();
+                break;
+            case EMPTY_HOUR:
+                $this->validatorEditSpecialTime($special_datetime_request)->validate();
+                break;
+            case EMPTY_DATE:
+                $this->validatorEditSpecialDate($special_datetime_request)->validate();
+                break;
+            
+            default:
+                return redirect()->route($name_route, ['id' => $id])
+                ->with('error', 'Xảy ra lỗi vui lòng thử lại');
+        }
+            
+        $special_datetime = $model_special_datetime->find($id);
+        $special_datetime_request['special_datetime'] = $special_datetime;
+
+        // Check isset time slot in bill
+        $isset_special_datetime_in_bill = $this->checkDataRequestIssetSpecialDateTime($special_datetime_request);
+        $isset_special_datetime = $this->checkSameSpecialDateTime($special_datetime_request);
+
+        // Get pitch
+        if(!$isset_special_datetime && !$isset_special_datetime_in_bill)
+        {
+            if(!empty($special_datetime_request['time_slot']))
+            {
+                $model_time = $this->time;
+                $time_slot  = $model_time->find($special_datetime_request['time_slot']);
+
+                $special_datetime->id_time_slot   = $special_datetime_request['time_slot'];
+                $special_datetime->name_time_slot = $time_slot->name;
+            }
+            if(!empty($special_datetime_request['date']))
+            {
+                $special_datetime->date           = $special_datetime_request['date'];
+            }
+            $special_datetime->increase_price = $special_datetime_request['increase_price'];
+            $special_datetime->status         = $special_datetime_request['status'];
+            $special_datetime->updated_at     = Helper::getCurrentDateTime();
+            $special_datetime->save();
+
+            return redirect()->route($name_route, ['id' => $id])
+                ->with('success', 'Bạn đã sửa khoảng thời gian tăng giá');
+        }
+
+        return redirect()->route($name_route, ['id' => $id])
+                ->with('error', 'Khoảng thời gian đã được sử dụng, không thể chỉnh sửa');
+    }
+
+    public function delete($id)
+    {
+        $model_special_datetime = $this->special_datetime;
+        $isset_special_datetime = false;
+        $name_route  = 'admin.specialdatetime';
+
+        $special_datetime = $model_special_datetime->find($id);
+
+        // Check isset special date time in bill
+        $isset_special_datetime = $this->checkIssetSpecialDateTime($special_datetime);
+        if(!$isset_special_datetime)
+        {
+            $special_datetime->delete();
+
+            return redirect()->route($name_route)
+                ->with('success', 'Bạn đã xóa sân bóng');
+        }
+
+        return redirect()->route($name_route)
+            ->with('error', 'Khoảng thời gian tăng giá đã được sử dụng, không thể xóa');
+    }
+
+    public function arrayTimeSlot()
+    {
+        $model_time      = $this->time;
+        $array_time_slot = array();
+
+        $time_slots = $model_time->all();
+        foreach ($time_slots as $time_slot) {
+            $array_time_slot[$time_slot->id] = $time_slot->name;
+        }
+
+        return $array_time_slot;
+    }
+
+    public function checkIssetSpecialDateTime($special_datetime)
+    {
+        $model_detail_bill      = $this->detail_bill;
+        $isset_special_datetime = false;
+        $detail_bill = '';
+
+        if(!empty($special_datetime->id_time_slot) && !empty($special_datetime->date))
+        {
+            $detail_bill = $model_detail_bill->where('id_time_slot', $special_datetime->id_time_slot)
+                ->where('soccer_day', $special_datetime->date)
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+        elseif(!empty($special_datetime->id_time_slot))
+        {
+            $detail_bill = $model_detail_bill->where('id_time_slot', $special_datetime->id_time_slot)
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+        elseif(!empty($special_datetime->date))
+        {
+            $detail_bill = $model_detail_bill->where('soccer_day', $special_datetime->date)
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+
+        $isset_special_datetime = !empty($detail_bill) ? true : false;
+
+        return $isset_special_datetime;
+    }
+
+    public function checkDataRequestIssetSpecialDateTime(array $data_request)
+    {
+        $model_detail_bill      = $this->detail_bill;
+        $isset_special_datetime = false;
+        $special_datetime       = $data_request['special_datetime'];
+        $detail_bill = '';
+
+        if(!empty($data_request['time_slot']) && !empty($data_request['date']))
+        {
+            $detail_bill = $model_detail_bill->where('id_time_slot', $data_request['time_slot'])
+                ->where('soccer_day', $data_request['date'])
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+        elseif(!empty($data_request['time_slot']))
+        {
+            $detail_bill = $model_detail_bill->where('id_time_slot', $data_request['time_slot'])
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+        elseif(!empty($data_request['date']))
+        {
+            $detail_bill = $model_detail_bill->where('soccer_day', $data_request['date'])
+                ->where('created_at', '>=', $special_datetime->created_at)
+                ->first();
+        }
+
+        $isset_special_datetime = !empty($detail_bill) ? true : false;
+
+        return $isset_special_datetime;
+    }
+
+    public function checkSameSpecialDateTime(array $data_request)
+    {
+        $model_special_datetime  = $this->special_datetime;
+        $isset_special_datetime  = false;
+        $special_datetime        = $data_request['special_datetime'];
+        $detail_special_datetime = '';
+
+        if(!empty($data_request['time_slot']) && !empty($data_request['date']))
+        {
+            $detail_special_datetime = $model_special_datetime->where('id_time_slot', $data_request['time_slot'])
+                ->where('date', $data_request['date'])
+                ->where('id', '!=', $special_datetime->id)
+                ->first();
+        }
+        elseif(!empty($data_request['time_slot']))
+        {
+            $detail_special_datetime = $model_special_datetime->where('id_time_slot', $data_request['time_slot'])
+                ->where('id', '!=', $special_datetime->id)
+                ->first();
+        }
+        elseif(!empty($data_request['date']))
+        {
+            $detail_special_datetime = $model_special_datetime->where('date', $data_request['date'])
+                ->where('id', '!=', $special_datetime->id)
+                ->first();
+        }
+
+        $isset_special_datetime = !empty($detail_special_datetime) ? true : false;
+
+        return $isset_special_datetime;
+    }
+
 
     private $array_validate = [
         'increase_price' => ['required', 'string', 'min:5', 'max:7'],
+    ];
+
+    private $array_validate_edit = [
+        'increase_price' => ['required', 'string', 'min:5', 'max:7'],
+        'status'         => ['required', 'string', 'min:1', 'max:1'],
     ];
 
     private function validatorSpecialDate(array $data)
@@ -308,6 +530,28 @@ class SpecialDateTimeController extends Controller
         $array_validate['time_slot_start'] = ['required', 'integer'];
         $array_validate['time_slot_end']   = ['required', 'integer', 'gte:time_slot_start'];
         return Validator::make($data, $array_validate, $this->messages());
+    }
+
+    private function validatorEditSpecialDate(array $data)
+    {
+        $array_validate_edit = $this->array_validate_edit;
+        $array_validate_edit['date'] = ['required', 'date_format:Y-m-d'];
+        return Validator::make($data, $array_validate_edit, $this->messages());
+    }
+
+    private function validatorEditSpecialTime(array $data)
+    {
+        $array_validate_edit = $this->array_validate_edit;
+        $array_validate_edit['time_slot'] = ['required', 'integer'];
+        return Validator::make($data, $array_validate_edit, $this->messages());
+    }
+
+    private function validatorEditSpecialDateTime(array $data)
+    {
+        $array_validate_edit = $this->array_validate_edit;
+        $array_validate_edit['date']      = ['required', 'date_format:Y-m-d'];
+        $array_validate_edit['time_slot'] = ['required', 'integer'];
+        return Validator::make($data, $array_validate_edit, $this->messages());
     }
 
     private function messages()
