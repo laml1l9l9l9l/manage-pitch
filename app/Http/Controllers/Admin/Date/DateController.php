@@ -76,7 +76,9 @@ class DateController extends Controller
         $date_period = new \DatePeriod($date_start, $interval, $date_end);
         foreach ($date_period as $date) {
             $date = $date->format('Y-m-d');
-            $isset_date = $model_date->where('date', '=', $date)->count();
+            $isset_date = $model_date->where('date', '=', $date)
+                ->where('status', '=', LOCK)
+                ->count();
             if($isset_date > 0){
                 continue;
             }

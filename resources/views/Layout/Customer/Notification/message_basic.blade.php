@@ -17,6 +17,22 @@
 	    	</div>
     	@endif
 
+    	@if (session('warning'))
+	    	<div class="alert alert-warning alert-rounded alert-message">
+	    		<div class="alert-icon">
+	    			<i class="material-icons">warning</i>
+	    		</div>
+	    		<h4 class="m-0" id="message">
+	    			{{ session('warning') }}
+	    		</h4>
+	    		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    			<span aria-hidden="true">
+	    				<i class="material-icons">clear</i>
+	    			</span>
+	    		</button>
+	    	</div>
+    	@endif
+
     	@if (session('error'))
 	    	<div class="alert alert-danger alert-rounded alert-message">
 	    		<div class="alert-icon">

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Cookie;
 
 class Controller extends BaseController
 {
@@ -24,5 +25,15 @@ class Controller extends BaseController
         }
 
         return $page;
+    }
+
+    protected function setCookie($name = '', $data = '', $minutes = 5){
+        Cookie::queue(Cookie::make($name, $data, $minutes));
+        return true;
+    }
+
+    protected function guard()
+    {
+        return \Auth::guard('');
     }
 }

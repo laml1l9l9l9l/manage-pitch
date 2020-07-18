@@ -293,7 +293,7 @@
                         <div class="card-footer">
                             <hr />
                             <div class="stats">
-                                <a href="{{ route('admin.bill').'manager/bill?bill%5Bstatus%5D='.UNPAID }}">
+                                <a href="{{ route('admin.bill').'?bill%5Bstatus%5D='.UNPAID }}">
                                     <i class="ti-search"></i> {{ __('Xem chi tiết') }}
                                 </a>
                             </div>

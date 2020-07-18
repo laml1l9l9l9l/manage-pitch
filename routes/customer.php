@@ -4,6 +4,7 @@ $group      = "customer";
 $LoginController      = "Customer\LoginController";
 $RegisterController   = "Customer\RegisterController";
 $HomeController       = "Customer\HomeController";
+$BookPitchController  = "Customer\BookPitch\BookPitchController";
 $BookPitchsController = "Customer\BookPitchs\BookPitchsController";
 $DateOffController    = "Customer\API\DateOffController";
 
@@ -30,6 +31,9 @@ Route::get("","$HomeController@home")
 Route::get("/home","$HomeController@home")
 	->name("$group.home");
 
+// Book
+Route::post("book","$BookPitchController@confirmBill")
+	->name("$group.check.book.pitch");
 // Book Pitchs
 Route::get("check-book-pitchs","$BookPitchsController@check")
 	->name("$group.check.book.pitchs");
@@ -48,6 +52,9 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	$group = "customer";
 	$ProfileController        = "Customer\Profile\ProfileController";
 	$ChangePasswordController = "Customer\Profile\ChangePasswordController";
+	$BookPitchController      = "Customer\BookPitch\BookPitchController";
+	$BillBookPitchController  = "Customer\BookPitch\BillBookPitchController";
+	$BillBookPitchsController = "Customer\BookPitchs\BillBookPitchsController";
 	$BillController           = "Customer\Bill\BillController";
 	$ListBillController       = "Customer\Bill\ListBillController";
 	$DetailBillController     = "Customer\Bill\DetailBillController";
@@ -65,14 +72,19 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticateCustomer"]],fun
 	Route::post("change-password","$ChangePasswordController@update")
 		->name("$group.profile.update.password");
 
+	// Book
+	Route::post("book-pitch","$BillBookPitchController@createBill")
+		->name("$group.book.pitch");
+	Route::post("book-pitchs","$BillBookPitchsController@createBill")
+		->name("$group.book.pitchs");
 
 	// Bill
-	Route::post("bill","$BillController@createBill")
-		->name("$group.bill.create");
 	Route::get("bill","$ListBillController@bill")
 		->name("$group.bill");
 	Route::get("bill/detail/{id}","$DetailBillController@index")
 		->name("$group.bill.detail");
+	Route::post("bill","$BillController@createBill")
+		->name("$group.bill.create");
 
 	
 	// Logout

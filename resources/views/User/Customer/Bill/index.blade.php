@@ -74,11 +74,17 @@
 												{{ __($bill->code) }}
 											</h3>
 											<p class="card-description">
-												{{ __('Đặt cọc: '.number_format($bill->down_payment).' VNĐ') }}
+												{{ __('Thành tiền: ') }}
+												<b>
+													{{ __(number_format($bill->into_money).' VNĐ') }}
+												</b>
 											</p>
 											<hr>
 											<p class="card-description">
-												{{ __('Thành tiền: '.number_format($bill->into_money).' VNĐ') }}
+												{{ __('Đặt cọc: ') }}
+												<b>
+													{{ __(number_format($bill->down_payment).' VNĐ') }}
+												</b>
 											</p>
 											<hr>
 											<p class="card-description">

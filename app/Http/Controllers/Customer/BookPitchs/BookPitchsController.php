@@ -5,54 +5,190 @@ namespace App\Http\Controllers\Customer\BookPitchs;
 use App\Http\Controllers\Controller;
 use App\Model\Customer\Pitch;
 use App\Model\Customer\Time;
+use App\Model\Customer\Date;
+use App\Model\Customer\DetailBill;
 use Illuminate\Http\Request;
 use Validator;
 
 class BookPitchsController extends Controller
 {
-    public function __construct(Pitch $pitch, Time $time)
+    public function __construct(Pitch $pitch, Time $time, Date $date, DetailBill $detail_bill)
     {
-		$this->pitch = $pitch;
-		$this->time  = $time;
+		$this->pitch       = $pitch;
+		$this->time        = $time;
+		$this->date        = $date;
+		$this->detail_bill = $detail_bill;
     }
 
     public function check()
     {
-    	return view('User.Customer.BookPitchs.check');
+		$model_pitch = $this->pitch;
+    	return view('User.Customer.BookPitchs.check', [
+    		'model_pitch' => $model_pitch
+    	]);
     }
 
     public function selectDateTimeRent(Request $request)
     {
     	$book_request = $request->book;
         $this->validatorSelectDateTimeRent($book_request)->validate();
-    	dd($book_request);
 
     	$date_time_booking = $this->dateTimeBooking($book_request);
+    	dd($date_time_booking);
     	return view('User.Customer.BookPitchs.book', [
     		'date_time_booking' => $date_time_booking
     	]);
     }
 
-    protected function dateTimeBooking(array date)
+    protected function suggestDateTimeBooking(array $date)
     {
-    	# return array [
-    	# 	{
-    	# 		date: 2020-07-12,
-    	# 		time: [ 1, 2, 4 ] // id time slot
-    	# 	},
-    	# 	{
-    	# 		date: 2020-07-13,
-    	# 		time: [ 2, 3, 4 ] // id time slot
-    	# 	}
+    	# get all times in a day
+    	# check bill with each time in a day
+    	# return array time in each day can rent
+    	# return object {
+    	# 	code: 00, // 00: success, 01: error
+    	# 	message: 'success',
+    	# 	series: '123123123',
+    	# 	result: [
+    	# 		{
+    	# 			date: 2020-07-12,
+    	# 			information: [
+    	# 				{
+    	# 					pitch: 1, // id time slot
+    	# 					time: [1, 2]
+    	# 				},
+    	# 				{
+    	# 					pitch: 2, // id time slot
+    	# 					time: [1, 2, 4]
+    	# 				},
+    	# 				{
+    	# 					pitch: 1, // id time slot
+    	# 					time: [2, 4]
+    	# 				}
+    	# 			]
+    	# 		},
+    	# 		{
+    	# 			date: 2020-07-13,
+    	# 			information: {
+    	# 				time: [ 2, 3, 4], // id time slot
+    	# 				pitch: [2]
+    	# 			}
+    	# 		}
+    	# 	]
+		# }
+		$model_detail_bill = $this->detail_bill;
+		$model_date        = $this->date;
+		$model_time        = $this->time;
+		$model_pitch       = $this->pitch;
+		$array_date  = array();
+		$array_time  = array();
+		$array_pitch = array();
+		$code    = null; // 00: success, 01: error
+		$message = null;
+		$result  = array();
+
+		// Get array date for period
+		$date_start   = date('Y-m-d', strtotime($date['date_start'] . ' 0 day'));
+		$date_end     = date('Y-m-d', strtotime($date['date_end'] . ' +1 day'));
+		$period_dates = new \DatePeriod(
+		     new \DateTime($date_start),
+		     new \DateInterval('P1D'),
+		     new \DateTime($date_end)
+		);
+		foreach($period_dates as $date_period){
+            $isset_date = $model_date->where('date', $date_period)
+                ->where('status', LOCK)
+            	->first();
+            if($isset_date){ continue; }
+
+            $date_period = $date_period->format('Y-m-d');
+            array_push($array_date, $date_period);
+		}
+
+		// Get array time for period
+		$time_slots = $model_time->where('status', ACTIVE)
+			->get();
+		$time_start = strtotime($date['time_start']);
+		$time_end   = strtotime($date['time_end']);
+		foreach($time_slots as $time_slot){
+			$time_slot_start = strtotime($time_slot->time_start);
+			$time_slot_end   = strtotime($time_slot->time_end);
+            if($time_start >= $time_slot_start || $time_end <= $time_slot_end){
+            	continue;
+            }
+
+            array_push($array_time, $time_slot->id);
+		}
+
+		// Get array pitch
+		$pitchs = $model_pitch->where('status', ACTIVE)
+			->where('type', $date['type_pitch'])
+			->get();
+		foreach ($pitchs as $pitch) {
+			array_push($array_pitch, $pitch->id);
+		}
+
+		// Get result
+		if(!$array_date || !$array_time || !$array_pitch) {
+			$code = '01';
+			$message = 'error';
+		} else {
+			foreach ($array_date as $a_date) {
+				foreach ($array_time as $time) {
+					$isset_detail_bill = $model_detail_bill->where('soccer_day', '=', $a_date)
+						->where('id_time_slot', '=', $time)
+						->get();
+					// bill: soccer_day - 15-07-2020
+					//	
+					print_r($isset_detail_bill);die('ok');
+					if($bill->id_time_slot > 0){
+						// print_r($bill->id_time_slot);die('ok');
+						$bill;
+					}
+				}
+			}
+		}
+
+		return (object) array(
+			'code'    => $code,
+			'message' => $message,
+			'result'  => $result
+		);
+    }
+
+    protected function informationDate(array $data)
+    {
+    	# data: [
+    	# 	date => 2020-07-19,
+    	# 	time => [1, 3, 5],
+    	# 	type_pitch => 1
     	# ]
-    	return null;
+    	# 
+    	# return {
+    	# 	date: 2020-07-12,
+    	# 	information: [
+    	# 		{
+    	# 			pitch: 1, // id time slot
+    	# 			time: [1, 2]
+    	# 		},
+    	# 		{
+    	# 			pitch: 2, // id time slot
+    	# 			time: [1, 2, 4]
+    	# 		},
+    	# 		{
+    	# 			pitch: 1, // id time slot
+    	# 			time: [2, 4]
+    	# 		}
+    	# 	]
+    	# }
     }
 
     private $array_select_date_time_validate = [
-        'time_start' => ['required', 'date_format:H:i'],
-        'time_end'   => ['required', 'date_format:H:i', 'after_or_equal:time_start'],
-        'date_start' => ['required', 'date_format:Y-m-d'],
-        'date_end'   => ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'],
+		'time_start' => ['required', 'date_format:H:i'],
+		'time_end'   => ['required', 'date_format:H:i', 'after_or_equal:time_start'],
+		'date_start' => ['required', 'date_format:Y-m-d', 'after:today'],
+		'date_end'   => ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'],
+		'type_pitch' => ['required', 'string', 'min:1', 'max:1'],
     ];
 
 
@@ -64,10 +200,14 @@ class BookPitchsController extends Controller
     private function messages()
     {
         return [
-            'required'                => 'Không được để trống',
-            'date_format'             => 'Sai định dạng',
-            'date_end.after_or_equal' => 'Ngày không hợp lệ',
-            'time_end.after_or_equal' => 'Giờ không hợp lệ',
+			'required'                => 'Không được để trống',
+			'string'                  => 'Sai định dạng',
+			'max'                     => 'Sai định dạng',
+			'min'                     => 'Sai định dạng',
+			'date_format'             => 'Sai định dạng',
+			'date_end.after'          => 'Ngày bắt đầu thuê phải lớn hơn ngày hiện tại',
+			'date_end.after_or_equal' => 'Ngày không hợp lệ',
+			'time_end.after_or_equal' => 'Giờ không hợp lệ',
         ];
     }
 }

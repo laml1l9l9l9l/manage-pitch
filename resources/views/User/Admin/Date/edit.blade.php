@@ -26,9 +26,9 @@
 						<div class="card-content">
 							<div class="form-group">
 								<label for="name">
-									{{ __('Sự kiện') }}
+									{{ __('Lý do') }}
 								</label>
-								<input type="text" placeholder="Sự kiện" class="form-control" id="name" name="date[name]" value="@if(!empty($date->name)) {{ $date->name }} @endif">
+								<input type="text" placeholder="Lý do" class="form-control" id="name" name="date[name]" value="@if(!empty($date->name)) {{ $date->name }} @endif">
                 				@if (!empty($errors) && $errors->has('name'))
                 					<label class="error text-danger" for="name">
                 						{{ $errors->first('name') }}

@@ -33,9 +33,7 @@
 							<div class="tab-space" id="row-title"></div>
 						</div>
 
-						<div class="col-md-12 p-0" id="alert-select-warning">
-							@include('Layout.Customer.Notification.message_basic')
-						</div>
+						@include('Layout.Customer.Notification.message_basic')
 					</div>
 
 
@@ -119,7 +117,38 @@
 												@endif
 											</div>
 										</div>
-										<button type="submit" class="btn btn-primary">
+										<div class="my-2">
+											<label>
+												<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Chọn loại sân') }}</h4>
+												<small id="selectDateHelp" class="form-text text-muted">
+													{{ __('Hãy chọn loại sân mong muốn') }}
+												</small>
+											</label>
+											<div class="row">
+												<div class="d-flex justify-content-between">
+													<div class="col-md-5 p-0">
+														<select class="selectpicker" name="book[type_pitch]" data-style="btn btn-primary btn-round" title="Single Select" data-size="5">
+															<option disabled selected>{{ __('Loại sân') }}</option>
+															@php
+																Helpers::optionSelectArray($model_pitch->status_model, ( isset(old('book')['type_pitch']) && old('book')['type_pitch'] !== null) ? old('book')['type_pitch'] : '' );
+															@endphp
+														</select>
+													</div>
+												</div>
+												@if (!empty($errors) && $errors->has('type_pitch'))
+													<div class="d-flex justify-content-between">
+														<div class="col-md-5 p-0">
+							                				@if ($errors->has('type_pitch'))
+							                					<label class="error text-danger">
+							                						{{ $errors->first('type_pitch') }}
+							                					</label>
+							                				@endif
+														</div>
+													</div>
+												@endif
+											</div>
+										</div>
+										<button type="submit" class="btn btn-info">
 											{{ __('Xác nhận') }}
 										</button>
 									</form>

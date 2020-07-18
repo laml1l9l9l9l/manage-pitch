@@ -52,9 +52,9 @@ $(document).ready(function() {
                 var message = 'Ngày này không hoạt động';
                 showErrorWarning(message);
             }
-			else if(new Date(rent_date) < new Date(full_day))
+			else if(new Date(rent_date) <= new Date(full_day))
 			{
-				var message = 'Ngày thuê nhỏ hơn ngày hiện tại';
+				var message = 'Ngày thuê phải lớn hơn ngày hiện tại';
 				showErrorWarning(message);
 			}
 			else

@@ -11,7 +11,6 @@ use App\Model\Customer\Pitch;
 use App\Model\Customer\SpecialDateTime;
 use App\Model\Helper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BillController extends CustomerController
 {

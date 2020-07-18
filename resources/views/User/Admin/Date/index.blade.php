@@ -26,9 +26,9 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="name-date">
-										{{ __('Sự kiện') }}
+										{{ __('Lý do') }}
 									</label>
-									<input type="text" placeholder="Tên sự kiện" class="form-control" id="name-date" name="date[name]" value="@if(!empty($request_date['name'])){{ $request_date['name'] }}@endif">
+									<input type="text" placeholder="Lý do" class="form-control" id="name-date" name="date[name]" value="@if(!empty($request_date['name'])){{ $request_date['name'] }}@endif">
 								</div>
 							</div>
 
@@ -121,7 +121,7 @@
 							<thead>
 								<tr class="text-bold">
 									<th class="text-center">#</th>
-									<th>{{ __('Sự kiện') }}</th>
+									<th>{{ __('Lý do') }}</th>
 									<th class="text-right">{{ __('Ngày') }}</th>
 									<th class="text-center">{{ __('Trạng thái') }}</th>
 									<th class="text-right">{{ __('Ngày tạo') }}</th>
