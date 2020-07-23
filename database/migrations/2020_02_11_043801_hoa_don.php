@@ -19,6 +19,7 @@ class HoaDon extends Migration
             $table->integer('down_payment')->comment('tien dat coc');
             $table->integer('into_money')->comment('thanh tien');
             $table->tinyInteger('status')->comment('1: da thanh toan, 0: da dat coc, -1: chua dat coc');
+            $table->tinyInteger('type')->default(1)->comment('1: kich hoat, 0: huy');
             $table->integer('id_customer');
             $table->timestamps();
         });

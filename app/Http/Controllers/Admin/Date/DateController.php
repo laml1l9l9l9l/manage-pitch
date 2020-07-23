@@ -154,7 +154,7 @@ class DateController extends Controller
 
     private $array_validate = [
         'name'       => ['required', 'string', 'min:2', 'max:25'],
-        'date_start' => ['required', 'date_format:Y-m-d'],
+        'date_start' => ['required', 'date_format:Y-m-d', 'after:today'],
         'date_end'   => ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'],
     ];
 
@@ -189,6 +189,7 @@ class DateController extends Controller
             'status.max'              => 'Sai định dạng',
             'status.min'              => 'Sai định dạng',
             'date_format'             => 'Sai định dạng',
+            'date_start.after'        => 'Ngày bắt đầu phải lớn hơn ngày hiện tại',
             'date_end.after_or_equal' => 'Ngày không hợp lệ',
             'date_special.max'        => 'Sai định dạng',
             'date_special.min'        => 'Sai định dạng',

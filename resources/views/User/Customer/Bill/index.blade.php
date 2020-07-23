@@ -88,7 +88,10 @@
 											</p>
 											<hr>
 											<p class="card-description">
-												{{ __( 'Ngày tạo: '.date('H:i, d-m-Y', strtotime($bill->created_at)) ) }}
+												{{ __( 'Ngày tạo: ') }}
+												<b>	
+													{{ __(date('H:i, d-m-Y', strtotime($bill->created_at)) ) }}
+												</b>
 											</p>
 											<a href="{{ route('customer.bill.detail', ['id' => $bill->id]) }}" class="btn btn-primary btn-round">
 												<i class="material-icons">format_align_left</i> {{ __('Xem chi tiết') }}

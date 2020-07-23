@@ -33,7 +33,7 @@ class BookPitchsController extends Controller
     	$book_request = $request->book;
         $this->validatorSelectDateTimeRent($book_request)->validate();
 
-    	$date_time_booking = $this->dateTimeBooking($book_request);
+    	$date_time_booking = $this->suggestDateTimeBooking($book_request);
     	dd($date_time_booking);
     	return view('User.Customer.BookPitchs.book', [
     		'date_time_booking' => $date_time_booking
@@ -52,27 +52,29 @@ class BookPitchsController extends Controller
     	# 	result: [
     	# 		{
     	# 			date: 2020-07-12,
-    	# 			information: [
+    	# 			informations: [
     	# 				{
     	# 					pitch: 1, // id time slot
-    	# 					time: [1, 2]
+    	# 					times: [1, 2]
     	# 				},
     	# 				{
     	# 					pitch: 2, // id time slot
-    	# 					time: [1, 2, 4]
+    	# 					times: [1, 2, 4]
     	# 				},
     	# 				{
     	# 					pitch: 1, // id time slot
-    	# 					time: [2, 4]
+    	# 					times: [2, 4]
     	# 				}
     	# 			]
     	# 		},
     	# 		{
     	# 			date: 2020-07-13,
-    	# 			information: {
-    	# 				time: [ 2, 3, 4], // id time slot
-    	# 				pitch: [2]
-    	# 			}
+    	# 			information: [
+    	# 				{
+    	# 					time: [ 2, 3, 4], // id time slot
+    	# 					pitch: [2]
+    	# 				}
+    	# 			]
     	# 		}
     	# 	]
 		# }
@@ -99,7 +101,8 @@ class BookPitchsController extends Controller
             $isset_date = $model_date->where('date', $date_period)
                 ->where('status', LOCK)
             	->first();
-            if($isset_date){ continue; }
+            if($isset_date)
+            	continue;
 
             $date_period = $date_period->format('Y-m-d');
             array_push($array_date, $date_period);
@@ -113,7 +116,7 @@ class BookPitchsController extends Controller
 		foreach($time_slots as $time_slot){
 			$time_slot_start = strtotime($time_slot->time_start);
 			$time_slot_end   = strtotime($time_slot->time_end);
-            if($time_start >= $time_slot_start || $time_end <= $time_slot_end){
+            if($time_start > $time_slot_start || $time_end < $time_slot_end){
             	continue;
             }
 
@@ -134,20 +137,23 @@ class BookPitchsController extends Controller
 			$message = 'error';
 		} else {
 			foreach ($array_date as $a_date) {
-				foreach ($array_time as $time) {
-					$isset_detail_bill = $model_detail_bill->where('soccer_day', '=', $a_date)
-						->where('id_time_slot', '=', $time)
-						->get();
-					// bill: soccer_day - 15-07-2020
-					//	
-					print_r($isset_detail_bill);die('ok');
-					if($bill->id_time_slot > 0){
-						// print_r($bill->id_time_slot);die('ok');
-						$bill;
-					}
-				}
+				$informations  = array();
+				$informations = $this->informationDate([
+					'date'   => $a_date,
+					'times'  => $array_time,
+					'pitchs' => $array_pitch
+				]);
+
+				$data_result = (object) array(
+					'date'         => $a_date,
+					'informations' => $informations
+				);
+
+				array_push($result, $data_result);
 			}
 		}
+
+		dd($result);
 
 		return (object) array(
 			'code'    => $code,
@@ -160,27 +166,68 @@ class BookPitchsController extends Controller
     {
     	# data: [
     	# 	date => 2020-07-19,
-    	# 	time => [1, 3, 5],
-    	# 	type_pitch => 1
+    	# 	times => [1, 3, 5],
+    	# 	pitchs => [1]
     	# ]
     	# 
     	# return {
     	# 	date: 2020-07-12,
-    	# 	information: [
+    	# 	informations: [
     	# 		{
     	# 			pitch: 1, // id time slot
-    	# 			time: [1, 2]
+    	# 			times: [1, 2]
     	# 		},
     	# 		{
     	# 			pitch: 2, // id time slot
-    	# 			time: [1, 2, 4]
+    	# 			times: [1, 2, 4]
     	# 		},
     	# 		{
     	# 			pitch: 1, // id time slot
-    	# 			time: [2, 4]
+    	# 			times: [2, 4]
     	# 		}
     	# 	]
     	# }
+		$model_detail_bill = $this->detail_bill;
+		$date   = $data['date'];
+		$times  = $data['times'];
+		$pitchs = $data['pitchs'];
+
+		$informations = array();
+
+    	foreach ($pitchs as $pitch) {
+			$object_information = null;
+			$array_time = array();
+    		foreach ($times as $time) {
+    			$isset_detail_bill = $model_detail_bill->join('bills', 'detail_bills.id_bill', '=', 'bills.id')
+    				->where('detail_bills.soccer_day', $date)
+					->where('detail_bills.id_time_slot', $time)
+					->where('detail_bills.id_pitch', $pitch)
+					->where('bills.type', ACTIVE)
+					->count();
+
+				if($isset_detail_bill > 0)
+					continue;
+
+				array_push($array_time, $time);
+    		}
+
+    		if(!$array_time)
+    			continue;
+
+    		$object_information = (object) array(
+    			'pitch' => $pitch,
+    			'times' => $array_time
+    		);
+
+			array_push($informations, $object_information);
+    	}
+
+    	return $informations;
+    }
+
+    protected function getSeriesVitualBill(array $data)
+    {
+
     }
 
     private $array_select_date_time_validate = [
@@ -205,7 +252,7 @@ class BookPitchsController extends Controller
 			'max'                     => 'Sai định dạng',
 			'min'                     => 'Sai định dạng',
 			'date_format'             => 'Sai định dạng',
-			'date_end.after'          => 'Ngày bắt đầu thuê phải lớn hơn ngày hiện tại',
+			'date_start.after'        => 'Ngày bắt đầu phải lớn hơn ngày hiện tại',
 			'date_end.after_or_equal' => 'Ngày không hợp lệ',
 			'time_end.after_or_equal' => 'Giờ không hợp lệ',
         ];

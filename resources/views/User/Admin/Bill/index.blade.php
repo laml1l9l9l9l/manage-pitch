@@ -138,7 +138,7 @@
 												<a href="{{ route('admin.bill.detail',['id' => $bill->id]) }}" type="button" rel="tooltip" title="Chi tiết" class="btn btn-info btn-simple btn-xs">
 													<i class="fa fa-file"></i>
 												</a>
-												<button type="button" rel="tooltip" title="Xóa" class="btn btn-danger btn-simple btn-xs btn-delete" data-toggle="modal" data-target="#confirmDelete" data-id-item="{{ __($bill->id) }}">
+												<button type="button" rel="tooltip" title="Hủy" class="btn btn-danger btn-simple btn-xs btn-delete" data-toggle="modal" data-target="#confirmDelete" data-id-item="{{ __($bill->id) }}">
 													<i class="fa fa-times"></i>
 												</button>
 											</td>
