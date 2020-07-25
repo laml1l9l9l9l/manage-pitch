@@ -40,56 +40,59 @@
 
 					<div class="row" id="booking-pitchs">
 
-						<div class="col-md-12">
-							<div class="card">
-								<div class="card-content">
-
-									<form>
-										@csrf
-										<div class="my-2">
-											<label>
-												<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Chọn khoảng ngày thuê') }}</h4>
-												<small id="selectDateHelp" class="form-text text-muted">
-													{{ __('Hãy chọn ngày bắt đầu và kết thúc') }}
-												</small>
-											</label>
-											<div class="row">
-												<div class="d-flex justify-content-between">
-													<div class="col-md-5 p-0">
-														<input type="date" class="form-control" name="book[start_date]" />
-													</div>
-													<div class="col-md-5 p-0">
-														<input type="date" class="form-control" name="book[end_date]" />
-													</div>
+						@foreach ($date_time_booking as $data)
+							@php
+								// dd($data);
+							@endphp
+							<div class="col-md-12">
+								<div class="card">
+									<div class="card-content">
+										<div class="d-flex">
+											<div class="col-md-1">
+												<div class="checkbox">
+													<label>
+														<input type="checkbox" name="optionsCheckboxes">
+													</label>
 												</div>
 											</div>
-										</div>
-										<div class="my-2">
-											<label>
-												<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Chọn khoảng giờ thuê') }}</h4>
-												<small id="selectDateHelp" class="form-text text-muted">
-													{{ __('Hãy chọn giờ bắt đầu và kết thúc') }}
-												</small>
-											</label>
-											<div class="row">
-												<div class="d-flex justify-content-between">
-													<div class="col-md-5 p-0">
-														<input type="time" class="form-control" name="book[start_time]" />
-													</div>
-													<div class="col-md-5 p-0">
-														<input type="time" class="form-control" name="book[end_time]" />
-													</div>
-												</div>
+											<div class="col-md-3">
+												<p>
+													<b>{{ __('Ngày thuê') }}</b>
+												</p>
+												<p>
+													{{ __(date('d-m-Y', strtotime($data->date))) }}
+												</p>
 											</div>
-										</div>
-										<button type="submit" class="btn btn-primary">
-											{{ __('Xác nhận') }}
-										</button>
-									</form>
-
+											<div class="col-md-2">
+												<p>
+													<b>{{ __('Khung giờ') }}</b>
+												</p>
+												<p>
+													{{ __('language.line') }}
+												</p>
+											</div>
+											<div class="col-md-3">
+												<p>
+													<b>{{ __('Sân bóng') }}</b>
+												</p>
+												<p>
+													{{ __('language.line') }}
+												</p>
+											</div>
+											<div class="col-md-3">
+												<p>
+													<b>{{ __('Giá') }}</b>
+												</p>
+												<p>
+													{{ __("language.line") }}
+												</p>
+											</div>
+										</div>							
+									</div>
 								</div>
 							</div>
-						</div>
+						@endforeach
+
 					</div>
 				</div>
 
@@ -101,4 +104,10 @@
 @endsection
 
 @push('js')
+	<script type="text/javascript">
+		$('.card').on('click', function(){
+		   	var checkbox = $(this).find('input[type="checkbox"]');
+		   	checkbox.prop('checked', !checkbox.prop('checked'));
+		});
+	</script>
 @endpush

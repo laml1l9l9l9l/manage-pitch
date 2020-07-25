@@ -99,9 +99,11 @@ class BookPitchController extends Controller
 		$amount      = 0;
 		$data_amount = array();
 
-		$count_detail_bill = $model_detail_bill->where('soccer_day', '=', $data['date'])
-			->where('id_time_slot', '=', $data['time_slot'])
-			->where('id_pitch', '=', $data['pitch'])
+		$count_detail_bill = $model_detail_bill->join('bills', 'detail_bills.id_bill', '=', 'bills.id')
+			->where('detail_bills.soccer_day', '=', $data['date'])
+			->where('detail_bills.id_time_slot', '=', $data['time_slot'])
+			->where('detail_bills.id_pitch', '=', $data['pitch'])
+			->where('bills.type', '=', ACTIVE)
 			->count();
 
 		if($count_detail_bill > 0){
@@ -177,9 +179,11 @@ class BookPitchController extends Controller
 			array_push($array_pitch, $pitch->id);
 
 		foreach ($array_pitch as $pitch) {
-			$count_detail_bill = $model_detail_bill->where('soccer_day', '=', $data['date'])
-				->where('id_time_slot', '=', $data['time_slot'])
-				->where('id_pitch', '=', $pitch)
+			$count_detail_bill = $model_detail_bill->join('bills', 'detail_bills.id_bill', '=', 'bills.id')
+				->where('detail_bills.soccer_day', '=', $data['date'])
+				->where('detail_bills.id_time_slot', '=', $data['time_slot'])
+				->where('detail_bills.id_pitch', '=', $pitch)
+				->where('bills.type', '=', ACTIVE)
 				->count();
 
 			if($count_detail_bill <= 0)

@@ -7,17 +7,19 @@ use App\Model\Customer\Pitch;
 use App\Model\Customer\Time;
 use App\Model\Customer\Date;
 use App\Model\Customer\DetailBill;
+use App\Model\Customer\SpecialDateTime;
 use Illuminate\Http\Request;
 use Validator;
 
 class BookPitchsController extends Controller
 {
-    public function __construct(Pitch $pitch, Time $time, Date $date, DetailBill $detail_bill)
+    public function __construct(Pitch $pitch, Time $time, Date $date, DetailBill $detail_bill, SpecialDateTime $special_datetime)
     {
 		$this->pitch       = $pitch;
 		$this->time        = $time;
 		$this->date        = $date;
 		$this->detail_bill = $detail_bill;
+		$this->special_datetime = $special_datetime;
     }
 
     public function check()
@@ -33,51 +35,60 @@ class BookPitchsController extends Controller
     	$book_request = $request->book;
         $this->validatorSelectDateTimeRent($book_request)->validate();
 
-    	$date_time_booking = $this->suggestDateTimeBooking($book_request);
-    	dd($date_time_booking);
-    	return view('User.Customer.BookPitchs.book', [
-    		'date_time_booking' => $date_time_booking
+		$date_time_booking = $this->suggestDateTimeBooking($book_request);
+		$data_suggest      = $this->dataSuggestBooking($date_time_booking);
+
+    	return view('User.Customer.BookPitchs.suggest', [
+    		'data_suggest' => $data_suggest
     	]);
+    }
+
+    protected function dataSuggestBooking(array $data)
+    {
+		$model_time  = $this->time;
+		$model_pitch = $this->pitch;
+    	$array_data_suggest = array();
+
+    	foreach ($data as $element) {
+    		$array_information = array();
+			$date         = $element->date ? $element->date : '';
+			$informations = $element->informations ? $element->informations : [];
+    		foreach ($informations as $information) {
+    			$pitch_id = $information->pitch ? $information->pitch : '';
+    			$pitch = $model_pitch->find($pitch_id);
+    			$times = $information->times ? $information->times : '';
+    			foreach ($times as $time) {
+    				$time_slot_id = $time;
+    				$time = $model_time->find($time_slot_id);
+
+		    		$amount = $this->getAmountBill([
+						'date'  => $date,
+						'pitch' => $pitch_id,
+						'time'  => $time_slot_id,
+		    		]);
+
+		    		$informations = (object) array(
+						'pitch'      => $pitch_id,
+						'pitch_name' => $pitch->name,
+						'time'       => $time_slot_id,
+						'time_name'  => $time->name,
+						'amount'     => $amount,
+		    		);
+					array_push($array_information, $informations);
+    			}
+    		};
+    		$data_result = (object) array(
+				'date'         => $date,
+				'informations' => $array_information
+    		);
+			array_push($array_data_suggest, $data_result);
+    	}
+
+    	return $array_data_suggest;
     }
 
     protected function suggestDateTimeBooking(array $date)
     {
-    	# get all times in a day
-    	# check bill with each time in a day
-    	# return array time in each day can rent
-    	# return object {
-    	# 	code: 00, // 00: success, 01: error
-    	# 	message: 'success',
-    	# 	series: '123123123',
-    	# 	result: [
-    	# 		{
-    	# 			date: 2020-07-12,
-    	# 			informations: [
-    	# 				{
-    	# 					pitch: 1, // id time slot
-    	# 					times: [1, 2]
-    	# 				},
-    	# 				{
-    	# 					pitch: 2, // id time slot
-    	# 					times: [1, 2, 4]
-    	# 				},
-    	# 				{
-    	# 					pitch: 1, // id time slot
-    	# 					times: [2, 4]
-    	# 				}
-    	# 			]
-    	# 		},
-    	# 		{
-    	# 			date: 2020-07-13,
-    	# 			information: [
-    	# 				{
-    	# 					time: [ 2, 3, 4], // id time slot
-    	# 					pitch: [2]
-    	# 				}
-    	# 			]
-    	# 		}
-    	# 	]
-		# }
 		$model_detail_bill = $this->detail_bill;
 		$model_date        = $this->date;
 		$model_time        = $this->time;
@@ -153,40 +164,11 @@ class BookPitchsController extends Controller
 			}
 		}
 
-		dd($result);
-
-		return (object) array(
-			'code'    => $code,
-			'message' => $message,
-			'result'  => $result
-		);
+		return $result;
     }
 
     protected function informationDate(array $data)
     {
-    	# data: [
-    	# 	date => 2020-07-19,
-    	# 	times => [1, 3, 5],
-    	# 	pitchs => [1]
-    	# ]
-    	# 
-    	# return {
-    	# 	date: 2020-07-12,
-    	# 	informations: [
-    	# 		{
-    	# 			pitch: 1, // id time slot
-    	# 			times: [1, 2]
-    	# 		},
-    	# 		{
-    	# 			pitch: 2, // id time slot
-    	# 			times: [1, 2, 4]
-    	# 		},
-    	# 		{
-    	# 			pitch: 1, // id time slot
-    	# 			times: [2, 4]
-    	# 		}
-    	# 	]
-    	# }
 		$model_detail_bill = $this->detail_bill;
 		$date   = $data['date'];
 		$times  = $data['times'];
@@ -225,9 +207,32 @@ class BookPitchsController extends Controller
     	return $informations;
     }
 
+    public function getAmountBill(array $data)
+    {
+		$model_pitch            = $this->pitch;
+		$model_special_datetime = $this->special_datetime;
+    	$amount = 0;
+    	$pitch = $model_pitch->find($data['pitch']);
+    	$amount += $pitch->price;
+    	$special_date = $model_special_datetime->where('date', '=', $data['date'])
+			->whereNull('id_time_slot')->first();
+		if($special_date)
+			$amount += $special_date->increase_price;
+    	$special_time = $model_special_datetime->where('id_time_slot', '=', $data['time'])
+			->whereNull('date')->first();
+		if($special_time)
+			$amount += $special_time->increase_price;
+    	$special_datetime = $model_special_datetime->where('date', '=', $data['date'])
+			->where('id_time_slot', '=', $data['time'])->first();
+		if($special_datetime)
+			$amount += $special_datetime->increase_price;
+    	return $amount;
+    }
+
     protected function getSeriesVitualBill(array $data)
     {
-
+    	$series = null;
+    	return $series;
     }
 
     private $array_select_date_time_validate = [
@@ -258,3 +263,38 @@ class BookPitchsController extends Controller
         ];
     }
 }
+
+	# Create bill
+    	# return object {
+    	# 	code: 00, // 00: success, 01: error
+    	# 	message: 'success',
+    	# 	series: '123123123',
+    	# 	result: [
+    	# 		{
+    	# 			date: 2020-07-12,
+    	# 			informations: [
+    	# 				{
+    	# 					pitch: 1, // id time slot
+    	# 					times: [1, 2]
+    	# 				},
+    	# 				{
+    	# 					pitch: 2, // id time slot
+    	# 					times: [1, 2, 4]
+    	# 				},
+    	# 				{
+    	# 					pitch: 1, // id time slot
+    	# 					times: [2, 4]
+    	# 				}
+    	# 			]
+    	# 		},
+    	# 		{
+    	# 			date: 2020-07-13,
+    	# 			information: [
+    	# 				{
+    	# 					time: [ 2, 3, 4], // id time slot
+    	# 					pitch: [2]
+    	# 				}
+    	# 			]
+    	# 		}
+    	# 	]
+		# }

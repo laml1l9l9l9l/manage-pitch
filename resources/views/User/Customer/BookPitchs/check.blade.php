@@ -26,7 +26,7 @@
 
 				<div class="section">
 					<div class="row" id="row-title-notice">
-						<div class="col-md-7 col-md-offset-2 text-center">
+						<div class="col-md-8 col-md-offset-2 text-center">
                         	<h2 class="title">
 								{{ __('Chọn khoảng thời gian thuê') }}
                         	</h2>
@@ -127,7 +127,7 @@
 											<div class="row">
 												<div class="d-flex justify-content-between">
 													<div class="col-md-5 p-0">
-														<select class="selectpicker" name="book[type_pitch]" data-style="btn btn-primary btn-round" title="Single Select" data-size="5">
+														<select class="selectpicker" name="book[type_pitch]" data-style="btn btn-primary btn-round" title="Loại sân" data-size="5">
 															<option disabled selected>{{ __('Loại sân') }}</option>
 															@php
 																Helpers::optionSelectArray($model_pitch->status_model, ( isset(old('book')['type_pitch']) && old('book')['type_pitch'] !== null) ? old('book')['type_pitch'] : '' );
