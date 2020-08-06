@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Bill;
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Bill;
 use App\Model\Admin\DetailBill;
+use App\Model\Admin\HistoryBill;
 use App\Model\Admin\SpecialDateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -12,10 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class BillController extends Controller
 {
-    public function __construct(Bill $bill, DetailBill $detail_bill, SpecialDateTime $special_datetime)
+    public function __construct(Bill $bill, DetailBill $detail_bill, HistoryBill $history_bill,SpecialDateTime $special_datetime)
     {
-        $this->bill        = $bill;
-        $this->detail_bill = $detail_bill;
+        $this->bill             = $bill;
+        $this->detail_bill      = $detail_bill;
+        $this->history_bill     = $history_bill;
         $this->special_datetime = $special_datetime;
     }
 
@@ -23,7 +25,6 @@ class BillController extends Controller
     {
         $request_bill = $request->bill;
         $model_bill   = $this->bill;
-
 
 		$offset     = 10;
 		$start_page = 1;
@@ -62,6 +63,7 @@ class BillController extends Controller
     {
         $model_bill             = $this->bill;
         $model_detail_bill      = $this->detail_bill;
+        $model_history_bill     = $this->history_bill;
         $model_special_datetime = $this->special_datetime;
         $offset = 6;
 
@@ -75,12 +77,17 @@ class BillController extends Controller
             ->orderBy('created_at', 'desc')
             ->select('detail_bills.*', 'time_slots.name as name_time_slot', 'pitchs.name as name_pitch', 'pitchs.price as price_pitch')
             ->paginate($offset);
+        $history_bill = $model_history_bill->where('id_bill', $id)
+            ->join('admins', 'admins.id', '=', 'bill_history.id_admin')
+            ->select('bill_history.*', 'admins.email as email_admin')
+            ->get();
         return view('User.Admin.Bill.detail', [
             'model_bill'             => $model_bill,
             'model_detail_bill'      => $model_detail_bill,
             'model_special_datetime' => $model_special_datetime,
             'bill'                   => $bill,
             'detail_bills'           => $detail_bills,
+            'history_bill'           => $history_bill
         ]);
     }
 

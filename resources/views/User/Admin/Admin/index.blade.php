@@ -2,7 +2,7 @@
 
 @push('css')
 	<title>
-		{{ __('Phân quyền') }}
+		{{ __('Quản trị viên') }}
 	</title>
 @endpush
 
@@ -38,7 +38,7 @@
 				<div class="col-md-12 card">
 
 					<div class="card-header">
-						<h4 class="card-title">{{ __('Quyền quản trị') }}</h4>
+						<h4 class="card-title">{{ __('Quản trị viên') }}</h4>
 					</div>
 
 					<div class="card-content">
@@ -47,37 +47,41 @@
 								<thead>
 									<tr class="text-bold">
 										<th class="text-center">#</th>
-										<th>{{ __('Tên quyền') }}</th>
+										<th>{{ __('Email') }}</th>
+										<th>{{ __('Họ tên') }}</th>
 										<th class="text-right">{{ __('Ngày tạo') }}</th>
-										{{-- <th class="text-right">{{ __('Thao Tác') }}</th> --}}
+										<th class="text-right">{{ __('Thao Tác') }}</th>
 									</tr>
 								</thead>
 								<tbody>
-									@if (count($roles) > 0)
-										@foreach ($roles as $role)
+									@if (count($admins) > 0)
+										@foreach ($admins as $admin)
 											<tr>
-												<td class="text-center">{{ $page_role }}</td>
+												<td class="text-center">{{ $page_admin }}</td>
 												<td>
-													{{ __($role->name) }}
+													{{ __($admin->email) }}
+												</td>
+												<td>
+													{{ __($admin->name) }}
 												</td>
 												<td class="text-right">
-													{{ date('d-m-Y H:i', strtotime($role->created_at)) }}
+													{{ date('d-m-Y H:i', strtotime($admin->created_at)) }}
 												</td>
-												{{-- <td class="td-actions text-right">
-													<button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
-														<i class="fa fa-times"></i>
-													</button>
-												</td> --}}
+												<td class="td-actions text-right">
+													<a href="{{ route('admin.admin.edit', ['id' => $admin->id]) }}" rel="tooltip" title="Chỉnh sửa" class="btn btn-success btn-simple btn-xs">
+														<i class="fa fa-edit"></i>
+													</a>
+												</td>
 											</tr>
 											@php
-												$page_role++
+												$page_admin++
 											@endphp
 										@endforeach
 									@else
 										<tr>
 											<td class="text-center" colspan="4">
 												<h4 class="my-3">
-													{{ __('Chưa có quyền quản trị') }}
+													{{ __('Chưa có quản trị viên') }}
 												</h4>
 											</td>
 										</tr>
@@ -87,7 +91,7 @@
 						</div>
 
 						<div class="text-right">
-							{{ $roles->links() }}
+							{{ $admins->links() }}
 						</div>
 					</div>
 				</div>

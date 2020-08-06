@@ -71,12 +71,14 @@ class HomeController extends Controller
         }
         else{
             $percent = $count_last_month ? $this->percent($count_current_month, $count_last_month) : null;
+            $percent = number_format($percent, 2);
             if($count_current_month > $count_last_month)
             {
                 $percent_status = INCREASE;
             }
         }
         $color_statistical = $model_bill->class_color_status_statistical[$percent_status];
+        $icon_statistical  = $model_bill->icon_status_statistical[$percent_status];
 
         // Count money
         $bill_unpaids    = $model_bill->where('status', UNPAID)->get();
@@ -100,6 +102,7 @@ class HomeController extends Controller
             'count_deposited'   => $count_deposited,
             'count_paid'        => $count_paid,
             'color_statistical' => $color_statistical,
+            'icon_statistical'  => $icon_statistical,
             'amount_unpaid'     => $amount_unpaid,
             'amount_deposited'  => $amount_deposited,
             'amount_paid'       => $amount_paid,

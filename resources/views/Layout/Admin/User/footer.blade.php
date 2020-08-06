@@ -1,7 +1,7 @@
 <footer class="footer">
     <div class="container-fluid">
         <nav class="pull-left">
-            <ul>
+            {{-- <ul>
                 <li>
                     <a href="http://www.creative-tim.com">
                         Creative Tim
@@ -17,10 +17,10 @@
                         Licenses
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
         </nav>
         <div class="copyright pull-right">
-            &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+            &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="https://www.linkedin.com/in/laml1l9l9l9l/" target="_blank">Firstking</a>
         </div>
     </div>
 </footer>

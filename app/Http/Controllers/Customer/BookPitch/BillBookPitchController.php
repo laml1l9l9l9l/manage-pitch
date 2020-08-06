@@ -21,15 +21,13 @@ class BillBookPitchController extends Controller
     	// Kiểm tra trong cookie visual bill tồn tại series hóa đơn thì unset
     	// Tiến hành tạo hóa đơn
 		$array_data = array();
-		$data_bill   = json_decode($request->cookie('new_bill'));
-		$visual_bill = json_decode($request->cookie('visual_bill'));
+		$queue_bill = $request->cookie('queue_bill');
+		$data_bill  = json_decode($request->cookie('new_bill'));
 		if($data_bill->code == '00')
 			$array_data = (array) $data_bill->result;
 
 		// Unset element in visual bill
-		$new_visual_bill = $this->unsetElementArray($visual_bill, $data_bill->series);
-		$new_visual_bill = json_encode($new_visual_bill);
-		$this->setCookie('visual_bill', $new_visual_bill, 60); // set cookie visual bill
+		$this->unsetQueueBill($queue_bill, $data_bill->series);
 
 		// Create bill then create detail bill
 		$id_bill = $this->storeBill($array_data);
@@ -73,16 +71,23 @@ class BillBookPitchController extends Controller
 		return true;
     }
 
-    function unsetElementArray(array $array, $unset_series){
-	    foreach ($array as $key => $val){
-	        // convert objects to arrays, in_array() does not support objects
+    protected function unsetQueueBill($queue_bill, $series_bill)
+    {
+    	$visual_bill = array();
+    	if($queue_bill)
+			$visual_bill = json_decode($queue_bill);
+    	foreach ($visual_bill as $key => $val){
+	        // Convert objects to arrays, in_array() does not support objects
 	        if (is_object($val))
 	            $val = (array)$val;
 
-	        if ($val['series'] === $unset_series)
-	        	unset($array[$key]);
+	        if ($val['series'] === $series_bill)
+	        	unset($visual_bill[$key]);
 	    }
 
-	    return $array;
-	}
+	    // Save cookie
+		$visual_bill = json_encode($visual_bill);
+		$this->setCookie('queue_bill', $visual_bill, 90); // set cookie visual bill
+	    return true;
+    }
 }

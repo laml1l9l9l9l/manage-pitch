@@ -27,6 +27,12 @@ class Bill extends Model
         INCREASE    => 'label-success',
     );
 
+    public $icon_status_statistical = array(
+        DECREASE    => 'ti-arrow-down',
+        KEEP_STABLE => 'ti-arrows-horizontal',
+        INCREASE    => 'ti-arrow-up',
+    );
+
     public function getCustomer($id_customer)
     {
     	$model_customer = new Customer;

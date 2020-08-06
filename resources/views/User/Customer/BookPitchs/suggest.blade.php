@@ -1,5 +1,6 @@
 @extends('Layout.Customer.User.master')
 @push('css')
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>
 		{{ __('Đặt giải') }}
 	</title>
@@ -73,7 +74,7 @@
 												<div class="col-md-1">
 													<div class="checkbox">
 														<label>
-															<input type="checkbox" name="optionsCheckboxes">
+															<input type="checkbox" name="optionsCheckboxes" data-date="{{ __($data->date) }}" data-pitch="{{ __($information->pitch) }}" data-time="{{ __($information->time) }}" data-amount="{{ __($information->amount) }}">
 														</label>
 													</div>
 												</div>
@@ -116,11 +117,13 @@
 							@endforeach
 						@endforeach
 
-						<div class="col-md-6 col-md-offset-3 text-center">
-							<button class="btn btn-primary">
-								{{ __('Xác nhận') }}
-							</button>
-						</div>
+						@if($data_suggest)
+							<div class="col-md-6 col-md-offset-3 text-center">
+								<button class="btn btn-primary" id="confirm-suggest-bill">
+									{{ __('Xác nhận') }}
+								</button>
+							</div>
+						@endif
 
 					</div>
 				</div>
@@ -130,8 +133,131 @@
 	    </div>{{-- end main --}}
 
     </div>
+
+    <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<i class="material-icons">clear</i>
+					</button>
+					<h4 class="modal-title">
+						{{ __('Đăng nhập') }}
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="form-login">
+							<div class="col-md-8 col-md-offset-2">
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="material-icons">email</i>
+									</span>
+									<input type="text" class="form-control" id="email_custom_login" placeholder="Email..." />
+								</div>
+
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="material-icons">lock_outline</i>
+									</span>
+									<input type="password" class="form-control" id="password_custom_login" placeholder="Mật khẩu..." />
+								</div>
+
+								<div class="col-md-12 d-flex justify-content-between pr-0">
+									{{-- <a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
+										{{ __('Quên mật khẩu?') }}
+									</a> --}}
+									{{-- <a href="#" class="footer-form btn-register" data-toggle="modal" data-target="#modalRegister"> --}}
+									<a href="{{ route('customer.register') }}" class="btn-register">
+										{{ __('Đăng ký') }}
+									</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info" id="btn-login">
+						{{ __('Đăng nhập') }}
+					</button>
+					<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">
+						{{ __('Đóng') }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<i class="material-icons">clear</i>
+					</button>
+					<h4 class="modal-title">
+						{{ __('Đăng ký') }}
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<form id="form-register">
+							<div class="col-md-8 col-md-offset-2">
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="material-icons">face</i>
+									</span>
+									<input type="text" class="form-control" placeholder="Họ và tên...">
+								</div>
+
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="material-icons">email</i>
+									</span>
+									<input type="text" class="form-control" placeholder="Email...">
+								</div>
+
+								<div class="input-group">
+									<span class="input-group-addon">
+										<i class="material-icons">lock_outline</i>
+									</span>
+									<input type="password" placeholder="Mật khẩu..." class="form-control" />
+								</div>
+
+								<div class="col-md-12 d-flex justify-content-between pr-0">
+									{{-- <a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
+										{{ __('Quên mật khẩu?') }}
+									</a> --}}
+									<a href="#" class="footer-form btn-login" data-toggle="modal" data-target="#modalLogin">
+										{{ __('Đăng nhập') }}
+									</a>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info">
+						{{ __('Đăng ký') }}
+					</button>
+					<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">
+						{{ __('Đóng') }}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 @endsection
 
 @push('js')
+	<script type="text/javascript">
+		{{-- route --}}
+		let routeAddVisualDetailBill    = '{{ route('customer.add.visual.detail.bill') }}';
+		let routeRemoveVisualDetailBill = '{{ route('customer.remove.visual.detail.bill') }}';
+		let urlGetInformation = '{{ route('customer.infor') }}';
+		var urlLogin          = '{{ route('customer.login.ajax') }}';
+		var urlConfirmBills   = '{{ route('customer.confirm.book.pitchs') }}';
+	</script>
 	<script src="{{ asset('custom/js/component/suggest-booking-pitchs.js') }}"></script>
 @endpush

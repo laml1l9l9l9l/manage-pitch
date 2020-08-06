@@ -10,6 +10,8 @@
     <div class="content">
         <div class="container-fluid">
 
+            @include('Layout.Admin.Notification.message_basic')
+            
             <div class="row">
                 <div class="col-lg-4 col-sm-6">
                     <div class="card">
@@ -24,7 +26,7 @@
                                     <div class="pull-right">
                                         @if ($bill_statistical['percent'] !== null)
                                             <span class="label {{ __($bill_statistical['color_statistical']) }}">
-                                                <i class="ti-arrow-up"></i>
+                                                <i class="{{ __($bill_statistical['icon_statistical']) }}"></i>
                                                 {{ __($bill_statistical['percent']."%") }}
                                             </span>
                                         @endif
@@ -69,9 +71,9 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        <span class="label label-success">
+                                        {{-- <span class="label label-success">
                                             ? %
-                                        </span>
+                                        </span> --}}
                                     </div>
                                 </div>
                             </div>
@@ -111,9 +113,9 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        <span class="label label-warning">
+                                        {{-- <span class="label label-warning">
                                             0%
-                                        </span>
+                                        </span> --}}
                                     </div>
                                 </div>
                             </div>
@@ -155,10 +157,10 @@
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="pull-right">
-                                        <span class="label label-danger">
+                                        {{-- <span class="label label-danger">
                                             <i class="ti-arrow-down"></i>
                                             14%
-                                        </span>
+                                        </span> --}}
                                     </div>
                                 </div>
                             </div>

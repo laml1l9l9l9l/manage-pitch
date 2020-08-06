@@ -16,7 +16,7 @@
 			
 			<div class="col-md-12">
 				<div class="card">
-					<form method="post" action="{{ route('admin.date.store') }}">
+					<form method="post" action="{{ route('admin.bill.update', ['id' => $bill->id]) }}">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
@@ -113,7 +113,7 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h2>
-						{{ __('Tổng hóa đơn con: '.count($detail_bills)) }}
+						{{ __('Tổng hóa đơn chi tiết: '.count($detail_bills)) }}
 					</h2>
 				</div>
 			</div>
@@ -121,7 +121,7 @@
 				
 				@foreach ($detail_bills as $detail_bill)
 					@php
-						$price_special_date_time = $model_special_datetime->getPriceSpecialDateTime($detail_bill->id_time_slot, $detail_bill->soccer_day, $detail_bill->created_at);
+						$price_special_date_time = $model_special_datetime->getPriceSpecialDateTime($detail_bill->id_time_slot, $detail_bill->soccer_day);
 						$increase_price = $detail_bill->price - $detail_bill->price_pitch;
 					@endphp
 					<div class="col-md-4">
@@ -220,6 +220,55 @@
 				</div>
 			</div>
 		@endif
+
+		<div class="row">
+			<div class="col-md-12">
+				<h2>
+					{{ __('Lịch sử thay đổi') }}
+				</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					@if (count($history_bill) > 0)
+						<table class="table">
+							<tr>
+								<th>
+									{{ __('Email admin') }}
+								</th>
+								<th>
+									{{ __('Thay đổi') }}
+								</th>
+								<th>
+									{{ __('Ngày thay đổi') }}
+								</th>
+							</tr>
+							@foreach ($history_bill as $bill)
+								<tr>
+									<td>
+										{{ $bill->email_admin }}
+									</td>
+									<td>
+										{{ $bill->log_change }}
+									</td>
+									<td>
+										{{ date('d-m-Y', strtotime($bill->created_at)) }}
+									</td>
+								</tr>
+							@endforeach
+						</table>
+					@else
+						<div class="text-center">
+							<h3 class="py-5">
+								{{ __('Chưa có lịch sử') }}
+							</h3>
+						</div>
+					@endif
+				</div>
+			</div>
+		</div>
 
 	</div>
 </div>

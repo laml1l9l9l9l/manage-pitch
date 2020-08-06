@@ -45,6 +45,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\CheckAuthenticateCustomer::class,
         ],
 
+        'CheckPermissionAdmin' => [
+            \App\Http\Middleware\CheckPermissionAdmin::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,

@@ -32,8 +32,13 @@ class BookPitchsController extends Controller
 
     public function selectDateTimeRent(Request $request)
     {
-    	$book_request = $request->book;
+		$array_bill   = array();				
+		$book_request = $request->book;
         $this->validatorSelectDateTimeRent($book_request)->validate();
+
+        // clear visual detail bill
+		$array_bill = json_encode($array_bill);
+		$this->setCookie('visual_detail_bills', $array_bill, 60);
 
 		$date_time_booking = $this->suggestDateTimeBooking($book_request);
 		$data_suggest      = $this->dataSuggestBooking($date_time_booking);
@@ -263,38 +268,3 @@ class BookPitchsController extends Controller
         ];
     }
 }
-
-	# Create bill
-    	# return object {
-    	# 	code: 00, // 00: success, 01: error
-    	# 	message: 'success',
-    	# 	series: '123123123',
-    	# 	result: [
-    	# 		{
-    	# 			date: 2020-07-12,
-    	# 			informations: [
-    	# 				{
-    	# 					pitch: 1, // id time slot
-    	# 					times: [1, 2]
-    	# 				},
-    	# 				{
-    	# 					pitch: 2, // id time slot
-    	# 					times: [1, 2, 4]
-    	# 				},
-    	# 				{
-    	# 					pitch: 1, // id time slot
-    	# 					times: [2, 4]
-    	# 				}
-    	# 			]
-    	# 		},
-    	# 		{
-    	# 			date: 2020-07-13,
-    	# 			information: [
-    	# 				{
-    	# 					time: [ 2, 3, 4], // id time slot
-    	# 					pitch: [2]
-    	# 				}
-    	# 			]
-    	# 		}
-    	# 	]
-		# }

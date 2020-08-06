@@ -25,7 +25,7 @@
 
 				<div class="section">
 					<div class="row" id="row-title-notice">
-						<div class="col-md-7 col-md-offset-2 text-center">
+						<div class="col-md-8 col-md-offset-2 text-md-center">
                         	<h2 class="title">
 								{{ __('Thông tin hóa đơn') }}
                         	</h2>
@@ -35,51 +35,53 @@
 
 							<div class="col-md-12">
 								@if(!empty($data_response))
-									<div class="card">
-										<div class="card-content">
-
-											<div class="row my-2">
-												<div class="d-flex align-items-center">
-													<div class="col-md-6">
-														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Ngày:') }}</h4>
-													</div>
-													<div class="col-md-4">
-														{{ __($data_response->date) }}
-													</div>
+									<div class="border-lg border-primary border-rounded py-5">
+										<div class="row my-2">
+											<div class="d-flex align-items-center justify-content-between">
+												<div class="col-md-6">
+													<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Ngày:') }}</h4>
+												</div>
+												<div class="col-md-4">
+													{{ __($data_response->date) }}
 												</div>
 											</div>
-											<div class="row my-2">
-												<div class="d-flex align-items-center">
-													<div class="col-md-6">
-														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Khung giờ:') }}</h4>
-													</div>
-													<div class="col-md-4">
-														{{ __($data_response->time) }}
-													</div>
+										</div>
+										<hr class="mx-5 my-0">
+										<div class="row my-2">
+											<div class="d-flex align-items-center justify-content-between">
+												<div class="col-md-6">
+													<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Khung giờ:') }}</h4>
+												</div>
+												<div class="col-md-4">
+													{{ __($data_response->time) }}
 												</div>
 											</div>
-											<div class="my-2">
-												<div class="d-flex align-items-center">
-													<div class="col-md-6">
-														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Sân:') }}</h4>
-													</div>
-													<div class="col-md-4">
-														{{ __($data_response->pitch) }}
-													</div>
+										</div>
+										<hr class="mx-5 my-0">
+										<div class="my-2">
+											<div class="d-flex align-items-center justify-content-between">
+												<div class="col-md-6">
+													<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Sân:') }}</h4>
+												</div>
+												<div class="col-md-4">
+													{{ __($data_response->pitch) }}
 												</div>
 											</div>
-											<div class="my-2">
-												<div class="d-flex align-items-center">
-													<div class="col-md-6">
-														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Tổng tiền:') }}</h4>
-													</div>
-													<div class="col-md-4">
-														<b>
-															{{ __(number_format($data_response->amount).' VNĐ') }}
-														</b>
-													</div>
+										</div>
+										<hr class="mx-5 my-0">
+										<div class="my-2">
+											<div class="d-flex align-items-center justify-content-between">
+												<div class="col-md-6">
+													<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Tổng tiền:') }}</h4>
+												</div>
+												<div class="col-md-4">
+													<b>
+														{{ __(number_format($data_response->amount).' VNĐ') }}
+													</b>
 												</div>
 											</div>
+										</div>
+										<div class="m-0 text-center">
 											<button type="submit" class="btn btn-info" id="book-pitch">
 												{{ __('Xác nhận') }}
 											</button>
@@ -87,7 +89,6 @@
 												<i class="fa fa-undo"></i>
 												{{ __('Quay lại') }}
 											</a>
-
 										</div>
 									</div>
 
@@ -111,7 +112,7 @@
 					<hr>
 
 					<div class="row" id="row-title-notice">
-						<div class="col-md-7 col-md-offset-2 text-center">
+						<div class="col-md-7 col-md-offset-2 text-md-center">
                         	<h3 class="title">
 								{{ __('Gợi ý đặt sân') }}
                         	</h3>
@@ -122,65 +123,65 @@
 								</h4>
 							@else
 								@foreach ($data_suggest as $data_bill)
-									<div class="card">
-										<div class="card-content">
-											<form action="{{ route('customer.check.book.pitch') }}" method="POST">
-												@csrf
-											
-												<div class="row my-2">
-													<div class="d-flex align-items-center">
-														<div class="col-md-6">
-															<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Ngày:') }}</h4>
-														</div>
-														<div class="col-md-4">
-															{{ __($data_bill->date_response) }}
-														</div>
-														<input type="hidden" class="d-none" name="bill[date]" value="{{ __($data_bill->date) }}">
+									<div class="border-lg border-primary border-rounded py-5">
+										<form action="{{ route('customer.check.book.pitch') }}" method="POST">
+											@csrf
+											<div class="row my-2">
+												<div class="d-flex align-items-center justify-content-between">
+													<div class="col-md-6">
+														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Ngày:') }}</h4>
+													</div>
+													<div class="col-md-4">
+														{{ __($data_bill->date_response) }}
+													</div>
+													<input type="hidden" class="d-none" name="bill[date]" value="{{ __($data_bill->date) }}">
+												</div>
+											</div>
+											<hr class="mx-5 my-0">
+											<div class="row my-2">
+												<div class="d-flex align-items-center justify-content-between">
+													<div class="col-md-6">
+														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Khung giờ:') }}</h4>
+													</div>
+													<div class="col-md-4">
+														{{ __($data_bill->time_name) }}
+													</div>
+													<input type="hidden" class="d-none" name="bill[time_slot]" value="{{ __($data_bill->time) }}">
+												</div>
+											</div>
+											<hr class="mx-5 my-0">
+											<div class="my-2">
+												<div class="d-flex align-items-center justify-content-between">
+													<div class="col-md-6">
+														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Sân:') }}</h4>
+													</div>
+													<div class="col-md-4">
+														{{ __($data_bill->pitch_name) }}
+													</div>
+													<input type="hidden" class="d-none" name="bill[pitch]" value="{{ __($data_bill->pitch) }}">
+												</div>
+											</div>
+											<hr class="mx-5 my-0">
+											<div class="my-2">
+												<div class="d-flex align-items-center justify-content-between">
+													<div class="col-md-6">
+														<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Tổng tiền:') }}</h4>
+													</div>
+													<div class="col-md-4">
+														<b>
+															{{ __(number_format($data_bill->amount).' VNĐ') }}
+														</b>
 													</div>
 												</div>
-												<div class="row my-2">
-													<div class="d-flex align-items-center">
-														<div class="col-md-6">
-															<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Khung giờ:') }}</h4>
-														</div>
-														<div class="col-md-4">
-															{{ __($data_bill->time_name) }}
-														</div>
-														<input type="hidden" class="d-none" name="bill[time_slot]" value="{{ __($data_bill->time) }}">
-													</div>
-												</div>
-												<div class="my-2">
-													<div class="d-flex align-items-center">
-														<div class="col-md-6">
-															<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Sân:') }}</h4>
-														</div>
-														<div class="col-md-4">
-															{{ __($data_bill->pitch_name) }}
-														</div>
-														<input type="hidden" class="d-none" name="bill[pitch]" value="{{ __($data_bill->pitch) }}">
-													</div>
-												</div>
-												<div class="my-2">
-													<div class="d-flex align-items-center">
-														<div class="col-md-6">
-															<h4 class="card-title m-0" aria-describedby="selectDateHelp">{{ __('Tổng tiền:') }}</h4>
-														</div>
-														<div class="col-md-4">
-															<b>
-																{{ __(number_format($data_bill->amount).' VNĐ') }}
-															</b>
-														</div>
-													</div>
-												</div>
-												<button type="submit" class="btn btn-info">
-													{{ __('Đặt sân') }}
-												</button>
-												<a href="{{ route('customer.home') }}" class="btn">
-													<i class="fa fa-undo"></i>
-													{{ __('Quay lại') }}
-												</a>
-											</form>
-										</div>
+											</div>
+											<button type="submit" class="btn btn-info">
+												{{ __('Đặt sân') }}
+											</button>
+											<a href="{{ route('customer.home') }}" class="btn">
+												<i class="fa fa-undo"></i>
+												{{ __('Quay lại') }}
+											</a>
+										</form>
 									</div>
 								@endforeach
 							@endif

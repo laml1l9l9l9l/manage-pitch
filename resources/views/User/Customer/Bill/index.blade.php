@@ -34,34 +34,41 @@
 						@include('Layout.Customer.Notification.message_basic')
 					</div>
 
-
-					@if (count($bills) > 0)
-						<div class="row">
-							<div class="col-md-12">
-								<div class="col-md-3 text-center">
-									<h5 class="decription">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="col-md-3 text-center">
+								<a href="{{ route('customer.bill', '#row-title-notice') }}">
+									<h5 class="decription" style="color: #000000">
 										{{ __('Hóa đơn: '.$count_bills['count_bills']) }}
 									</h5>
-								</div>
-								<div class="col-md-3 text-center">
+								</a>
+							</div>
+							<div class="col-md-3 text-center">
+								<a href="{{ route('customer.bill.search', ['#row-title-notice', 'status' => UNPAID]) }}">
 									<h5 class="decription text-danger">
 										{{ __('Hóa đơn chưa đặt cọc: '.$count_bills['count_unpaid_bills']) }}
 									</h5>
-								</div>
-								<div class="col-md-3 text-center">
+								</a>
+							</div>
+							<div class="col-md-3 text-center">
+								<a href="{{ route('customer.bill.search', ['#row-title-notice', 'status' => DEPOSITED]) }}">
 									<h5 class="decription text-warning">
 										{{ __('Hóa đơn đã đặt cọc: '.$count_bills['count_deposited_bills']) }}
 									</h5>
-								</div>
-								<div class="col-md-3 text-center">
+								</a>
+							</div>
+							<div class="col-md-3 text-center">
+								<a href="{{ route('customer.bill.search', ['#row-title-notice', 'status' => PAID]) }}">
 									<h5 class="decription text-success">
 										{{ __('Hóa đơn đã thanh toán: '.$count_bills['count_paid_bills']) }}
 									</h5>
-								</div>
+								</a>
 							</div>
 						</div>
+					</div>
 
 
+					@if (count($bills) > 0)
 						<div class="row">
 
 							@foreach ($bills as $bill)

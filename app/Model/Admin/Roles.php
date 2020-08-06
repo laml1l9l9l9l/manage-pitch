@@ -2,21 +2,20 @@
 
 namespace App\Model\Admin;
 
-use App\Model\Admin\Admin;
-use App\Model\Admin\Permissions;
 use Illuminate\Database\Eloquent\Model;
 
 class Roles extends Model
 {
     protected $table = 'roles';
 
-    public function users()
+    public function arrayRole()
     {
-    	return $this->belongsToMany(Admin::class,'admin_roles');
-    }
+    	$array_role = array();
+    	$roles = Roles::all();
+    	foreach ($roles as $role) {
+    		$array_role[$role->id] = $role->name;
+    	}
 
-    public function permissions()
-    {
-    	return $this->belongsToMany(Permissions::class,'role_permission');
+    	return $array_role;
     }
 }

@@ -201,10 +201,11 @@
 								</div>
 
 								<div class="col-md-12 d-flex justify-content-between pr-0">
-									<a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
+									{{-- <a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
 										{{ __('Quên mật khẩu?') }}
-									</a>
-									<a href="#" class="footer-form btn-register" data-toggle="modal" data-target="#modalRegister">
+									</a> --}}
+									{{-- <a href="#" class="footer-form btn-register" data-toggle="modal" data-target="#modalRegister"> --}}
+									<a href="{{ route('customer.register') }}" class="btn-register">
 										{{ __('Đăng ký') }}
 									</a>
 								</div>
@@ -262,9 +263,9 @@
 								</div>
 
 								<div class="col-md-12 d-flex justify-content-between pr-0">
-									<a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
+									{{-- <a href="#" class="footer-form btn-forgot-password" data-toggle="modal" data-target="#modalForgotPassword">
 										{{ __('Quên mật khẩu?') }}
-									</a>
+									</a> --}}
 									<a href="#" class="footer-form btn-login" data-toggle="modal" data-target="#modalLogin">
 										{{ __('Đăng nhập') }}
 									</a>
@@ -343,7 +344,6 @@
 	<script type="text/javascript">
 		var urlGetInformation = '{{ route('customer.infor') }}';
 		var urlGetDatesOff    = '{{ route('customer.api.date.off') }}';
-		// var urlCreateBill     = '{{ route('customer.bill.create') }}';
 		var urlCreateBill     = '{{ route('customer.check.book.pitch') }}';
 		var typeRent          = '{{ SIMPLE }}';
 		var urlLogin          = '{{ route('customer.login.ajax') }}';

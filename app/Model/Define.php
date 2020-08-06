@@ -32,3 +32,6 @@
 	define('EMPTY_HOUR', '1');
 	define('EMPTY_DATE', '2');
 	define('ENOUGH', '3');
+
+
+	define('ROLE_SUPER_ADMIN', '1');

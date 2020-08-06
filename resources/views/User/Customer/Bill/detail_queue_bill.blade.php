@@ -1,7 +1,7 @@
 @extends('Layout.Customer.User.master')
 @push('css')
 	<title>
-		{{ __('Chi tiết hóa đơn') }}
+		{{ __('Chi tiết hóa đơn tạm') }}
 	</title>
 @endpush
 
@@ -12,9 +12,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-8 col-md-offset-2 text-center">
-						<h2 class="title" id="title_page">
-							{{-- {{ __('Rèn luyện thể thao, đẩy lùi dịch bệnh') }} --}}
-						</h2>
+						<h2 class="title" id="title_page"></h2>
 					</div>
 				</div>
 			</div>

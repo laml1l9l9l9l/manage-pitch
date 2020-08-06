@@ -22,7 +22,7 @@
 				</div>
 			</form> --}}
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                {{-- <li>
                     <a href="#stats" class="dropdown-toggle btn-magnify" data-toggle="dropdown">
                         <i class="ti-panel"></i>
 						<p>Stats</p>
@@ -44,7 +44,7 @@
                         <li><a href="#not4">Notification 4</a></li>
                         <li><a href="#another">Another notification</a></li>
                     </ul>
-                </li>
+                </li> --}}
 				<li class="dropdown">
                     <a href="#" class="btn-rotate" class="dropdown-toggle btn-rotate" data-toggle="dropdown">
 						<i class="ti-settings"></i>

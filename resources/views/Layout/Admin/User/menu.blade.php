@@ -1,6 +1,6 @@
 <ul class="nav" id="menu">
 
-	<li>
+	{{-- <li>
 		<a href="{{ route('admin.menu') }}">
 			<i class="ti-menu"></i>
 			<p>
@@ -12,15 +12,23 @@
 		<a href="{{ route('admin.permission') }}">
 			<i class="ti-key"></i>
 			<p>
+				{{ __('Phân quyền') }}
+			</p>
+		</a>
+	</li> --}}
+	<li>
+		<a href="{{ route('admin.role') }}">
+			<i class="ti-lock"></i>
+			<p>
 				{{ __('Quyền quản trị') }}
 			</p>
 		</a>
 	</li>
 	<li>
-		<a href="{{ route('admin.role') }}">
-			<i class="ti-lock"></i>
+		<a href="{{ route('admin.admin') }}">
+			<i class="ti-clipboard"></i>
 			<p>
-				{{ __('Phân quyền') }}
+				{{ __('Quản trị viên') }}
 			</p>
 		</a>
 	</li>
@@ -79,13 +87,13 @@
 		</div>
 	</li>
 
-	<li>
+	{{-- <li>
 		<a href="#">
 			<i class="ti-shopping-cart"></i>
 			<p>
 				{{ __('Căng Tin') }}
 			</p>
 		</a>
-	</li>
+	</li> --}}
 
 </ul>

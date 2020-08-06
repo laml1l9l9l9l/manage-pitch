@@ -30,17 +30,24 @@ class BookPitchController extends Controller
 		$data_response = null;
 		$model_time  = $this->time;
 		$model_pitch = $this->pitch;
+		$check_customer = $this->checkPhoneCustomer();
+
+		if(!$check_customer)
+			return redirect()->route('customer.home', '#row-title-notice')
+				->with('warning', 'Thêm số điện thoại để được đặt sân');
 
 		$request_bill = $request->get('bill');
-		$visual_bill  = $request->cookie('visual_bill');
-		if($visual_bill)
-			$array_bill = json_decode($visual_bill);
+		$queue_bill   = $request->cookie('queue_bill');
 
 		$data_bill   = $this->checkBill($request_bill);
 		$data_result = $data_bill->result;
 
 		if($data_result){
+			// add cookie bill
 			array_push($array_bill, $data_bill);
+			$this->pushQueueBill($queue_bill, $data_bill);
+
+			// set up data response
 			$date = date('d-m-Y', strtotime($data_result->date));
 			$time = $model_time->find($data_result->time);
 			$pitch = $model_pitch->find($data_result->pitch);
@@ -51,10 +58,8 @@ class BookPitchController extends Controller
 				'amount' => $data_result->amount
 			);
 		}
-		$array_bill    = $this->arrayUnique($array_bill);
-		$array_bill    = json_encode($array_bill);
+		$array_bill = $this->arrayUnique($array_bill);
 		$data_new_bill = json_encode($data_bill);
-		$this->setCookie('visual_bill', $array_bill, 60); // set cookie visual bill
 		$this->setCookie('new_bill', $data_new_bill, 60); // set cookie new bill
 
 
@@ -193,7 +198,32 @@ class BookPitchController extends Controller
 		return $array_blank_pitch;
     }
 
-    function arrayUnique(array $array){
+    protected function pushQueueBill($queue_bill, $bill)
+    {
+    	$visual_bill = array();
+    	if($queue_bill)
+			$visual_bill = json_decode($queue_bill);
+
+		array_push($visual_bill, $bill);
+		$visual_bill = $this->arrayUnique($visual_bill);
+		$visual_bill = json_encode($visual_bill);
+		$this->setCookie('queue_bill', $visual_bill, 90); // set cookie queue bill
+
+		return true;
+    }
+
+    protected function checkPhoneCustomer()
+    {
+		$customer = $this->guard()->user();
+		$result   = false;
+
+    	if(!empty($customer->phone))
+    		$result = true;
+
+    	return $result;
+    }
+
+    protected function arrayUnique(array $array){
 	    $duplicate_keys = array();
 	    $tmp = array();
 

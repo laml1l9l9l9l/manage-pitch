@@ -16,7 +16,7 @@
 			
 			<div class="col-md-12">
 				<div class="card">
-					<form method="post" action="{{ route('admin.date.store') }}">
+					<form method="post" action="{{ route('admin.customer.update', ['id' => $customer->id]) }}">
 						@csrf
 						<div class="card-header">
 							<h4 class="card-title">
