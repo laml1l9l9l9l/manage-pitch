@@ -18,9 +18,9 @@ class BillBookPitchController extends Controller
 
     public function createBill(Request $request)
     {
-    	// Kiểm tra trong cookie visual bill tồn tại series hóa đơn thì unset
-    	// Tiến hành tạo hóa đơn
 		$array_data = array();
+		$isset_bill = false;
+
 		$queue_bill = $request->cookie('queue_bill');
 		$data_bill  = json_decode($request->cookie('new_bill'));
 		if($data_bill->code == '00')
@@ -29,12 +29,19 @@ class BillBookPitchController extends Controller
 		// Unset element in visual bill
 		$this->unsetQueueBill($queue_bill, $data_bill->series);
 
+		// Check isset detail bill
+		$isset_bill = $this->checkBookingInformation($array_data);
+		if($isset_bill){
+			return redirect()->route('customer.home', '#row-title-notice')
+				->with('error', 'Thời gian đã được thuê. Vui lòng thử lại');
+		}
 		// Create bill then create detail bill
 		$id_bill = $this->storeBill($array_data);
 		$array_data['id_bill'] = $id_bill;
         $this->storeDetailBill($array_data);
 
-		return redirect()->route('customer.bill', '#row-title-notice')->with('success', 'Thuê sân thành công');
+		return redirect()->route('customer.bill', '#row-title-notice')
+			->with('success', 'Thuê sân thành công');
     }
 
     public function storeBill(array $data)
@@ -89,5 +96,22 @@ class BillBookPitchController extends Controller
 		$visual_bill = json_encode($visual_bill);
 		$this->setCookie('queue_bill', $visual_bill, 90); // set cookie visual bill
 	    return true;
+    }
+
+    protected function checkBookingInformation(array $data)
+    {
+    	$result = true;
+		$model_detail_bill = $this->detail_bill;
+
+    	$bill = $model_detail_bill->where('id_pitch', $data['pitch'])
+    		->where('id_pitch', $data['pitch'])
+    		->where('id_time_slot', $data['time'])
+    		->where('soccer_day', $data['date'])
+    		->count();
+    	
+    	if(!$bill)
+    		$result = false;
+
+	    return $result;
     }
 }

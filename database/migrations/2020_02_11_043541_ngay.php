@@ -15,7 +15,7 @@ class Ngay extends Migration
     {
         Schema::create('dates', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->date('date')->unique();
             $table->string('name');
             // $table->tinyInteger('date_special')->comment('1: ngay dac biet, 0: ngay binh thuong');
             // $table->integer('increase_price')->comment('gia tang');

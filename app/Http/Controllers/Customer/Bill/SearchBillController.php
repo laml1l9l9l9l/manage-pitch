@@ -15,6 +15,7 @@ class SearchBillController extends ListBillController
 
     public function search(Request $request)
     {
+        $data_request = $request->all();
     	$status_bill = $request->status;
 
 		$account    = $this->guard()->user();
@@ -28,10 +29,11 @@ class SearchBillController extends ListBillController
         $count_bills = $this->countBill();
 
         return view('User.Customer.Bill.index', [
-			'account'     => $account,
-			'model_bill'  => $model_bill,
-			'bills'       => $bills,
-			'count_bills' => $count_bills,
+            'account'      => $account,
+            'model_bill'   => $model_bill,
+            'bills'        => $bills,
+            'count_bills'  => $count_bills,
+            'data_request' => $data_request
         ]);
     }
 }

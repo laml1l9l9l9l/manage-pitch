@@ -15,8 +15,10 @@ class BillHistory extends Migration
     {
         Schema::create('bill_history', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_bill');
-            $table->integer('id_admin')->nullable();
+            $table->integer('id_bill')->unsigned();
+            $table->foreign('id_bill')->references('id')->on('bills');
+            $table->integer('id_admin')->nullable()->unsigned();
+            $table->foreign('id_admin')->references('id')->on('admins');
             $table->string('log_change')->nullable();
             $table->tinyInteger('status')->comment('1: hoat dong, 0: nghi');
             $table->timestamps();

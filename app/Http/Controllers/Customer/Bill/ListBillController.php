@@ -15,9 +15,10 @@ class ListBillController extends CustomerController
 
     public function bill(Request $request)
     {
-		$account    = $this->guard()->user();
-		$model_bill = $this->bill;
-		$offset     = 4;
+		$data_request = $request->all();
+		$account      = $this->guard()->user();
+		$model_bill   = $this->bill;
+		$offset       = 4;
 
         $bills = $model_bill->where('id_customer', $account->id)
         	->orderBy('created_at', 'desc')
@@ -25,10 +26,11 @@ class ListBillController extends CustomerController
         $count_bills = $this->countBill();
 
         return view('User.Customer.Bill.index', [
-			'account'     => $account,
-			'model_bill'  => $model_bill,
-			'bills'       => $bills,
-			'count_bills' => $count_bills,
+			'account'      => $account,
+			'model_bill'   => $model_bill,
+			'bills'        => $bills,
+			'count_bills'  => $count_bills,
+			'data_request' => $data_request
         ]);
     }
 

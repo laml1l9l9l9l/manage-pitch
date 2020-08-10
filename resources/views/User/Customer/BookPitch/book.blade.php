@@ -112,7 +112,7 @@
 					<hr>
 
 					<div class="row" id="row-title-notice">
-						<div class="col-md-7 col-md-offset-2 text-md-center">
+						<div class="col-md-8 col-md-offset-2 text-md-center">
                         	<h3 class="title">
 								{{ __('Gợi ý đặt sân') }}
                         	</h3>

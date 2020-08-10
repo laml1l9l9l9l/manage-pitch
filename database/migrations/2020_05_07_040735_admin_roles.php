@@ -15,8 +15,10 @@ class AdminRoles extends Migration
     {
         Schema::create('admin_roles', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_admin');
-            $table->integer('id_role');
+            $table->integer('id_admin')->unsigned();
+            $table->foreign('id_admin')->references('id')->on('admins');
+            $table->integer('id_role')->unsigned();
+            $table->foreign('id_role')->references('id')->on('roles');
             $table->timestamps();
         });
     }

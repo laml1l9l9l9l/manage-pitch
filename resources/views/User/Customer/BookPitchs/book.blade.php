@@ -119,7 +119,7 @@
 						<div class="row">
 							<div class="col-md-8 col-md-offset-2">
 								<h3 class="title text-center">
-									{{ __('Hóa đơn con') }}
+									{{ __('Hóa đơn chi tiết') }}
 								</h3>
 							</div>
 							<div class="tab-space"></div>
@@ -189,12 +189,3 @@
 
     </div>
 @endsection
-
-@push('js')
-	<script type="text/javascript">
-		$('.card').on('click', function(){
-		   	var checkbox = $(this).find('input[type="checkbox"]');
-		   	checkbox.prop('checked', !checkbox.prop('checked'));
-		});
-	</script>
-@endpush

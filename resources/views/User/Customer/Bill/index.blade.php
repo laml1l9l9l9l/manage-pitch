@@ -109,7 +109,11 @@
 							@endforeach
 							
 							<div class="col-md-12 text-right">
-								{{ $bills->fragment('row-title-notice')->links() }}
+								{{
+									$bills->appends($data_request)
+									->fragment('row-title-notice')
+									->links()
+								}}
 							</div>
 						</div>
 					@else

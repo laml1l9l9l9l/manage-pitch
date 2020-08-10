@@ -144,12 +144,23 @@ class BillBookPitchsController extends Controller
 		$visual_bill = $request->cookie('visual_detail_bills');
 		if($visual_bill) {
 			$array_bill = json_decode($visual_bill);
+			// Check isset detail bill
+			foreach ($array_bill as $bill) {
+				$isset_bill = false;
+				$array_data = (array)$bill->result;
+				$isset_bill = $this->checkBookingInformation($array_data);
+				if($isset_bill){
+					return redirect()->route('customer.check.book.pitchs', '#row-title-notice')
+						->with('error', 'Thời gian đã được thuê. Vui lòng thử lại');
+				}
+			}
 			$id_bill    = $this->storeBill();
 		} else {
-			return redirect()->route('customer.bill', '#row-title-notice')
+			return redirect()->route('customer.check.book.pitchs', '#row-title-notice')
 				->with('error', 'Xảy ra lỗi, vui lòng thử lại');
 		}
 
+		// Save bill
 		foreach ($array_bill as $detail_bill) {
 			$result_bill            = (array)$detail_bill->result;
 			$result_bill['id_bill'] = $id_bill;
@@ -203,7 +214,11 @@ class BillBookPitchsController extends Controller
 
 	protected function series(array $data)
 	{
-		$series = strtotime($data['date']) + (int)$data['time'] + (int)$data['pitch'];
+		$model_pitch = $this->pitch;
+		$model_time  = $this->time;
+		$pitch  = $model_pitch->find($data['pitch']);
+		$time   = $model_time->find($data['time']);
+		$series = strtotime($data['date']) + (int)$data['time'] + (int)$data['pitch'] + strtotime($time->created_at) + strtotime($pitch->created_at);
 		return $series;
 	}
 
@@ -290,6 +305,23 @@ class BillBookPitchsController extends Controller
 		array_push($array, $bill);
 		return $array;
 	}
+
+    protected function checkBookingInformation(array $data)
+    {
+    	$result = true;
+		$model_detail_bill = $this->detail_bill;
+
+    	$bill = $model_detail_bill->where('id_pitch', $data['pitch'])
+    		->where('id_pitch', $data['pitch'])
+    		->where('id_time_slot', $data['time'])
+    		->where('soccer_day', $data['date'])
+    		->count();
+    	
+    	if(!$bill)
+    		$result = false;
+
+	    return $result;
+    }
 
     protected function checkPhoneCustomer()
     {
