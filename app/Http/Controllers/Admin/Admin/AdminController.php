@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Model\Admin\Admin;
 use App\Model\Admin\Roles;
 use App\Model\Admin\AdminRoles;
+use App\Model\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Validator;
 
 class AdminController extends Controller
 {
@@ -56,18 +58,41 @@ class AdminController extends Controller
     public function update($id, Request $request)
     {
         $model_admin = $this->admin;
-        $date_request = $request->date;
+        $model_roles = $this->roles;
+        $model_admin_roles = $this->admin_roles;
+        $admin_request = $request->admin;
 
-        return view('User.Admin.Admin.edit', [
-            'admin'       => $admin,
-            'model_admin' => $model_admin,
-        ]);
+        $this->validatorManually($admin_request)->validate();
+
+        $admin       = $model_admin->find($id);
+        $admin->name = $admin_request['name'];
+        if(!empty($admin_request['password'])) {
+            $new_password = $model_admin->buildPassAdmin($admin_request['password']);
+            $admin->password = $new_password;
+        }
+        $admin->save();
+        
+        if(!empty($admin_request['id_role'])){
+            $role       = $model_roles->find($admin_request['id_role']);
+            $admin_role = $model_admin_roles->where('id_admin', $id)
+                ->where('id_role', $admin_request['id_role'])
+                ->first();
+            if($role && !$admin_role){
+                $model_admin_roles->id_admin   = $id;
+                $model_admin_roles->id_role    = $admin_request['id_role'];
+                $model_admin_roles->created_at = Helper::getCurrentDateTime();
+                $model_admin_roles->updated_at = Helper::getCurrentDateTime();
+                $model_admin_roles->save();
+            }
+        }
+
+        return redirect()->route('admin.admin.edit', ['id' => $id])
+            ->with('success', 'Chỉnh sửa thành công');
     }
 
     private $array_validate = [
-        'name'       => ['required', 'string', 'min:2', 'max:25'],
-        'date_start' => ['required', 'date_format:Y-m-d', 'after:today'],
-        'date_end'   => ['required', 'date_format:Y-m-d', 'after_or_equal:date_start'],
+        'name' => 'required|string|min:3|max:100',
+        'password' => 'nullable|string|min:5|max:100'
     ];
 
     private function validatorManually(array $data)
@@ -78,17 +103,10 @@ class AdminController extends Controller
     private function messages()
     {
         return [
-            'required'                => 'Không được để trống',
-            'string'                  => 'Sai định dạng',
-            'max'                     => 'Sai định dạng, dài hơn :max ký tự',
-            'min'                     => 'Sai định dạng, ngắn hơn :min ký tự',
-            'status.max'              => 'Sai định dạng',
-            'status.min'              => 'Sai định dạng',
-            'date_format'             => 'Sai định dạng',
-            'date_start.after'        => 'Ngày bắt đầu phải lớn hơn ngày hiện tại',
-            'date_end.after_or_equal' => 'Ngày không hợp lệ',
-            'date_special.max'        => 'Sai định dạng',
-            'date_special.min'        => 'Sai định dạng',
+            'required' => 'Không được để trống',
+            'string'   => 'Sai định dạng',
+            'max'      => 'Sai định dạng, dài hơn :max ký tự',
+            'min'      => 'Sai định dạng, ngắn hơn :min ký tự',
         ];
     }
 }

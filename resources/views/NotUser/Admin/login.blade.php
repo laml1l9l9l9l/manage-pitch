@@ -8,9 +8,9 @@
 
 @section('menu')
 	<li>
-       <a href="{{ route('admin.forgot.password') }}">
+       {{-- <a href="{{ route('admin.forgot.password') }}">
             {{ __('Quên mật khẩu') }}
-        </a>
+        </a> --}}
     </li>
     <li>
        <a href="{{ route('admin.register') }}">
@@ -57,9 +57,9 @@
 						{{ __('Xác nhận') }}
                     </button>
                     <div class="forgot">
-                        <a href="#pablo">
+                        {{-- <a href="#pablo">
 							{{ __('Quên mật khẩu?') }}
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </div>

@@ -59,7 +59,6 @@
                         	<h3 class="info-title">{{ __('Đặt sân bóng') }}</h3>
                         </div>
                         <div id="calendar"></div>
-						<div class="tab-space"></div>
 					</div>
 
 
@@ -132,6 +131,7 @@
 
 					{{-- Rent league --}}
 					<div class="row" id="booking-pitchs">
+						<div class="tab-space"></div>
 
 						<div class="col-md-12">
 							<div class="card card-raised card-background" style="background-image: url('{{ asset('custom/img/bg-rent-league.jpg') }}')">

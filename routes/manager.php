@@ -24,19 +24,11 @@ Route::get("forgot-password","$prefix\ForgotPassword@index")
 Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function() {
 	// tách ra nhiều controller
 	$group = "admin";
-	$HomeController            = "Admin\HomeController";
-	$ProfileController         = "Admin\Profile\ProfileController";
-	$BillController            = "Admin\Bill\BillController";
-	$UpdateBillController      = "Admin\Bill\UpdateBillController";
-	$PitchController           = "Admin\Pitch\PitchController";
-	$CustomerController        = "Admin\Customer\CustomerController";
-	$UpdateCustomerController  = "Admin\Customer\UpdateCustomerController";
-	$DateController            = "Admin\Date\DateController";
-	$TimeController            = "Admin\Time\TimeController";
-	$SpecialDateTimeController = "Admin\SpecialDateTime\SpecialDateTimeController";
-	$ChangePasswordController  = "Admin\Profile\ChangePasswordController";
-	$MenuController            = "Admin\Menu\MenuController";
-	$PermissionController      = "Admin\Permission\PermissionController";
+	$HomeController           = "Admin\HomeController";
+	$ProfileController        = "Admin\Profile\ProfileController";
+	$ChangePasswordController = "Admin\Profile\ChangePasswordController";
+	$MenuController           = "Admin\Menu\MenuController";
+	$PermissionController     = "Admin\Permission\PermissionController";
 
 	// home
 	Route::get("","$HomeController@home")
@@ -60,12 +52,27 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 	Route::post("permission/add","$PermissionController@store")
 		->name("$group.permission.store");
 
+	// profile
+	Route::get("profile","$ProfileController@index")
+		->name("$group.profile");
+	Route::post("profile/update","$ProfileController@update")
+		->name("$group.profile.update");
+	Route::get("change-password","$ChangePasswordController@changePassword")
+		->name("$group.change.password");
+	Route::post("change-password","$ChangePasswordController@updatePassword")
+		->name("$group.update.password");
+
+	//logout
+	Route::get("logout","$ProfileController@logout")
+		->name("$group.logout");
+
 	// for super admin
 	Route::group(["middleware" => ["CheckPermissionAdmin"]], function() {
 		$group = "admin";
 		$AdminController           = "Admin\Admin\AdminController";
 		$RoleController            = "Admin\Role\RoleController";
 		$RemoveRoleController      = "Admin\Profile\RemoveRoleController";
+		$RemoveAdminController     = "Admin\Admin\RemoveAdminController";
 		$PitchController           = "Admin\Pitch\PitchController";
 		$BillController            = "Admin\Bill\BillController";
 		$DateController            = "Admin\Date\DateController";
@@ -84,6 +91,8 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 			->name("$group.role");
 		Route::get("remove-role/{id}","$RemoveRoleController@index")
 			->name("$group.role.remove");
+		Route::post("remove-role-admin","$RemoveAdminController@index")
+			->name("$group.role.admin.remove");
 
 		// pitch
 		Route::get("pitch/add","$PitchController@add")
@@ -144,52 +153,50 @@ Route::group(["prefix" => "", "middleware" => ["checkAuthenticate"]], function()
 			->name("$group.specialdatetime.delete");
 	});
 
-	// profile
-	Route::get("profile","$ProfileController@index")
-		->name("$group.profile");
-	Route::post("profile/update","$ProfileController@update")
-		->name("$group.profile.update");
-	Route::get("change-password","$ChangePasswordController@changePassword")
-		->name("$group.change.password");
-	Route::post("change-password","$ChangePasswordController@updatePassword")
-		->name("$group.update.password");
+	Route::group(["middleware" => ["CheckCloneAdmin"]], function() {
+		$group = "admin";
+		$BillController            = "Admin\Bill\BillController";
+		$UpdateBillController      = "Admin\Bill\UpdateBillController";
+		$PitchController           = "Admin\Pitch\PitchController";
+		$CustomerController        = "Admin\Customer\CustomerController";
+		$UpdateCustomerController  = "Admin\Customer\UpdateCustomerController";
+		$DateController            = "Admin\Date\DateController";
+		$TimeController            = "Admin\Time\TimeController";
+		$SpecialDateTimeController = "Admin\SpecialDateTime\SpecialDateTimeController";
 
-	//logout
-	Route::get("logout","$ProfileController@logout")
-		->name("$group.logout");
+		//bill
+		Route::get("bill","$BillController@index")
+			->name("$group.bill");
+		Route::get("bill/detail/{id}","$BillController@detail")
+			->name("$group.bill.detail");
+		Route::post("bill/update/{id}","$UpdateBillController@index")
+			->name("$group.bill.update");
 
-	//bill
-	Route::get("bill","$BillController@index")
-		->name("$group.bill");
-	Route::get("bill/detail/{id}","$BillController@detail")
-		->name("$group.bill.detail");
-	Route::post("bill/update/{id}","$UpdateBillController@index")
-		->name("$group.bill.update");
-
-	//pitch
-	Route::get("pitch","$PitchController@index")
-		->name("$group.pitch");
+		//pitch
+		Route::get("pitch","$PitchController@index")
+			->name("$group.pitch");
 
 
-	//customer
-	Route::get("customer","$CustomerController@index")
-		->name("$group.customer");
-	Route::get("customer/detail/{id}","$CustomerController@detail")
-		->name("$group.customer.detail");
-	Route::post("customer/update/{id}","$UpdateCustomerController@index")
-		->name("$group.customer.update");
+		//customer
+		Route::get("customer","$CustomerController@index")
+			->name("$group.customer");
+		Route::get("customer/detail/{id}","$CustomerController@detail")
+			->name("$group.customer.detail");
+		Route::post("customer/update/{id}","$UpdateCustomerController@index")
+			->name("$group.customer.update");
 
-	//date
-	Route::get("date","$DateController@index")
-		->name("$group.date");
+		//date
+		Route::get("date","$DateController@index")
+			->name("$group.date");
 
-	//time
-	Route::get("time-slots","$TimeController@index")
-		->name("$group.time");
+		//time
+		Route::get("time-slots","$TimeController@index")
+			->name("$group.time");
 
-	//special date time
-	Route::get("special-datetime","$SpecialDateTimeController@index")
-		->name("$group.specialdatetime");
+		//special date time
+		Route::get("special-datetime","$SpecialDateTimeController@index")
+			->name("$group.specialdatetime");
+	});
 
 });
 

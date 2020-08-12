@@ -30,13 +30,13 @@
 										<label>
 											{{ __('Email') }}
 										</label>
-										<input type="text" placeholder="Email" class="form-control" disable value="@if(!empty($admin->email)) {{ $admin->email }} @endif">
+										<input type="text" placeholder="Email" class="form-control" disabled="disable" value="@if(!empty($admin->email)) {{ $admin->email }} @endif">
 									</div>
 									<div class="col-sm-6">
 										<label for="name">
 											{{ __('Họ tên') }}
 										</label>
-										<input type="text" placeholder="Họ tên" class="form-control" id="name" name="admin[name]" disable value="@if(!empty($admin->name)) {{ $admin->name }} @endif">
+										<input type="text" placeholder="Họ tên" class="form-control" id="name" name="admin[name]" disable value="@if(!empty($admin->name)) {{ $admin->name }} @elseif(!empty(old('admin')['name'])){{old('admin')['name']}}@endif">
 		                				@if (!empty($errors) && $errors->has('name'))
 		                					<label class="error text-danger" for="name">
 		                						{{ $errors->first('name') }}
@@ -62,23 +62,18 @@
 										<label>
 											{{ __('Quyền quản trị') }}
 										</label>
-										<select class="selectpicker" data-style="btn btn-block" title="Chọn quyền" data-size="5" name="profile[id_role]">
+										<select class="selectpicker" data-style="btn btn-block" title="Chọn quyền" data-size="5" name="admin[id_role]">
 		                                    @php
-		                                        Helpers::optionSelectArray($model_roles->arrayRole(), (isset(old('profile')['id_role']) && old('profile')['id_role'] !== null) ? strval(old('profile')['id_role']) : '' );
+		                                        Helpers::optionSelectArray($model_roles->arrayRole(), (isset(old('admin')['id_role']) && old('admin')['id_role'] !== null) ? strval(old('admin')['id_role']) : '' );
 		                                    @endphp
 		                                </select>
-		                                @if (!empty($errors) && $errors->has('profile.id_role'))
-		                                    <label class="error text-danger" for="input_id_role">
-		                                        {{ $errors->first('profile.id_role') }}
-		                                    </label>
-		                                @endif
 		                                <label class="d-flex">
 		                                    {{ __('Xóa quyền hiện tại:') }}
 		                                    &nbsp;
 		                                    <div class="text-danger d-flex">
 		                                        @if (count($admin->array_role_admin) > 0)
 		                                            @foreach ($admin->array_role_admin as $key => $role_admin)
-		                                                <a href="{{ route('admin.role.remove', ['id' => $key]) }}">
+		                                                <a href="#" class="role-admin" data-id-admin="{{ $admin->id }}" data-role-admin="{{ $key }}">
 		                                                    {{ $role_admin }}
 		                                                </a>
 		                                                &nbsp;
@@ -102,4 +97,26 @@
 		</div>
 	</div>
 </div>
+
+<div class="d-none">
+	<form class="d-none" id="form-remove-role-admin" action="{{ route('admin.role.admin.remove') }}" method="POST">
+		@csrf
+		<input type="hidden" name="admin[id]" id="input-id-admin">
+		<input type="hidden" name="admin[id_role]" id="input-role-admin">
+	</form>
+</div>
 @endsection
+
+@push('js')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.role-admin').click(function() {
+				var id_admin   = $(this).data('id-admin');
+				var role_admin = $(this).data('role-admin');
+				$('#input-id-admin').val(id_admin);
+				$('#input-role-admin').val(role_admin);
+				$('#form-remove-role-admin').submit();
+			});
+		});
+	</script>
+@endpush

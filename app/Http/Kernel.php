@@ -49,6 +49,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\CheckPermissionAdmin::class,
         ],
 
+        'CheckCloneAdmin' => [
+            \App\Http\Middleware\CheckCloneAdmin::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
